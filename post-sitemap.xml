@@ -8,8 +8,8 @@
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/archives/f9abf4e9.html</loc>
-        <lastmod>2019-02-15T03:48:00.118Z</lastmod>
+        <loc>https://blog.byhi.org/archives/b39da0c2.html</loc>
+        <lastmod>2019-02-22T22:39:09.153Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +17,15 @@
 
     <url>
         <loc>https://blog.byhi.org/archives/ad2407d.html</loc>
-        <lastmod>2019-02-09T11:26:51.828Z</lastmod>
+        <lastmod>2019-02-22T17:14:42.733Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://blog.byhi.org/archives/f9abf4e9.html</loc>
+        <lastmod>2019-02-15T03:48:00.118Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
