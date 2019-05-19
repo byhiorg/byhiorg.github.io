@@ -95,7 +95,14 @@
 
     <url>
         <loc>https://blog.byhi.org/tags/telegram/</loc>
-        <lastmod>2019-03-02T19:28:52.213Z</lastmod>
+        <lastmod>2019-03-04T00:31:16.174Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://blog.byhi.org/tags/JavaScript/</loc>
+        <lastmod>2019-05-19T05:58:09.352Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
