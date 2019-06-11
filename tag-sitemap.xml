@@ -66,13 +66,6 @@
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/tags/%E9%9A%8F%E5%8F%A3%E8%AF%B4/</loc>
-        <lastmod>2018-10-11T19:17:23.143Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://blog.byhi.org/tags/js/</loc>
         <lastmod>2019-01-18T16:45:26.793Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -94,15 +87,22 @@
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/tags/telegram/</loc>
-        <lastmod>2019-03-04T00:31:16.174Z</lastmod>
+        <loc>https://blog.byhi.org/tags/JavaScript/</loc>
+        <lastmod>2019-05-19T06:53:13.123Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/tags/JavaScript/</loc>
-        <lastmod>2019-05-19T06:53:13.123Z</lastmod>
+        <loc>https://blog.byhi.org/tags/telegram/</loc>
+        <lastmod>2019-06-08T02:11:48.884Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://blog.byhi.org/tags/%E9%9A%8F%E5%8F%A3%E8%AF%B4/</loc>
+        <lastmod>2019-06-11T12:02:53.656Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
