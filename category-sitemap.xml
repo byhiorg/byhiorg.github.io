@@ -8,15 +8,8 @@
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/categories/%E6%9E%B6%E6%9E%84/</loc>
-        <lastmod>2018-05-06T08:28:40.459Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://blog.byhi.org/categories/Linux/</loc>
-        <lastmod>2018-10-11T18:11:13.105Z</lastmod>
+        <loc>https://blog.byhi.org/categories/%E7%BB%BC%E5%90%88/</loc>
+        <lastmod>2019-06-13T18:28:37.470Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -29,8 +22,15 @@
     </url>
 
     <url>
-        <loc>https://blog.byhi.org/categories/%E7%BB%BC%E5%90%88/</loc>
-        <lastmod>2019-06-13T18:28:37.470Z</lastmod>
+        <loc>https://blog.byhi.org/categories/Linux/</loc>
+        <lastmod>2018-10-11T18:11:13.105Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://blog.byhi.org/categories/%E6%9E%B6%E6%9E%84/</loc>
+        <lastmod>2018-05-06T08:28:40.459Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

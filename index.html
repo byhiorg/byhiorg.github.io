@@ -2,15 +2,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
 
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+
 
 
 
@@ -19,24 +29,8 @@
     
     
   <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
 
-
-
-
-  
-  
-  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="KtMub_pJsgO61zBTDS_zJizyNGdp_Pr9yTUibviLihQ" />
 
 
 
@@ -53,7 +47,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
 
 
 
@@ -61,40 +55,59 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-echobits.png?v=5.1.4">
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-echobits.ico?v=5.1.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-echobits.png?v=7.1.2">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-echobits.ico?v=5.1.4">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-echobits.ico?v=7.1.2">
 
 
-  <link rel="mask-icon" href="/images/favicon.svg?v=5.1.4" color="#222">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-echobits.ico?v=7.1.2">
 
 
-
-
-
-  <meta name="keywords" content="杂谈,折腾,记录" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="echobits" type="application/atom+xml" />
+  <link rel="mask-icon" href="/images/favicon.svg?v=7.1.2" color="#222">
 
 
 
 
 
 
-<meta name="description" content="心之所愿，无所不成。">
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="心之所愿，无所不成。">
 <meta name="keywords" content="后端,前端,java,php,杂谈,折腾,记录">
 <meta property="og:type" content="website">
 <meta property="og:title" content="echobits">
@@ -108,63 +121,66 @@
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+  <link rel="alternate" href="/atom.xml" title="echobits" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://blog.byhi.org/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
   };
 </script>
 
-
-
-  <link rel="canonical" href="https://blog.byhi.org/"/>
-
-
-
-
-
   <title>echobits</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
   
 
 
 
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-117516329-1', 'auto');
-  ga('send', 'pageview');
-</script>
+
+
+
 
 
 
 
 
   <style>
-      .social-share{
-        margin-top: 20px;
-      }
+    .social-share{
+      margin-top: 20px;
+    }
   </style>
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -180,23 +196,26 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">echobits</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
+    
       
         <h1 class="site-subtitle" itemprop="description">echobits的杂货铺</h1>
       
+    
+    
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="Navigationsleiste an/ausschalten">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -204,56 +223,80 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home menu-item-active">
 
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
       
         <li class="menu-item menu-item-search">
           
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            搜索
-          </a>
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
         </li>
       
     </ul>
+  
+
+  
+    
+
   
 
   
@@ -268,9 +311,7 @@
       <i class="fa fa-times-circle"></i>
     </span>
     <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
     </div>
   </div>
   <div id="local-search-result"></div>
@@ -284,12 +325,20 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -302,6 +351,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -311,7 +362,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -326,11 +377,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/8f8ebfff.html" itemprop="url">B站2019年6月自查下架番剧汇总</a></h2>
+                
+                <a href="/archives/8f8ebfff.html" class="post-title-link" itemprop="url">B站2019年6月自查下架番剧汇总</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -338,18 +398,23 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T14:48:13+08:00">
-                2019-06-11
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-06-11 14:48:13 / 更新于：20:19:06" itemprop="dateCreated datePublished" datetime="2019-06-11T14:48:13+08:00">2019-06-11</time>
             
 
             
+              
 
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -360,11 +425,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -374,14 +435,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/8f8ebfff.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/8f8ebfff.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/8f8ebfff.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -389,16 +453,16 @@
 
           
           
-             <span id="/archives/8f8ebfff.html" class="leancloud_visitors" data-flag-title="B站2019年6月自查下架番剧汇总">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/8f8ebfff.html" class="leancloud_visitors" data-flag-title="B站2019年6月自查下架番剧汇总">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -414,7 +478,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -436,21 +500,29 @@
 <li>欧西里斯的天秤 第二季</li>
 </ul>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/8f8ebfff.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/8f8ebfff.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -459,7 +531,6 @@
       
 
       
-
 
       
 
@@ -482,6 +553,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -493,7 +566,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -508,11 +581,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/6e64e2a1.html" itemprop="url">允许空白referer防盗链图片的破解</a></h2>
+                
+                <a href="/archives/6e64e2a1.html" class="post-title-link" itemprop="url">允许空白referer防盗链图片的破解</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -520,18 +602,23 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-19T13:47:12+08:00">
-                2019-05-19
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-05-19 13:47:12 / 更新于：14:53:13" itemprop="dateCreated datePublished" datetime="2019-05-19T13:47:12+08:00">2019-05-19</time>
             
 
             
+              
 
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -542,11 +629,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
 
                 
                 
@@ -556,14 +639,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/6e64e2a1.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/6e64e2a1.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/6e64e2a1.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -571,16 +657,16 @@
 
           
           
-             <span id="/archives/6e64e2a1.html" class="leancloud_visitors" data-flag-title="允许空白referer防盗链图片的破解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/6e64e2a1.html" class="leancloud_visitors" data-flag-title="允许空白referer防盗链图片的破解">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -596,7 +682,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -605,23 +691,32 @@
         
           <p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
 <h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span><br><span class="line">    frameid = <span class="string">'frameimg'</span> + imgid;</span><br><span class="line">    <span class="built_in">window</span>[<span class="string">'img'</span>+imgid] = <span class="string">'&lt;img id="img" src=\''</span>+url+<span class="string">'\' /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\''</span>+frameid+<span class="string">'\').height = document.getElementById(\'img\').height+\'px\'; &#125;&lt;'</span>+<span class="string">'/script&gt;'</span>;</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">'&lt;iframe id="'</span>+frameid+<span class="string">'" src="javascript:parent[\'img'</span>+imgid+<span class="string">'\'];" frameBorder="0" scrolling="no" width="100%"&gt;&lt;/iframe&gt;'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showImg(<span class="string">'图片地址'</span>);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/6e64e2a1.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/6e64e2a1.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -630,7 +725,6 @@
       
 
       
-
 
       
 
@@ -655,6 +749,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -664,7 +760,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -679,11 +775,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/b39da0c2.html" itemprop="url">Telegram群组/频道/机器人推荐</a></h2>
+                
+                <a href="/archives/b39da0c2.html" class="post-title-link" itemprop="url">Telegram群组/频道/机器人推荐</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -691,18 +796,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T01:12:52+08:00">
-                2019-02-23
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-02-23 01:12:52" itemprop="dateCreated datePublished" datetime="2019-02-23T01:12:52+08:00">2019-02-23</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2019-06-14 02:28:37" itemprop="dateModified" datetime="2019-06-14T02:28:37+08:00">2019-06-14</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -713,11 +835,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -727,14 +845,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/b39da0c2.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/b39da0c2.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/b39da0c2.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -742,16 +863,16 @@
 
           
           
-             <span id="/archives/b39da0c2.html" class="leancloud_visitors" data-flag-title="Telegram群组/频道/机器人推荐">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/b39da0c2.html" class="leancloud_visitors" data-flag-title="Telegram群组/频道/机器人推荐">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -767,7 +888,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -797,21 +918,29 @@
 <h2 id="与编程语言相关令人敬畏的印度尼西亚Telegram群组"><a href="#与编程语言相关令人敬畏的印度尼西亚Telegram群组" class="headerlink" title="与编程语言相关令人敬畏的印度尼西亚Telegram群组"></a>与编程语言相关令人敬畏的印度尼西亚Telegram群组</h2><p><a href="https://github.com/hendisantika/List-All-Programming-Telegram-Group" target="_blank" rel="noopener">https://github.com/hendisantika/List-All-Programming-Telegram-Group</a></p>
 <h2 id="Telegram-Desktop-下載"><a href="#Telegram-Desktop-下載" class="headerlink" title="Telegram Desktop 下載"></a>Telegram Desktop 下載</h2><p><a href="https://desktop.telegram.org/" target="_blank" rel="noopener">https://desktop.telegram.org/</a></p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/b39da0c2.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/b39da0c2.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -820,7 +949,6 @@
       
 
       
-
 
       
 
@@ -843,6 +971,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -854,7 +984,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -869,11 +999,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/f9abf4e9.html" itemprop="url">在CentOS7下使用Tor 创建匿名服务和匿名网站</a></h2>
+                
+                <a href="/archives/f9abf4e9.html" class="post-title-link" itemprop="url">在CentOS7下使用Tor 创建匿名服务和匿名网站</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -881,18 +1020,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-13T02:52:29+08:00">
-                2019-02-13
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-02-13 02:52:29" itemprop="dateCreated datePublished" datetime="2019-02-13T02:52:29+08:00">2019-02-13</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2019-02-15 11:48:00" itemprop="dateModified" datetime="2019-02-15T11:48:00+08:00">2019-02-15</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -903,11 +1059,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -917,14 +1069,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/f9abf4e9.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/f9abf4e9.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/f9abf4e9.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -932,16 +1087,16 @@
 
           
           
-             <span id="/archives/f9abf4e9.html" class="leancloud_visitors" data-flag-title="在CentOS7下使用Tor 创建匿名服务和匿名网站">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/f9abf4e9.html" class="leancloud_visitors" data-flag-title="在CentOS7下使用Tor 创建匿名服务和匿名网站">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -957,7 +1112,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -967,21 +1122,29 @@
           <h2 id="科普下什么是暗网"><a href="#科普下什么是暗网" class="headerlink" title="科普下什么是暗网"></a>科普下什么是暗网</h2><p>暗网（英语：Dark web）是存在于黑暗网络、覆盖网络上的万维网内容，只能用特殊软体、特殊授权、或对电脑做特殊设定才能访问。暗网构成了深网的一小部分，深网网络没有被网络搜索引擎索引，有时“深网”这一术语被错误地用于指代暗网。</p>
 <p>构成暗网的黑暗网络包括F2F的小型点对点网络以及由公共组织和个人运营的大型流行网络，如Tor、自由网、I2P和Riffle。暗网用户基于常规网络未加密的性质将其称为明网。Tor暗网可以称为洋葱区域（onionland），其使用网络顶级域后缀.onion和洋葱路由的流量匿名化技术。  —《维基百科-<a href="https://zh.wikipedia.org/zh-hans/%E6%9A%97%E7%BD%91" target="_blank" rel="noopener">暗网</a>》词条的解释</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/f9abf4e9.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/f9abf4e9.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -990,7 +1153,6 @@
       
 
       
-
 
       
 
@@ -1013,6 +1175,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1024,7 +1188,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1039,11 +1203,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/ad2407d.html" itemprop="url">1809 1 月更新官方 esd 和 xml 下载</a></h2>
+                
+                <a href="/archives/ad2407d.html" class="post-title-link" itemprop="url">1809 1 月更新官方 esd 和 xml 下载</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1051,18 +1224,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T14:14:59+08:00">
-                2019-02-09
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-02-09 14:14:59" itemprop="dateCreated datePublished" datetime="2019-02-09T14:14:59+08:00">2019-02-09</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2019-02-23 01:14:42" itemprop="dateModified" datetime="2019-02-23T01:14:42+08:00">2019-02-23</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1073,11 +1263,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -1087,14 +1273,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/ad2407d.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/ad2407d.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/ad2407d.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1102,16 +1291,16 @@
 
           
           
-             <span id="/archives/ad2407d.html" class="leancloud_visitors" data-flag-title="1809 1 月更新官方 esd 和 xml 下载">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/ad2407d.html" class="leancloud_visitors" data-flag-title="1809 1 月更新官方 esd 和 xml 下载">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1127,7 +1316,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -1139,21 +1328,29 @@
 <p>本站存档：<a href="/files/products_20190110.cab">products_20190110.cab</a></p>
 <p>解压此 cab 文件，可得 xml 文件，可下载所有语言的 esd 文件。</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/ad2407d.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/ad2407d.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -1162,7 +1359,6 @@
       
 
       
-
 
       
 
@@ -1185,6 +1381,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1196,7 +1394,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1211,11 +1409,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/8b542dc4.html" itemprop="url">【防浏览器调试模式】And 防【防浏览器调试模式】</a></h2>
+                
+                <a href="/archives/8b542dc4.html" class="post-title-link" itemprop="url">【防浏览器调试模式】And 防【防浏览器调试模式】</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1223,18 +1430,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-18T23:29:45+08:00">
-                2019-01-18
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2019-01-18 23:29:45" itemprop="dateCreated datePublished" datetime="2019-01-18T23:29:45+08:00">2019-01-18</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2019-01-19 00:45:26" itemprop="dateModified" datetime="2019-01-19T00:45:26+08:00">2019-01-19</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1245,11 +1469,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
 
                 
                 
@@ -1259,14 +1479,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/8b542dc4.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/8b542dc4.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/8b542dc4.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1274,16 +1497,16 @@
 
           
           
-             <span id="/archives/8b542dc4.html" class="leancloud_visitors" data-flag-title="【防浏览器调试模式】And 防【防浏览器调试模式】">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/8b542dc4.html" class="leancloud_visitors" data-flag-title="【防浏览器调试模式】And 防【防浏览器调试模式】">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1299,7 +1522,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -1308,21 +1531,29 @@
         
           <h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*!</span></span><br><span class="line"><span class="comment"> * source: https://github.com/sindresorhus/devtools-detect</span></span><br><span class="line"><span class="comment"> * Abbey改写</span></span><br><span class="line"><span class="comment"> * MIT License</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    'use strict'</span>;</span><br><span class="line">    <span class="keyword">var</span> devtools = &#123;</span><br><span class="line">        open: <span class="literal">false</span>,</span><br><span class="line">        orientation: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> threshold = <span class="number">160</span>;</span><br><span class="line">    <span class="keyword">var</span> emitEvent = <span class="function"><span class="keyword">function</span> (<span class="params">state, orientation</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.dispatchEvent(<span class="keyword">new</span> CustomEvent(<span class="string">'devtoolschange'</span>, &#123;</span><br><span class="line">            detail: &#123;</span><br><span class="line">                open: state,</span><br><span class="line">                orientation: orientation</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;;</span><br><span class="line">    setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> widthThreshold = <span class="built_in">window</span>.outerWidth - <span class="built_in">window</span>.innerWidth &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> heightThreshold = <span class="built_in">window</span>.outerHeight - <span class="built_in">window</span>.innerHeight &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> orientation = widthThreshold ? <span class="string">'vertical'</span> : <span class="string">'horizontal'</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(heightThreshold &amp;&amp; widthThreshold) &amp;&amp; ((<span class="built_in">window</span>.Firebug &amp;&amp; <span class="built_in">window</span>.Firebug.chrome &amp;&amp; <span class="built_in">window</span>.Firebug.chrome.isInitialized) ||</span><br><span class="line">            widthThreshold || heightThreshold)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!devtools.open || devtools.orientation !== orientation) &#123;</span><br><span class="line">                emitEvent(<span class="literal">true</span>, orientation);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">true</span>;</span><br><span class="line">            devtools.orientation = orientation;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (devtools.open) &#123;</span><br><span class="line">                emitEvent(<span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">false</span>;</span><br><span class="line">            devtools.orientation = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> &amp;&amp; <span class="built_in">module</span>.exports) &#123;</span><br><span class="line">        <span class="built_in">module</span>.exports = devtools;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.devtools = devtools;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'devtoolschange'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (e.detail.open)&#123;</span><br><span class="line">        <span class="keyword">debugger</span>;</span><br><span class="line">        <span class="built_in">window</span>.stop();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">window</span>.location.reload();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/8b542dc4.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/8b542dc4.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -1331,7 +1562,6 @@
       
 
       
-
 
       
 
@@ -1354,6 +1584,8 @@
 
   
   
+  
+
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -1365,7 +1597,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1380,11 +1612,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/464ec3e2.html" itemprop="url">如何在Ubuntu中安装PuTTY</a></h2>
+                
+                <a href="/archives/464ec3e2.html" class="post-title-link" itemprop="url">如何在Ubuntu中安装PuTTY</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1392,18 +1633,23 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-12T01:35:19+08:00">
-                2018-10-12
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2018-10-12 01:35:19 / 更新于：02:11:13" itemprop="dateCreated datePublished" datetime="2018-10-12T01:35:19+08:00">2018-10-12</time>
             
 
             
+              
 
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1414,11 +1660,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
 
                 
                 
@@ -1428,14 +1670,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/464ec3e2.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/464ec3e2.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/464ec3e2.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1443,16 +1688,16 @@
 
           
           
-             <span id="/archives/464ec3e2.html" class="leancloud_visitors" data-flag-title="如何在Ubuntu中安装PuTTY">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/464ec3e2.html" class="leancloud_visitors" data-flag-title="如何在Ubuntu中安装PuTTY">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1468,7 +1713,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -1479,21 +1724,29 @@
 <p>本文将介绍如何在Ubuntu 14.04及更高版本上安装PuTTY。</p>
 <h2 id="开启终端"><a href="#开启终端" class="headerlink" title="开启终端"></a>开启终端</h2><p>登录Ubuntu Desktop。按<code>Ctrl + Atl + T</code>打开GNOME终端。如果由于某种原因快捷方式不起作用，请从Ubuntu Dash运行终端。</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/464ec3e2.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/464ec3e2.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -1502,7 +1755,6 @@
       
 
       
-
 
       
 
@@ -1527,6 +1779,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1536,7 +1790,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1551,11 +1805,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/3ecb4f72.html" itemprop="url">如何在Ubuntu中开启Fast TCP Open</a></h2>
+                
+                <a href="/archives/3ecb4f72.html" class="post-title-link" itemprop="url">如何在Ubuntu中开启Fast TCP Open</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1563,18 +1826,23 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-12T01:15:05+08:00">
-                2018-10-12
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2018-10-12 01:15:05 / 更新于：01:29:43" itemprop="dateCreated datePublished" datetime="2018-10-12T01:15:05+08:00">2018-10-12</time>
             
 
             
+              
 
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1585,11 +1853,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a></span>
 
                 
                 
@@ -1599,14 +1863,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/3ecb4f72.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/3ecb4f72.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/3ecb4f72.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1614,16 +1881,16 @@
 
           
           
-             <span id="/archives/3ecb4f72.html" class="leancloud_visitors" data-flag-title="如何在Ubuntu中开启Fast TCP Open">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/3ecb4f72.html" class="leancloud_visitors" data-flag-title="如何在Ubuntu中开启Fast TCP Open">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1639,7 +1906,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -1653,6 +1920,7 @@
 <li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_fastopen = 3</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>保存，退出。</li>
 <li>执行<code>sysctl -p</code>使其生效。</li>
@@ -1660,16 +1928,23 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen</span><br></pre></td></tr></table></figure>
 
+
           
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -1678,7 +1953,6 @@
       
 
       
-
 
       
 
@@ -1703,6 +1977,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1712,7 +1988,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1727,11 +2003,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/d27d55f2.html" itemprop="url">将本站的评论系统gitment改为disqus了</a></h2>
+                
+                <a href="/archives/d27d55f2.html" class="post-title-link" itemprop="url">将本站的评论系统gitment改为disqus了</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1739,18 +2024,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-01T02:42:55+08:00">
-                2018-10-01
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2018-10-01 02:42:55" itemprop="dateCreated datePublished" datetime="2018-10-01T02:42:55+08:00">2018-10-01</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2018-10-12 03:17:23" itemprop="dateModified" datetime="2018-10-12T03:17:23+08:00">2018-10-12</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1761,11 +2063,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -1775,14 +2073,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/d27d55f2.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/d27d55f2.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/d27d55f2.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1790,16 +2091,16 @@
 
           
           
-             <span id="/archives/d27d55f2.html" class="leancloud_visitors" data-flag-title="将本站的评论系统gitment改为disqus了">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/d27d55f2.html" class="leancloud_visitors" data-flag-title="将本站的评论系统gitment改为disqus了">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1815,7 +2116,7 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -1834,12 +2135,18 @@
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -1848,7 +2155,6 @@
       
 
       
-
 
       
 
@@ -1873,6 +2179,8 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -1882,7 +2190,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="心之所愿，无所不成。">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -1897,11 +2205,20 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/archives/b0441bd.html" itemprop="url">北大法学院：非法集资背后的是与非</a></h2>
+                
+                <a href="/archives/b0441bd.html" class="post-title-link" itemprop="url">北大法学院：非法集资背后的是与非</a>
+              
+            
+          </h2>
         
 
         <div class="post-meta">
           <span class="post-time">
+
+            
+            
+            
+
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -1909,18 +2226,35 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-22T21:52:36+08:00">
-                2018-09-22
-              </time>
+
+              
+                
+              
+
+              <time title="创建于：2018-09-22 21:52:36" itemprop="dateCreated datePublished" datetime="2018-09-22T21:52:36+08:00">2018-09-22</time>
             
 
             
+              
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="更新于：2018-09-23 00:10:32" itemprop="dateModified" datetime="2018-09-23T00:10:32+08:00">2018-09-23</time>
+              
             
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -1931,11 +2265,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/综合/" itemprop="url" rel="index">
-                    <span itemprop="name">综合</span>
-                  </a>
-                </span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/综合/" itemprop="url" rel="index"><span itemprop="name">综合</span></a></span>
 
                 
                 
@@ -1945,14 +2275,17 @@
 
           
             
+            
+              
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
                 <a href="/archives/b0441bd.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="archives/b0441bd.html" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="archives/b0441bd.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1960,16 +2293,16 @@
 
           
           
-             <span id="/archives/b0441bd.html" class="leancloud_visitors" data-flag-title="北大法学院：非法集资背后的是与非">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <span id="/archives/b0441bd.html" class="leancloud_visitors" data-flag-title="北大法学院：非法集资背后的是与非">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1985,36 +2318,44 @@
     
     
     
-    <div class="post-body han-init-context" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <p><strong> 我不保证你能在10分钟内读完,但我保证这篇文章对得起你的时间。</strong></p>
+          <p>** 我不保证你能在10分钟内读完,但我保证这篇文章对得起你的时间。**</p>
 <p><em>在中国，目前正规的金融机构提供不了民营企业需要的融资服务，民间融资市场非常混乱，而政府又没办法划出一个准确的界线，在这种情况下，如果我们可以给出这样一个安全港，至少它划出了一个相对来说比较明确的路径，或者说政府有把握地说你沿着这个路径走我们就能够认定你是安全的、合法的。这就给所有企业家提供了一个相对比较安全和确定的非正规融资渠道，不至于让很多人在灰色地带摸索、在刀尖上行走。</em></p>
 <p>在出事之前，地方政府是鼓励企业非法集资的。为什么？第一，可以最大限度地动员本地的闲散资金；第二，可以把外地的闲散资金吸引到本地来。所以地方政府在你没有出风险的时候是纵容、支持非法集资的。我们看到过很多这样的案例，比如湖南湘西自治州的“曾成杰案”，一开始地方政府是完全支持他非法集资的，可是后来崩盘了，投资者一闹事，就把他抓起来，以“非法集资罪”判了他死刑。由此可见，政府事权的划分是有问题的。</p>
 <p>2015年，北京市开展“打击非法集资专项整治活动”，非法集资再次成为政府关注的重点。大家如果关注时事，就会知道最近一个月又出了很多事，比如e租宝，而且昨天新闻又曝出上海的大大宝也出事了，都是几百亿的规模。</p>
 <p>如果你去查中国政府的文献，如果你从传统法律规范的层面分析、研究“非法集资”现象，你就会发现从1993年的中国第一起非法集资案件“长城机电案”起，大概每隔4-5年时间，政府就会掀起一次对“非法集资”的整治运动。并且你会发现，随着整治，“非法集资”数量越来越多：每次开展打击非法集资活动时，政府都会这样讲：“非法集资现象比原来还要猖獗，金额越来越大，手段越来越多”。</p>
 <p>为什么会这样？我最近对政府的监管策略、监管手段有一些不成熟的想法，希望跟大家讨论讨论。</p>
-<p><strong> 我主要讲四部分的内容：首先谈谈监管集资行为的基本理论，谈谈如何监管，以及如何界定集资行为，最后谈谈监管策略。前面三部分其实都是比较成熟的理论，最后一部分是我的一些最新想法。 </strong></p>
+<p>** 我主要讲四部分的内容：首先谈谈监管集资行为的基本理论，谈谈如何监管，以及如何界定集资行为，最后谈谈监管策略。前面三部分其实都是比较成熟的理论，最后一部分是我的一些最新想法。 **</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/archives/b0441bd.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/archives/b0441bd.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
           <!--/noindex-->
         
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
 
     
@@ -2023,7 +2364,6 @@
       
 
       
-
 
       
 
@@ -2044,15 +2384,12 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Nächste Seite"></i></a>
   </nav>
 
 
 
           </div>
-          
-
-
           
 
         </div>
@@ -2068,61 +2405,108 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
     <div class="sidebar-inner">
 
       
 
       
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="echobits" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="echobits">
             
               <p class="site-author-name" itemprop="name">echobits</p>
-              <p class="site-description motion-element" itemprop="description"></p>
+              <div class="site-description motion-element" itemprop="description">心之所愿，无所不成。</div>
           </div>
 
-          <nav class="site-state motion-element">
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
 
-            
-              <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
               
-                  <span class="site-state-item-count">14</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
 
-            
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
+            </nav>
+          
 
           
             <div class="feed-link motion-element">
@@ -2136,39 +2520,19 @@
           
 
           
-          
-            <div class="cc-license motion-element" itemprop="license">
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
-                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
-              </a>
-            </div>
+
           
 
           
           
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                友情链接
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://notes.iissnan.com/" title="IIssNan's Notes" target="_blank">IIssNan's Notes</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://theme-next.iissnan.com/" title="NexT" target="_blank">NexT</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
 
+          
+            
+          
           
 
         </div>
-      </section>
+      </div>
 
       
 
@@ -2176,6 +2540,7 @@
 
     </div>
   </aside>
+  
 
 
         
@@ -2184,17 +2549,19 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">echobits</span>
 
   
+
+  
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
 
 
 
@@ -2202,7 +2569,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.1.2</div>
 
 
 
@@ -2212,21 +2579,28 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
-    <span class="site-uv">
-      <i class="fa fa-user"></i> 本站访客数
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Alle Besucher">
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      人次
     </span>
   
 
   
-    <span class="site-pv">
-      <i class="fa fa-eye"></i> 本站总访问量
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Alle Aufrufe">
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      次
     </span>
   
 </div>
+
 
 
 
@@ -2250,11 +2624,14 @@
 
     
 
+    
+
+    
   </div>
 
   
 
-<script type="text/javascript">
+<script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -2264,92 +2641,12 @@
 
 
 
-
+  
 
 
 
   
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://echobits.disqus.com/count.js" async></script>
-    
-
-    
-
-  
-
-
-
-
-	
 
 
 
@@ -2369,10 +2666,79 @@
 
 
 
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
 
   
 
-  <script type="text/javascript">
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.1.2"></script>
+  <script src="/js/scroll-cookie.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://echobits.disqus.com/count.js" async></script>
+
+
+
+
+
+
+
+  
+  <script>
     // Popup Window;
     var isfetched = false;
     var isXml = true;
@@ -2421,6 +2787,21 @@
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
 
+      
+        // ref: https://github.com/ForbesLindesay/unescape-html
+        var unescapeHtml = function(html) {
+          return String(html)
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, '\'')
+            .replace(/&#x3A;/g, ':')
+            // replace all the other &#x; chars
+            .replace(/&#(\d+);/g, function (m, p) { return String.fromCharCode(p); })
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&');
+        };
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -2454,8 +2835,11 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                content = unescapeHtml(content);
+                
                 var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
                 var indexOfContent = [];
                 // only match articles with not empty titles
@@ -2624,9 +3008,9 @@
               })
             };
             if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
             } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
             } else {
               resultItems.sort(function (resultLeft, resultRight) {
                 if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
@@ -2694,23 +3078,19 @@
 
 
   
-
   
-  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
-  <script>AV.initialize("hlGTvG1egqcR5NIgaX6bt0kE-MdYXbMMI", "NoXxAvIbsyvNqeI5z4aukNJn");</script>
   <script>
+    
     function showTime(Counter) {
-      var query = new AV.Query(Counter);
       var entries = [];
-      var $visitors = $(".leancloud_visitors");
+      var $visitors = $('.leancloud_visitors');
 
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
+      $visitors.each(function() {
+        entries.push( $(this).attr('id').trim() );
       });
 
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url: { '$in': entries } }) })
+        .done(function({ results }) {
           var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
 
           if (results.length === 0) {
@@ -2720,83 +3100,48 @@
 
           for (var i = 0; i < results.length; i++) {
             var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
+            var url = item.url;
+            var time = item.time;
             var element = document.getElementById(url);
 
             $(element).find(COUNT_CONTAINER_REF).text(time);
           }
-          for(var i = 0; i < entries.length; i++) {
+          for (var i = 0; i < entries.length; i++) {
             var url = entries[i];
             var element = document.getElementById(url);
             var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
+            if (countSpan.text() == '') {
               countSpan.text(0);
             }
           }
         })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
+        .fail(function ({ responseJSON }) {
+          console.log('LeanCloud Counter Error: ' + responseJSON.code + ' ' + responseJSON.error);
         });
     }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
+    
 
     $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'hlGTvG1egqcR5NIgaX6bt0kE-MdYXbMMI')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'hlGTvG1egqcR5NIgaX6bt0kE-MdYXbMMI',
+                'X-LC-Key': 'NoXxAvIbsyvNqeI5z4aukNJn',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            if ($('.post-title-link').length >= 1) {
+              showTime(Counter);
+            }
+          
+        });
     });
   </script>
 
@@ -2805,42 +3150,67 @@
   
 
   
-
-  
   
 
   
   
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
   
-  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
-  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.loadBookmark();
+  
+  </script>
 
 
   
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+  
+
+  
+
   <canvas id="demo-canvas" style="display: block; width: 100%; height: 100%; top: 0; left: 0; position: fixed; pointer-events: none;"></canvas>
   <script src="//res.cloudinary.com/dwomm5wrg/raw/upload/v1537718572/blog/js/canvas-spirit.js"></script>
 </body>
