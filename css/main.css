@@ -2934,7 +2934,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #7faaff;
+  background: #11c8ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2966,8 +2966,5 @@ hr {
 }
 .posts-expand.index .post-meta-container {
   margin-left: auto;
-  display: inline-flex;
-}
-#busuanzi_container_page_pv {
   display: inline-flex;
 }
