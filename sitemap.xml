@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.byhi.org/about/index.html</loc>
+    
+    <lastmod>2021-07-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.byhi.org/archives/b39da0c2.html</loc>
     
     <lastmod>2020-02-14</lastmod>
@@ -68,13 +75,6 @@
     <loc>https://blog.byhi.org/archives/3ecb4f72.html</loc>
     
     <lastmod>2018-10-11</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.byhi.org/about/index.html</loc>
-    
-    <lastmod>2018-09-30</lastmod>
     
   </url>
   
