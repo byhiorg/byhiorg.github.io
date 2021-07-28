@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.byhi.org","root":"/","images":"/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码123456function showImg( url ) &amp;#123;    var imgid &#x3D; Math.random(),    frameid &#x3D; &amp;#x27;f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="允许空白referer防盗链图片的破解">
+<meta property="og:url" content="https://blog.byhi.org/archives/6e64e2a1.html">
+<meta property="og:site_name" content="echobits">
+<meta property="og:description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码123456function showImg( url ) &amp;#123;    var imgid &#x3D; Math.random(),    frameid &#x3D; &amp;#x27;f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-19T05:47:12.000Z">
+<meta property="article:modified_time" content="2019-05-19T06:53:14.000Z">
+<meta property="article:author" content="echobits">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.byhi.org/archives/6e64e2a1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.byhi.org/archives/6e64e2a1.html","path":"archives/6e64e2a1.html","title":"允许空白referer防盗链图片的破解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>允许空白referer防盗链图片的破解 | echobits</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">echobits</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">echobits的杂货铺</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iframe%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">iframe方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Javascript%E6%BA%90%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">Javascript源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">调用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">1.3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">兼容性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%99img%E6%A0%87%E7%AD%BE%E6%B7%BB%E5%8A%A0Referrer-Policy%E5%B1%9E%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">给img标签添加Referrer-Policy属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%99%E4%BD%A0%E9%A1%B5%E9%9D%A2%E4%B8%AD%E7%9A%84img%E6%B7%BB%E5%8A%A0%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">给你页面中的img添加参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.3.</span> <span class="nav-text">参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0head%E6%A0%87%E8%AE%B0"><span class="nav-number">3.</span> <span class="nav-text">加head标记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">HTML代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="nav-number">3.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%9D%9E%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E7%9A%84http%E5%9B%BE%E7%89%87%E5%9C%B0%E5%9D%80"><span class="nav-number">4.</span> <span class="nav-text">使用非安全协议的http图片地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8CReferer-%E4%B8%8D%E4%BC%9A%E8%A2%AB%E5%8F%91%E9%80%81"><span class="nav-number">4.1.</span> <span class="nav-text">在以下几种情况下，Referer 不会被发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-2"><span class="nav-number">4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">防御方法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">echobits</p>
+  <div class="site-description" itemprop="description">个人笔记</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/6e64e2a1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="echobits">
+      <meta itemprop="description" content="个人笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echobits">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          允许空白referer防盗链图片的破解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-05-19 13:47:12 / 修改时间：14:53:14" itemprop="dateCreated datePublished" datetime="2019-05-19T13:47:12+08:00">2019-05-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
+<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span><br><span class="line">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span><br><span class="line">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showImg(<span class="string">&#x27;图片地址&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript">  </span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span></span><br><span class="line"><span class="javascript">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>直接盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>js破解盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hotlinking&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"> showImg(<span class="string">&#x27;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#x27;</span>);</span></span><br><span class="line"><span class="javascript"> </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
+<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">referrerPolicy</span>=<span class="string">&quot;no-referrer&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
+<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
+<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
+<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
+<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
+<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
+<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
+</ul>
+<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
+<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
+<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
+<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
+<li>登录校验（如必须登录网站帐号后才能访问）；</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/archives/b39da0c2.html" rel="prev" title="Telegram群组/频道/机器人推荐">
+                  <i class="fa fa-chevron-left"></i> Telegram群组/频道/机器人推荐
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/archives/8f8ebfff.html" rel="next" title="B站2019年6月自查下架番剧汇总">
+                  B站2019年6月自查下架番剧汇总 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">echobits</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
