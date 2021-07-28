@@ -151,13 +151,6 @@
   </url>
   
   <url>
-    <loc>https://blog.byhi.org/tags/%E9%9A%8F%E5%8F%A3%E8%AF%B4/</loc>
-    <lastmod>2021-07-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.byhi.org/tags/Spring-Cloud/</loc>
     <lastmod>2021-07-28</lastmod>
     <changefreq>daily</changefreq>
@@ -166,6 +159,13 @@
   
   <url>
     <loc>https://blog.byhi.org/tags/Spring-Boot/</loc>
+    <lastmod>2021-07-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.byhi.org/tags/%E9%9A%8F%E5%8F%A3%E8%AF%B4/</loc>
     <lastmod>2021-07-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -186,13 +186,6 @@
   </url>
   
   <url>
-    <loc>https://blog.byhi.org/tags/js/</loc>
-    <lastmod>2021-07-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.byhi.org/tags/tor/</loc>
     <lastmod>2021-07-28</lastmod>
     <changefreq>daily</changefreq>
@@ -200,7 +193,7 @@
   </url>
   
   <url>
-    <loc>https://blog.byhi.org/tags/JavaScript/</loc>
+    <loc>https://blog.byhi.org/tags/js/</loc>
     <lastmod>2021-07-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -208,6 +201,13 @@
   
   <url>
     <loc>https://blog.byhi.org/tags/windows/</loc>
+    <lastmod>2021-07-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.byhi.org/tags/JavaScript/</loc>
     <lastmod>2021-07-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
