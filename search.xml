@@ -1,0 +1,1708 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>用虚拟机上QQ，挂全局Socks代理的请注意，UDP协议暴露真实IP</title>
+    <url>/archives/d02050ce.html</url>
+    <content><![CDATA[<p>目前市面上所有的全局socks代理（包括Prixifier等）均无法代理UDP协议</p>
+<p>TCP：</p>
+<p>虚拟机——NAT——各种代理，各种TOR——真实服务器</p>
+<p>UDP：</p>
+<p>虚拟机——NAT——真实IP——真实服务器</p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>UDP</tag>
+        <tag>proxy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>将本站的评论系统gitment改为disqus了</title>
+    <url>/archives/d27d55f2.html</url>
+    <content><![CDATA[<p>本博客原来的评论系统为 <strong><a href="https://github.com/imsun/gitment/">Gitment</a></strong></p>
+<p>Gitment 是一款基于 GitHub Issues 的评论系统,可以使用 GitHub 账号进行评论。</p>
+<p>我主题 <strong>Next</strong> 自带的服务接口已经停止维护了，而我又不想购买服务器自己搭一个CORS header server。所以改用disqus了。</p>
+<p>对于想要自己创建评论服务的可以看这里：<a href="https://github.com/imsun/gh-oauth-server">https://github.com/imsun/gh-oauth-server</a> 作者已经把这个开源了，很简单的 nodejs 代码。</p>
+<p>因为disqus评论系统为国外服务。如果长时间无法加载，请针对 disq.us | disquscdn.com | disqus.com 启用代理。</p>
+<p>于更换日(2018-10-01)简单记录下。</p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>随口说</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从 Spring Cloud 看一个微服务框架的「五脏六腑」</title>
+    <url>/archives/50cd1a2.html</url>
+    <content><![CDATA[<p>Spring Cloud 是一个基于 Spring Boot 实现的微服务框架，它包含了实现微服务架构所需的各种组件。</p>
+<blockquote>
+<p>注：Spring Boot 简单理解就是简化 Spring 项目的搭建、配置、组合的框架。因为与构建微服务本身没有直接关系，所以本文不对 Spring Boot 进行展开。另外本文有一些例子涉及到 Spring 和 Spring Boot，建议先了解一下 Spring 和 Spring Boot 再阅读本文。<br>本文的阅读对象主要是没有接触过服务架构，想对其有一个宏观的了解的同学。</p>
+</blockquote>
+<p>本文将从 Spring Cloud 出发，分两小节讲述微服务框架的「五脏六腑」：</p>
+<ul>
+<li>第一小节「服务架构」旨在说明的包括两点，一服务架构是什么及其必要性；二是服务架构的基本组成。为什么第一节写服务架构而不是微服务架构呢？原因主要是微服务架构本身与服务架构有着千丝万缕的关系，服务架构是微服务架构的根基。</li>
+<li>第二小节「五脏六腑」则将结合 Spring Cloud 这个特例来介绍一个完整的微服务框架的组成。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="「服务架构」"><a href="#「服务架构」" class="headerlink" title="「服务架构」"></a>「服务架构」</h2><p>为了方便理解，我先讲一个小故事：（改编自一知乎答主）</p>
+<p>Martin（微服务提出者也叫 Martin）刚来到公司时是一个基层员工，它上面有经理、老板，那个时候所有人都听老板的指挥。</p>
+<p>但是过了两年，公司的人越来越多，原来的模式下整个公司的运作效率太低，管理也很混乱。</p>
+<p>于是已经踏上中层岗位的 Martin 建议老板进行部门划分（服务化），专门的部门只做专门的事情（单一职责）。例如研发部门只做研发，人事部门只做招聘。</p>
+<p>老板听取了 Martin 的意见，对公司的组织架构进行了调整。</p>
+<p>有一天，Martin 发现公司的部门越来越多，各个部门并不能完全知道对方所做的事情，这对跨部门协作（服务调用）带来了困难。</p>
+<p>行政部门会（注册中心）来记录所有的部门，每当有新的部门行政都会记录下来（服务注册），然后公布出来让所有部门知道（服务发现）。</p>
+<p>在新的组织架构下，公司的效率逐步提高。老板也给 Martin 发了大量奖金作为奖励，Martin 从此赢取白富美走向了人生巅峰。</p>
+<p>这是一个公司组织架构演变的故事，主要讲的是随着公司规模的扩大，组织从集中化管理到分布化管理的过程。</p>
+<p>映射到我们的信息系统里来也是一样的，随着我们的系统越来越复杂，变得难以管理，也有人想到去拆分然后治理。在解决复杂问题上，分治可以说是一个屡试不爽的办法。</p>
+<p>服务化即是拆解的一种手段。而上面圆括号里面的内容其实就对应了一个服务化架构的最小组成元素，分别是服务、服务调用、注册中心、服务注册、服务发现。有了这些基本的组成要素，就可以实现一个最简单的服务架构。</p>
+<h3 id="面向服务的架构和微服务架构"><a href="#面向服务的架构和微服务架构" class="headerlink" title="面向服务的架构和微服务架构"></a>面向服务的架构和微服务架构</h3><p>面向服务的架构（SOA）和微服务架构是目前两种主流的服务化架构，都符合上面的例子，也有上面提到的所有组件。这两种服务架构有很多可以讲的，但是与本文的相关性不大，本文不做会过多展开，只简单介绍一下两者的区别。</p>
+<p>准确地说微服务是去 ESB（企业服务总线）的 SOA。ESB 借鉴了计算机组成原理中的通信模型 —— 总线，所有需要和外部系统通信的系统，通过 ESB 进行标准化地转换从而消除协议、异构系统之间的差异，这样就可以利用现有的系统构建一个全新的松耦合的异构的分布式系统。微服务架构去掉 ESB，本质上是一种去中心化的思想。</p>
+<h2 id="「五脏六腑」"><a href="#「五脏六腑」" class="headerlink" title="「五脏六腑」"></a>「五脏六腑」</h2><h3 id="「心脏」"><a href="#「心脏」" class="headerlink" title="「心脏」"></a>「心脏」</h3><p>顺着上一节的思路，从最简单、最核心的问题出发，假设服务 A 要调用服务 B，会有什么问题？</p>
+<ul>
+<li>服务在哪？（服务治理问题）</li>
+<li>怎么调用？（服务调用问题）</li>
+</ul>
+<p>这两个是最核心的问题，也是任何微服务框架首要解决的两个问题。</p>
+<p>为了解决第一个问题 Spring Cloud 提供了 Eureka、Zookeeper、Cloud Foundry、Consul 等服务治理框架的集成。它们的工作模式是将所有的微服务注册到一个 Server 上，然后通过心跳进行服务健康监测。这样服务 A 调用 B 时可以从注册中心拿到可用的服务 B 的地址、端口进行调用。</p>
+<p>第二个服务调用有人可能认为就是一个简单的 HTTP 或者 RPC 调用，不是什么问题。但是在分布式的场景下，服务调用需要考虑的因素会更多。比如一个服务有多个实例，此时请求进来了交给谁处理，请求的负载怎么平衡到各个实例，都是比较棘手的问题。Spring Cloud 提供了两种服务调用的方式：一种是 Ribbon + restTemplate，另一种是 Feign。</p>
+<p>其中 Ribbon 是基于 HTTP 和 TCP 客户端的负载均衡器，restTemplate 是 Spring 提供的 Restful 远程调用的模板，两者结合就可以达到远程调用的负载均衡。</p>
+<p>而 Feign 是一个更加声明式的 HTTP 客户端，开发者可以像调用本地方法一样调用它，完全感觉不到是远程调用，结合 Ribbon 也可以做负载均衡。</p>
+<p>既然两个问题都得到了解决，我们就用一个例子来进一步说明一下，例子包含了微服务中最基本的三个角色（注册中心、服务提供者、服务消费者)：</p>
+<h4 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h4><p>注解 <code>@EnableEurekaServer</code> 表示该 Spring Boot 应用是一个注册中心。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@EnableEurekaServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaserverApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(EurekaserverApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code> eureka.client.registerWithEureka: false</code> 和<code>fetchRegistry: false</code>来表明自己是一个 eureka server。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080</span><br><span class="line"></span><br><span class="line">eureka:</span><br><span class="line">  instance:</span><br><span class="line">    hostname: localhost</span><br><span class="line">  client:</span><br><span class="line">    registerWithEureka: false</span><br><span class="line">    fetchRegistry: false</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http://$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span><br></pre></td></tr></table></figure>
+
+<h4 id="service-hello-服务"><a href="#service-hello-服务" class="headerlink" title="service-hello 服务"></a>service-hello 服务</h4><p>注解<code>@EnableEurekaClient</code>表示他是一个 Eureka 客户端，它会在注册中心注册自己。</p>
+<p>注解<code>@RestController</code>表示这是一个控制器，<code>@RequestMapping(&quot;/hello&quot;)</code>表示匹配到请求<code>&#39;/hello&#39;</code>时会调用该方法进行响应。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceHelloApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ServiceHelloApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;server.port&#125;&quot;)</span></span><br><span class="line">    String port;</span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">home</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>+name+<span class="string">&quot;,i am from port:&quot;</span> +port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注册中心的地址为<code>http://localhost:8080/eureka/</code>，也就是上面我们定义的。服务名为<code>service-hello</code>，将会被调用者使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    serviceUrl:</span><br><span class="line">      defaultZone: http://localhost:8080/eureka/</span><br><span class="line">server:</span><br><span class="line">  port: 8081</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: service-hello</span><br></pre></td></tr></table></figure>
+
+<h4 id="服务消费者-service-ribbon"><a href="#服务消费者-service-ribbon" class="headerlink" title="服务消费者 service-ribbon"></a>服务消费者 service-ribbon</h4><p>假设 service-ribbon 端口为 8082，当我们访问 <a href="http://localhost:8080/hello">http://localhost:8080/hello</a> 时，<code>HelloControler</code> 接收到请求，并调用 <code>HelloService</code> 中的<code>helloService</code>方法，<code>HelloService</code>中通过定义的<code>restTemplate</code>去调用<code>http://service-hello/hello</code>。此处要注意的是<code>@LoadBalanced</code>注解，它表示启用负载均衡。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceRibbonApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ServiceRibbonApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@LoadBalanced</span></span><br><span class="line">    <span class="function">RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">helloService</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> restTemplate.getForObject(<span class="string">&quot;http://service-hello/hello?name=&quot;</span>+name,String.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloControler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    HelloService helloService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(value = &quot;/hello&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helloService.helloService(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此其实一个微服务应用的雏形已经搭建出来了，服务治理、服务调用可以说是「五脏六腑」中的「心脏」。</p>
+<h3 id="「心脏」的依托"><a href="#「心脏」的依托" class="headerlink" title="「心脏」的依托"></a>「心脏」的依托</h3><p>接下来我们要进一步思考的是「五脏六腑」中其余的部分，因为少了它们人也是活不久的。下面通过一个问题或需求对应一个组件的方式进行介绍。</p>
+<h4 id="服务“雪崩”与断路器"><a href="#服务“雪崩”与断路器" class="headerlink" title="服务“雪崩”与断路器"></a>服务“雪崩”与断路器</h4><p>由于网络等原因，服务并不能保证 100% 可用，如果单个服务出现问题，调用这个服务就会出现线程阻塞，此时若有大量的请求涌入，Servlet 容器的线程资源会被消耗殆尽，导致服务瘫痪。</p>
+<p>由于服务与服务之间存在依赖，故障会在调用链路上传播，导致整个微服务系统崩溃，这就是服务故障的“雪崩”效应。</p>
+<p>为了解决这个问题，Spring Cloud 提供了对 Hystrix 断路器的集成，当服务调用失败的频次达到一定阈值，断路器将被开启，降级的策略可以开发者制定，一般是返回一个固定值。这样就能够避免连锁故障。</p>
+<p>此外 Spring Cloud 还提供 Hystrix Dashboard 和 Hystrix Turbine，帮助我们进行监控和聚合监控。</p>
+<h4 id="服务暴露与路由网关"><a href="#服务暴露与路由网关" class="headerlink" title="服务暴露与路由网关"></a>服务暴露与路由网关</h4><p>微服务中的服务很多，直接暴露给用户一是不安全，二是对用户不友好。因此在微服务和面向服务的架构中，通常会有一个路由网关的角色，来负责路由转发和过滤。对应到 Spring Cloud 中有 Zuul 和 Gateway 两个组件可用。</p>
+<p>路由网关接收了所有的用户请求，有着很高的负载，因此它通常是一个集群。用户的请求会先经过一层负载均衡被发到路由网关。</p>
+<h4 id="服务配置与配置中心"><a href="#服务配置与配置中心" class="headerlink" title="服务配置与配置中心"></a>服务配置与配置中心</h4><p>在微服务应用中，服务数量巨多，而每个服务不同环境都有着不同的配置，为了方便服务配置文件统一管理，实时更新，所以需要分布式配置中心组件。需要注意的是此处的配置与注册中心注册的配置信息是两个概念，此处的配置是服务本身的一些配置信息，如下图：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1525595207/blog/b6e1ba88-36a7-4fa6-ba93-2b0e501e6c1b.png" alt="服务配置与配置中心"></p>
+<p>Spring Cloud 提供了 Spring Cloud Config 组件，它支持配置服务放在配置服务的内存中（即本地），也支持放在远程 Git 仓库中，帮助我们管理服务的配置信息。</p>
+<h4 id="信息同步与消息总线"><a href="#信息同步与消息总线" class="headerlink" title="信息同步与消息总线"></a>信息同步与消息总线</h4><p>前一个问题讲到了每个服务都有一些配置信息，那么配置信息更新了我们该怎么办，手动一个个去更新？当然不是，Spring Cloud 提供了 Spring Cloud Bus 组件，它通过轻量消息代理连接各个分布的节点。当配置信息更新的时候，我们只要更新一个节点的配置，这个更新就会被广播到这个分布式系统中。</p>
+<h4 id="问题定位与链路追踪"><a href="#问题定位与链路追踪" class="headerlink" title="问题定位与链路追踪"></a>问题定位与链路追踪</h4><p>在微服务系统中，服务之间可以相互调用，因此我们一个请求可能会一条调用链，而整个系统会存在一张调用网，其中任意一个服务调用失败或网络超时都可能导致整个请求失败。因为调用关系的复杂，这给问题的定位造成了极大的困难，这也是必须提供服务链路追踪的原因。</p>
+<p>Spring Cloud 为我们提供了 Spring Cloud Sleuth 组件，它能够跟进一个请求到底有哪些服务参与，参与的顺序是怎样的，从而达到每个请求的步骤清晰可见。借助服务链路追踪，我们可以快速定位问题。</p>
+<p>至此，Spring Cloud 的所有基础组件都介绍完了。但是目前所有的组件介绍都是分散的，它们组合起来，完整的样子是什么样的？如下图：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1525595206/blog/1812r43dfgregr.jpg" alt="问题定位与链路追踪"></p>
+<blockquote>
+<p>偷懒偷了张图，图中漏掉了 Config Server 和链路追踪组件。但是结合上文的介绍，我们大致可以脑补出这两个东西在图中的位置。Config Server 是一个与所有服务相连的服务集群，链路追踪组件则集成在每个服务中。</p>
+</blockquote>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>服务治理为心脏，路由网关、消息中心、断路器、链路追踪、配置中心等为依托，构造了整个微服务框架的「五脏六腑」。当然，一个微服务系统远比本文所写的复杂得多，尤其是在不同的业务场景之下，因此想要更深入地了解它就需要我们不断地去实践。而作为前端，我了解这些内容一是为了更好地了解整个请求的流程，二是为了后续在 SOA 中接入 Node 子服务积累相关知识。</p>
+<p>最后分享一句有趣的调侃 Spring 的话：在 Spring 中没有什么是一个注解解决不了的，如果有，那么就用两个注解。</p>
+<h2 id="文章来源"><a href="#文章来源" class="headerlink" title="文章来源"></a>文章来源</h2><p><a href="https://webfe.kujiale.com/spring-could-heart/">https://webfe.kujiale.com/spring-could-heart/</a></p>
+]]></content>
+      <categories>
+        <category>架构</category>
+      </categories>
+      <tags>
+        <tag>Spring Cloud</tag>
+        <tag>Spring Boot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何在Ubuntu中开启Fast TCP Open</title>
+    <url>/archives/3ecb4f72.html</url>
+    <content><![CDATA[<p>TFO是TCP连接的拥塞控制算法之一。 TFO解决的问题是减少TCP连接通常需要的握手的RTT（往返时间）。这篇叫做《<a href="https://raghavan.usc.edu//papers/tfo-conext11.pdf">TCP Fast Open</a>》的论文指出它可以获得大约10％甚至在某些情况下能够达到40％的提速。</p>
+<h2 id="如何在Ubuntu下开启"><a href="#如何在Ubuntu下开启" class="headerlink" title="如何在Ubuntu下开启"></a>如何在Ubuntu下开启</h2><p>首先，你的Linux内核必须高于3.7。你可以用<code>uname -r</code>来检查一下。然后按照以下步骤启用Fast TCP Open。</p>
+<ul>
+<li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net.ipv4.tcp_fastopen = 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>保存，退出。</li>
+<li>执行<code>sysctl -p</code>使其生效。</li>
+<li>在<code>/etc/rc.local</code>中添加以下行，即使在重启系统后也可以使其持久化</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>TCP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何在Ubuntu中安装PuTTY</title>
+    <url>/archives/464ec3e2.html</url>
+    <content><![CDATA[<h2 id="PuTTY简介"><a href="#PuTTY简介" class="headerlink" title="PuTTY简介"></a>PuTTY简介</h2><p><a href="https://www.ssh.com/ssh/putty/linux/">PuTTY</a>是一款开源免费的终端模拟器。但它不仅在Windows操作系统很流行，在Linux用户中也很受欢迎。 PuTTY支持多种协议，如串口，SSH，Telnet，rlogin，SCP，SFTP等。经验丰富的系统管理员和业余爱好者都使用PuTTY。系统管理员通常使用PuTTY作为SSH和telnet客户端，而制造商社区广泛使用PuTTY与其硬件上的串行端口连接。 PuTTY附带了一个叫做“psftp”的命令行工具，这款PuTTY SFTP客户端，用于通过SSH连接在计算机之间安全地传输文件。</p>
+<p>本文将介绍如何在Ubuntu 14.04及更高版本上安装PuTTY。</p>
+<h2 id="开启终端"><a href="#开启终端" class="headerlink" title="开启终端"></a>开启终端</h2><p>登录Ubuntu Desktop。按<code>Ctrl + Atl + T</code>打开GNOME终端。如果由于某种原因快捷方式不起作用，请从Ubuntu Dash运行终端。</p>
+<span id="more"></span>
+
+<h2 id="检查可用更新"><a href="#检查可用更新" class="headerlink" title="检查可用更新"></a>检查可用更新</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p>该命令表示使用最新版本更新Ubuntu软件包列表。如果跳过此命令，Ubuntu很可能会安装较旧版本的软件而不是最新版本。因此，无论何时安装新软件或打算升级软件版本，最好先运行此命令。命令开头的sudo前缀指示终端以root身份运行命令，因为安装和升级软件是一种权限操作，不应由没有足够访问权限的用户执行。在sudo提示时提供用户密码，然后按Enter键。</p>
+<h2 id="通过命令行安装PuTTY"><a href="#通过命令行安装PuTTY" class="headerlink" title="通过命令行安装PuTTY"></a>通过命令行安装PuTTY</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install -y putty</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动PuTTY"><a href="#启动PuTTY" class="headerlink" title="启动PuTTY"></a>启动PuTTY</h2><p>你可以以命令行的方式，或者从Dash来启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ putty</span><br></pre></td></tr></table></figure>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1539280502/blog/putty.png" alt="puttyGUI"></p>
+<p>如上图所示，PuTTY提供了一系列连接类型可供选择：Raw，Telnet，Rlogin，SSH和Serial。它还附带了SCP（pscp），SFTP（psftp），RSA和DSA密钥生成器（puttygen）等命令行工具，可以从终端运行。</p>
+<h2 id="关于源码编译"><a href="#关于源码编译" class="headerlink" title="关于源码编译"></a>关于源码编译</h2><p>在此处下载<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY源文件</a>。解压源码文件压缩包，并按照压缩包中的README文件从源代码编译PuTTY。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【防浏览器调试模式】And 防【防浏览器调试模式】</title>
+    <url>/archives/8b542dc4.html</url>
+    <content><![CDATA[<h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*!</span></span><br><span class="line"><span class="comment"> * source: https://github.com/sindresorhus/devtools-detect</span></span><br><span class="line"><span class="comment"> * Abbey改写</span></span><br><span class="line"><span class="comment"> * MIT License</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    &#x27;use strict&#x27;</span>;</span><br><span class="line">    <span class="keyword">var</span> devtools = &#123;</span><br><span class="line">        <span class="attr">open</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">orientation</span>: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> threshold = <span class="number">160</span>;</span><br><span class="line">    <span class="keyword">var</span> emitEvent = <span class="function"><span class="keyword">function</span> (<span class="params">state, orientation</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.dispatchEvent(<span class="keyword">new</span> CustomEvent(<span class="string">&#x27;devtoolschange&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">detail</span>: &#123;</span><br><span class="line">                <span class="attr">open</span>: state,</span><br><span class="line">                <span class="attr">orientation</span>: orientation</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> widthThreshold = <span class="built_in">window</span>.outerWidth - <span class="built_in">window</span>.innerWidth &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> heightThreshold = <span class="built_in">window</span>.outerHeight - <span class="built_in">window</span>.innerHeight &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> orientation = widthThreshold ? <span class="string">&#x27;vertical&#x27;</span> : <span class="string">&#x27;horizontal&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(heightThreshold &amp;&amp; widthThreshold) &amp;&amp; ((<span class="built_in">window</span>.Firebug &amp;&amp; <span class="built_in">window</span>.Firebug.chrome &amp;&amp; <span class="built_in">window</span>.Firebug.chrome.isInitialized) ||</span><br><span class="line">            widthThreshold || heightThreshold)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!devtools.open || devtools.orientation !== orientation) &#123;</span><br><span class="line">                emitEvent(<span class="literal">true</span>, orientation);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">true</span>;</span><br><span class="line">            devtools.orientation = orientation;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (devtools.open) &#123;</span><br><span class="line">                emitEvent(<span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">false</span>;</span><br><span class="line">            devtools.orientation = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="built_in">module</span>.exports) &#123;</span><br><span class="line">        <span class="built_in">module</span>.exports = devtools;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.devtools = devtools;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">&#x27;devtoolschange&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (e.detail.open)&#123;</span><br><span class="line">        <span class="keyword">debugger</span>;</span><br><span class="line">        <span class="built_in">window</span>.stop();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">window</span>.location.reload();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>代码地址：<a href="https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f">https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f</a></p>
+<ol>
+<li>检测浏览器是否处于调试模式，如果是，则暂停加载内容；</li>
+<li>调试模式-&gt;非调试模式，则自动重新加载页面</li>
+<li>防君子不防小人，fiddler一样可以调试</li>
+</ol>
+<h2 id="防【防浏览器调试模式】"><a href="#防【防浏览器调试模式】" class="headerlink" title="防【防浏览器调试模式】"></a>防【防浏览器调试模式】</h2><p>打开Devtool之后，页面显示Paused in debugger。</p>
+<ol>
+<li>点击Source选项卡，下图的1。</li>
+<li>按Ctrl+F8，开启Deactive breakpoints，也就是禁用断点调试，也可以点击下图中的2，使其变蓝。</li>
+<li>按F8即可。也可以点击下图中的3。</li>
+</ol>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1547828109/blog/5b83c1a0b4280.png" alt="防【防浏览器调试模式】"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://www.abbeyok.com/archives/48">https://www.abbeyok.com/archives/48</a></li>
+<li><a href="https://www.hostloc.com/thread-471522-1-1.html">https://www.hostloc.com/thread-471522-1-1.html</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1809 1 月更新官方 esd 和 xml 下载</title>
+    <url>/archives/ad2407d.html</url>
+    <content><![CDATA[<p>最近，在官方发布 1809 1 月更新官方 ISO 后，官方新更 1809 1 月更新官方 esd，以下贴出简体中文和英语的 esd 下载地址。</p>
+<h2 id="Microsoft-Windows-XML-下载地址"><a href="#Microsoft-Windows-XML-下载地址" class="headerlink" title="Microsoft Windows XML 下载地址"></a>Microsoft Windows XML 下载地址</h2><p>windows10 1809 xml 官方下载地址：<a href="https://download.microsoft.com/download/B/E/4/BE4D25FA-BF52-4EAF-B9D0-5EF8D31F29FA/products_20190110.cab">https://download.microsoft.com/download/B/E/4/BE4D25FA-BF52-4EAF-B9D0-5EF8D31F29FA/products_20190110.cab</a></p>
+<p>本站存档：<a href="/files/products_20190110.cab">products_20190110.cab</a></p>
+<p>解压此 cab 文件，可得 xml 文件，可下载所有语言的 esd 文件。</p>
+<span id="more"></span>
+
+<h2 id="ISO，WIM与ESD"><a href="#ISO，WIM与ESD" class="headerlink" title="ISO，WIM与ESD"></a>ISO，WIM与ESD</h2><p><strong>.iso</strong> 是电脑上光盘镜像（CD Mirror）的存储格式之一，因为其是根据ISO-9660有关CD-ROM文件系统标准存储的文件，所以通常在电脑中以后缀.iso命名，俗称iso镜像文件。它形式上只有一个文件，可以真实反映光盘的内容，可由刻录软件或者镜像文件制作工具创建。</p>
+<p><strong>Windows 映像文件格式（WIM）</strong> 是一个基于文件的磁盘映像格式。它由微软公司设计且发布于Windows Vista及其之后的Windows操作系统中，用来支持他们的一部分标准安装过程。</p>
+<p><strong>ESD，极限压缩镜像的缩写</strong>，是目前微软推出的压缩率最高的一种文件，一般用于系统大版本更新的推送。</p>
+<h2 id="ESD-转-ISO"><a href="#ESD-转-ISO" class="headerlink" title="ESD 转 ISO"></a>ESD 转 ISO</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>转换 ISO，可用 <a href="https://www.chuyu.me/">Dism++</a>，如果不知道怎么转，请点击<a href="https://bit.ly/2SmkE1a">这里</a></p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>可用 <a href="https://rg-adguard.net/decrypt-multi-release/">decrypt-multi-release</a>,至于使用教程，官网有<a href="https://youtu.be/FxSToycsWwU">视频教程</a>。实在看不懂，就把ESD文件拖放到decrypt-ESD批处理文件上，然后按照提示操作。</p>
+<h2 id="贴出部分-ESD-下载地址"><a href="#贴出部分-ESD-下载地址" class="headerlink" title="贴出部分 ESD 下载地址"></a>贴出部分 ESD 下载地址</h2><h3 id="简体中文"><a href="#简体中文" class="headerlink" title="简体中文"></a>简体中文</h3><ul>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/a2a3698f-33bc-4f90-9cf4-d76f92fa0591/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCHINA_RET_x64FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/a2a3698f-33bc-4f90-9cf4-d76f92fa0591/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCHINA_RET_x64FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/b7105f07-d970-43f1-a1d8-e3e8164513f9/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCHINA_RET_x86FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/b7105f07-d970-43f1-a1d8-e3e8164513f9/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCHINA_RET_x86FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/632c523e-fccf-4dc1-ac4a-f32eacc2c687/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x64FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/632c523e-fccf-4dc1-ac4a-f32eacc2c687/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x64FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/fe258d08-631b-470c-b273-b3846f9ad9f9/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x86FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/fe258d08-631b-470c-b273-b3846f9ad9f9/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x86FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/3640bb1f-2ae3-482d-9efd-fd80a035c950/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_A64FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/3640bb1f-2ae3-482d-9efd-fd80a035c950/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_A64FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/04e7cf0f-18f9-470f-b5e4-caeb52d3131d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/04e7cf0f-18f9-470f-b5e4-caeb52d3131d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/6933c81b-1ad8-463e-95db-e08cd573e637/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x86FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/6933c81b-1ad8-463e-95db-e08cd573e637/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x86FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/04e7cf0f-18f9-470f-b5e4-caeb52d3131d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_zh-cn.esd"><br>http://dl.delivery.mp.microsoft.com/filestreamingservice/files/04e7cf0f-18f9-470f-b5e4-caeb52d3131d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_zh-cn.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/6933c81b-1ad8-463e-95db-e08cd573e637/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x86FRE_zh-cn.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/6933c81b-1ad8-463e-95db-e08cd573e637/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x86FRE_zh-cn.esd</a></p>
+</li>
+</ul>
+<h3 id="英文"><a href="#英文" class="headerlink" title="英文"></a>英文</h3><ul>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/9526cf2a-3132-48b6-8e9c-a7120bd01679/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x64FRE_en-us.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/9526cf2a-3132-48b6-8e9c-a7120bd01679/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x64FRE_en-us.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/9250b050-b667-4a82-b1b0-424ac5c93c85/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x86FRE_en-us.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/9250b050-b667-4a82-b1b0-424ac5c93c85/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_x86FRE_en-us.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/1764c5f8-37c4-428c-8d72-984976a3a10d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_A64FRE_en-us.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/1764c5f8-37c4-428c-8d72-984976a3a10d/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTCONSUMER_RET_A64FRE_en-us.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/bac63291-8e30-4739-9194-f01fa9599efd/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_en-us.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/bac63291-8e30-4739-9194-f01fa9599efd/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_en-us.esd</a></p>
+</li>
+<li><p><a href="http://dl.delivery.mp.microsoft.com/filestreamingservice/files/bac63291-8e30-4739-9194-f01fa9599efd/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_en-us.esd">http://dl.delivery.mp.microsoft.com/filestreamingservice/files/bac63291-8e30-4739-9194-f01fa9599efd/17763.253.190108-0006.rs5_release_svc_refresh_CLIENTBUSINESS_VOL_x64FRE_en-us.esd</a></p>
+</li>
+</ul>
+<h2 id="LTSB-LTSC-下载"><a href="#LTSB-LTSC-下载" class="headerlink" title="LTSB,LTSC 下载"></a>LTSB,LTSC 下载</h2><h3 id="LTSB-和-LTSC的关系"><a href="#LTSB-和-LTSC的关系" class="headerlink" title="LTSB 和 LTSC的关系"></a>LTSB 和 LTSC的关系</h3><blockquote>
+<p>** Windows 10 Enterprise LTSC 2018 **</p>
+</blockquote>
+<blockquote>
+<p>The next LTSC release, Windows 10 Enterprise LTSC 2018, will be available in the fall of 2018.  In keeping with the previous Long-Term Servicing Channel releases, this release will have the same features as the Windows 10 Semi-Annual Channel release made available at the same time – with the usual exceptions (including apps that are often updated with additional functionality, including the in-box apps, Microsoft Edge, and Cortana).  This new release will also add support for the latest generations of processors, per the standard silicon support policy.  This release of Windows 10 Enterprise LTSC will be released under our fixed lifecycle policy with a term of 5 years of mainstream support and 5 years of extended support.</p>
+</blockquote>
+<p>意思就是说，LTSB更名LTSC了。原文见这里: <a href="https://techcommunity.microsoft.com/t5/Windows-IT-Pro-Blog/Changes-to-Office-and-Windows-servicing-and-support/ba-p/151509">https://techcommunity.microsoft.com/t5/Windows-IT-Pro-Blog/Changes-to-Office-and-Windows-servicing-and-support/ba-p/151509</a></p>
+<h3 id="LTSB-2015"><a href="#LTSB-2015" class="headerlink" title="LTSB 2015"></a>LTSB 2015</h3><p>文件名：cn_windows_10_enterprise_2015_ltsb_x64_dvd_6848425.iso</p>
+<p>架构: x64</p>
+<p>文件大小：3.64 GB</p>
+<p>SHA1：179A95E6A498EFE079FB1817D1ADF5A3B7793B4D</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_2015_ltsb_x64_dvd_6848425.iso|3907538944|38E47AB92B6D97DF2BE602BBC9969D34|/</span><br></pre></td></tr></table></figure>
+
+<p>文件名：cn_windows_10_enterprise_2015_ltsb_x86_dvd_6848426.iso</p>
+<p>架构: x86</p>
+<p>文件大小：2.69 GB</p>
+<p>SHA1：B0181D56B7C699890B69A21E77EDA40884F3CF24</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_2015_ltsb_x86_dvd_6848426.iso|2887350272|681C2F80A511FCEC73B7A5D878D4D9EC|/</span><br></pre></td></tr></table></figure>
+
+<h3 id="LTSB-2016"><a href="#LTSB-2016" class="headerlink" title="LTSB 2016"></a>LTSB 2016</h3><p>文件名：cn_windows_10_enterprise_2016_ltsb_x64_dvd_9060409.iso</p>
+<p>架构: x64</p>
+<p>文件大小：3.55 GB</p>
+<p>SHA1：9E405E950890D2A196565BCA35E152F9CFAD296D</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_2016_ltsb_x64_dvd_9060409.iso|3821895680|FF17FF2D5919E3A560151BBC11C399D1|/</span><br></pre></td></tr></table></figure>
+
+<p>文件名：cn_windows_10_enterprise_2016_ltsb_x86_dvd_9057089.iso</p>
+<p>架构: x86</p>
+<p>文件大小：2.62 GB</p>
+<p>SHA1：0422052F25C9C8DF983F3B287F725860AAB907CF</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_2016_ltsb_x86_dvd_9057089.iso|2817034240|67C3865D03E765BDD4845BA2CB7649F8|/</span><br></pre></td></tr></table></figure>
+
+<h3 id="LTSC-2019-1"><a href="#LTSC-2019-1" class="headerlink" title="LTSC 2019(1)"></a>LTSC 2019(1)</h3><p>文件名：</p>
+<ol>
+<li>cn_windows_10_enterprise_ltsc_2019_x64_dvd_d17070a8.iso</li>
+<li>SW_DVD5_WIN_ENT_LTSC_2019_64-bit_Chinese_Simplified_MLF_X21-96413.ISO</li>
+</ol>
+<p>架构: x64</p>
+<p>文件大小：4 GB</p>
+<p>SHA1：C0B4704E1336281C98A91438C7DF0F14B8F41E46</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_ltsc_2019_x64_dvd_d17070a8.iso|4290967552|9E80DED85693E8E4E0D76E55B1207221|/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|SW_DVD5_WIN_ENT_LTSC_2019_64-bit_Chinese_Simplified_MLF_X21-96413.ISO|4290967552|9E80DED85693E8E4E0D76E55B1207221|/</span><br></pre></td></tr></table></figure>
+
+<p>文件名：</p>
+<ol>
+<li>cn_windows_10_enterprise_ltsc_2019_x86_dvd_62156a9a.iso</li>
+<li>SW_DVD5_WIN_ENT_LTSC_2019_32-bit_Chinese_Simplified_MLF_X21-96412.ISO</li>
+</ol>
+<p>架构: x86</p>
+<p>文件大小：2.88 GB</p>
+<p>SHA1：FBFEABDE20B6F49AA0C7F8FD62A5BA029505F36F</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|cn_windows_10_enterprise_ltsc_2019_x86_dvd_62156a9a.iso|3095267328|8C81DB85E8D1B0E431CFEB12CDBBF745|/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|SW_DVD5_WIN_ENT_LTSC_2019_32-bit_Chinese_Simplified_MLF_X21-96412.ISO|3095267328|8C81DB85E8D1B0E431CFEB12CDBBF745|/</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="LTSC-2019-2"><a href="#LTSC-2019-2" class="headerlink" title="LTSC 2019(2)"></a>LTSC 2019(2)</h3><p>文件名：</p>
+<ol>
+<li>en_windows_10_enterprise_ltsc_2019_x64_dvd_be3c8ffb.iso</li>
+<li>SW_DVD5_WIN_ENT_LTSC_2019_64-bit_English_MLF_X21-96425.ISO</li>
+</ol>
+<p>架构: x64</p>
+<p>文件大小：3.78 GB</p>
+<p>SHA1：D5B2F95E3DD658517FE7C14DF4F36DE633CA4845</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|en_windows_10_enterprise_ltsc_2019_x64_dvd_be3c8ffb.iso|4056717312|17B62BAE00F77F162247008710F55AF0|/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|SW_DVD5_WIN_ENT_LTSC_2019_64-bit_English_MLF_X21-96425.ISO|4056717312|17B62BAE00F77F162247008710F55AF0|/</span><br></pre></td></tr></table></figure>
+
+<p>文件名：</p>
+<ol>
+<li>en_windows_10_enterprise_ltsc_2019_x86_dvd_b8ef2c2b.iso</li>
+<li>SW_DVD5_WIN_ENT_LTSC_2019_32-bit_English_MLF_X21-96424.ISO</li>
+</ol>
+<p>架构: x86</p>
+<p>文件大小：2.68 GB</p>
+<p>SHA1：220EB673D4AED9F1652C1CE3D2731CD96A8138F2</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|en_windows_10_enterprise_ltsc_2019_x86_dvd_b8ef2c2b.iso|2881441792|ED789E7D329B4F9E72361A26CCE36B0E|/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ed2k://|file|SW_DVD5_WIN_ENT_LTSC_2019_32-bit_English_MLF_X21-96424.ISO|2881441792|ED789E7D329B4F9E72361A26CCE36B0E|/</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="windows-10-各版本区别"><a href="#windows-10-各版本区别" class="headerlink" title="windows 10 各版本区别"></a>windows 10 各版本区别</h2><p>Win10家庭版、专业版、企业版、教育版功能区别一览表:</p>
+<ol>
+<li><p><a href="http://wincom.blob.core.windows.net/documents/Win10CompareTable_FY17_zh-cn.pdf">微软官网</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Windows_10_editions">wikipedia.org</a></p>
+</li>
+<li><p>概括一下：</p>
+<p> 家庭版：供家庭用户使用，无法加入Active Directory和Azure AD，不允许远程链接；<br> 专业版：供小型企业使用，在家庭版基础上增加了域账号加入、bitlocker、企业商店等功能；<br> 企业版：供中大型企业使用，在专业版基础上增加了DirectAccess，AppLocker等高级企业功能；<br> 教育版：供学校使用 (学校职员、管理人员、老师和学生) 其功能几乎和企业版一样，针对学校授权而已；<br> LTSB,LTSC ：没应用商店、Edge浏览器、小娜、磁贴、可选是否下载和安装补丁，其它版本都不能自选补丁，更新周期更长、只更新安全更新（即不更新功能性更新）。适合办公！</p>
+<p> Windows 10 Pro For Workstations，即专业工作站版。具体来说有以下特点区别于专业版：</p>
+<ol>
+<li>ReFS (Resilient file system)，存储文件系统，现阶段不可安装系统。</li>
+<li>Persistent memory，永固内存，听着不错。</li>
+<li>Faster file sharing，快速文件分享，也不错。</li>
+<li>Expanded hardware support，可用于4路平台，6TB内存，现阶段两路可3T内存。</li>
+<li>专业图形卡（适合图形、图片、图像处理，平面设计与视频编辑适用），支持多屏显示。</li>
+<li>液冷散热技术，保障高负荷持续稳定运行。</li>
+<li>追求极高稳定性（仅此军用，军用追求的是“各种极端场景的能用”，不惜血本）<br>工作站分台式机和笔记本工作站两种概念，具体使用场景：商用（商用主要是考虑到商业用途，请注意与商务概念有区别）。</li>
+</ol>
+</li>
+</ol>
+<h2 id="安利几个讲Windows的网站"><a href="#安利几个讲Windows的网站" class="headerlink" title="安利几个讲Windows的网站"></a>安利几个讲Windows的网站</h2><ul>
+<li>中文：</li>
+</ul>
+<ol>
+<li><a href="https://msdn.itellyou.cn/">https://msdn.itellyou.cn/</a></li>
+<li><a href="https://bbs.pcbeta.com/">https://bbs.pcbeta.com</a></li>
+<li><a href="https://www.windows10.pro/">https://www.windows10.pro</a></li>
+</ol>
+<ul>
+<li>英文：<br><a href="https://www.itechtics.com/category/microsoft/">https://www.itechtics.com/category/microsoft/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在CentOS7下使用Tor 创建匿名服务和匿名网站</title>
+    <url>/archives/f9abf4e9.html</url>
+    <content><![CDATA[<h2 id="科普下什么是暗网"><a href="#科普下什么是暗网" class="headerlink" title="科普下什么是暗网"></a>科普下什么是暗网</h2><p>暗网（英语：Dark web）是存在于黑暗网络、覆盖网络上的万维网内容，只能用特殊软体、特殊授权、或对电脑做特殊设定才能访问。暗网构成了深网的一小部分，深网网络没有被网络搜索引擎索引，有时“深网”这一术语被错误地用于指代暗网。</p>
+<p>构成暗网的黑暗网络包括F2F的小型点对点网络以及由公共组织和个人运营的大型流行网络，如Tor、自由网、I2P和Riffle。暗网用户基于常规网络未加密的性质将其称为明网。Tor暗网可以称为洋葱区域（onionland），其使用网络顶级域后缀.onion和洋葱路由的流量匿名化技术。  —《维基百科-<a href="https://zh.wikipedia.org/zh-hans/%E6%9A%97%E7%BD%91">暗网</a>》词条的解释</p>
+<span id="more"></span>
+
+<h2 id="Deep-web／Dark-web／Darknet-的区别"><a href="#Deep-web／Dark-web／Darknet-的区别" class="headerlink" title="Deep web／Dark web／Darknet 的区别"></a>Deep web／Dark web／Darknet 的区别</h2><p>深网”(Deep web) 是指服务器上可通过标准的网络浏览器和连接方法访问的页面和服务，但主流搜索引擎不会收录这些页面和服务。搜索引擎之所以不会收录深网，通常是因为网站或服务的配置错误、拒绝爬虫爬取信息、需要付费查看、需要注册查看或其他内容访问限制。</p>
+<p>“暗网”(Dark web) 是深网中相对较小的一部分，与被故意隐藏的 Web 服务和页面有关。仅使用标准浏览器无法直接访问这些服务和页面，必须依靠使用覆盖网络 (Overlay Network)；而这种网络需要特定访问权限、代理配置、专用软件或特殊网络协议。</p>
+<p>“黑暗网络”(Darknet) 是在网络层访问受限的框架，例如 Tor 或 I2P。私有 VPN 和网状网络 (Mesh Network) 也属于这个类别。通过这些框架的网络流量会被屏蔽。当进行数据传输时，系统只会显示您连接的黑暗网络以及您传输了多少数据，而不一定会显示您访问的网站或所涉及数据的内容。与之相反的是，直接与明网（Clean Net）或与未加密的表网服务和深网服务交互。在这种情况下，您与所请求资源之间的互联网服务提供商 (ISP) 和网络运营商可以看到您传输的流量内容。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里使用centos7作为服务器</p>
+<h3 id="首先扩展yum源"><a href="#首先扩展yum源" class="headerlink" title="首先扩展yum源"></a>首先扩展yum源</h3><p>这里推荐下面两个yum源，建议服务器初始化的时候就是用这两个yum源作为软件的扩展</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</span><br><span class="line">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm</span><br></pre></td></tr></table></figure>
+
+<h3 id="然后安装nginx"><a href="#然后安装nginx" class="headerlink" title="然后安装nginx"></a>然后安装nginx</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装tor"><a href="#安装tor" class="headerlink" title="安装tor"></a>安装tor</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install tor</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="先配置nginx"><a href="#先配置nginx" class="headerlink" title="先配置nginx"></a>先配置nginx</h3><p>打开nginx的配置文件,让nginx监听8080端口</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 8080;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /www/tor;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重启nginx让配置生效</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>然后到 /www/tor 里写点东西测试下:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &quot;&lt;h2&gt;Tor site build success!&lt;/h2&gt;&quot; &gt; /www/tor/index.html</span><br></pre></td></tr></table></figure>
+
+<p>然后用curl访问下 <a href="http://localhost:8080/">http://localhost:8080</a>  如果可以访问，则成功生效！</p>
+<h3 id="再来配置-Tor"><a href="#再来配置-Tor" class="headerlink" title="再来配置 Tor"></a>再来配置 Tor</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi /etc/tor/torrc</span><br></pre></td></tr></table></figure>
+
+<p>添加以下两行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HiddenServiceDir /var/lib/tor/hidden_service/</span><br><span class="line">HiddenServicePort 80 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<p>保存配置，然后启动Tor</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl start tor.service</span><br></pre></td></tr></table></figure>
+
+<p>当tor启动后，会创建一个私钥(/var/lib/tor/hidden_service/private_key)在你的hidden_service目录，同时创建你的 /var/lib/tor/hidden_service/hostname 里创建独一无二的.onion 主机名。</p>
+<p>然后，用<a href="https://www.torproject.org/">tor浏览器</a>访问你的.onion的域名，看是否成功。</p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>tor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>允许空白referer防盗链图片的破解</title>
+    <url>/archives/6e64e2a1.html</url>
+    <content><![CDATA[<p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
+<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span><br><span class="line">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span><br><span class="line">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">showImg(<span class="string">&#x27;图片地址&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript">  </span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span></span><br><span class="line"><span class="javascript">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span></span><br><span class="line"><span class="javascript">&#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>直接盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"> <span class="tag">&lt;<span class="name">h1</span>&gt;</span>js破解盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hotlinking&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript"> showImg(<span class="string">&#x27;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#x27;</span>);</span></span><br><span class="line"><span class="javascript"> </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
+<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">referrerPolicy</span>=<span class="string">&quot;no-referrer&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
+<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
+<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
+<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
+<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
+<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
+<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
+</ul>
+<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
+<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
+<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
+<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
+<li>登录校验（如必须登录网站帐号后才能访问）；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/archives/4a17b156.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>B站2019年6月自查下架番剧汇总</title>
+    <url>/archives/8f8ebfff.html</url>
+    <content><![CDATA[<p><a href="https://www.bilibili.com/">B站</a> (bilibili) 在6月初进行了大规模的自查工作，针对目前B站拥有的大量番剧动画进行审查后，进行了下架的处理，截止到目前为止共计有198部番剧下架，当然这个数量肯定还会增加，而且肯定还会有遗漏的地方，这里先做一个初步的汇总，一起来看看有哪些番剧不幸遭遇下架吧</p>
+<p>对于这些被下架的番剧，定位标准不一，但总体来说的标准是禁腐和百合、校园霸凌、勾心斗角、常规的三俗、价值观不正常这类的番剧，家教和魔法少女伊莉雅都不能幸免，这个属于躺枪，但没想到魔伊作为接近fate系列IP的作品也会被下架，但是日常这部番为何会被下架，我是搞不懂。下面看具体的汇总</p>
+<h2 id="下架番剧名单汇总"><a href="#下架番剧名单汇总" class="headerlink" title="下架番剧名单汇总"></a>下架番剧名单汇总</h2><ul>
+<li>哥谭妹子第一季</li>
+<li>哥谭妹子第二季</li>
+<li>哥谭妹子第三季</li>
+<li>学战都市Asterisk</li>
+<li>学战都市Asterisk第二季</li>
+<li>初音岛</li>
+<li>初音岛 S.S.</li>
+<li>初音岛II S.S.</li>
+<li>欧西里斯的天秤</li>
+<li>欧西里斯的天秤 第二季</li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li>灰色的迷宫</li>
+<li>灰色的乐园</li>
+<li>瞅咪BABY 中文版</li>
+<li>瞅咪BABY 日语版</li>
+<li>恶魔阿萨谢尔在召唤你 第一季</li>
+<li>恶魔阿萨谢尔在召唤你 第二季</li>
+<li>恶魔阿萨谢尔在召唤你 路西法篇</li>
+<li>恶魔阿萨谢尔在召唤你 OVA</li>
+<li>学生会的一己之见</li>
+<li>学生会的一己之见 Lv.2</li>
+<li>旋风管家Cuties</li>
+<li>旋风管家 CAN’T TAKE MY EYES OFF YOU</li>
+<li>蜘蛛骑士</li>
+<li>蜘蛛骑士第2季</li>
+<li>月色真美</li>
+<li>月色真美SP</li>
+<li>地狱少女 二笼</li>
+<li>地狱少女 三鼎</li>
+<li>地狱少女 宵伽</li>
+<li>One Room</li>
+<li>One Room 第二季</li>
+</ul>
+<ul>
+<li>弃宝之岛：遥与魔法镜</li>
+<li>西方善魔女</li>
+<li>遥远时空中3红之月</li>
+<li>忍者杀手SE</li>
+<li>地狱一家客</li>
+<li>应避忌之狼</li>
+<li>水之语</li>
+<li>人狼暗号1951</li>
+<li>英雄解体</li>
+<li>奇魂侍</li>
+<li>VitaminX Addiction</li>
+<li>尾随者竞技</li>
+<li>书家</li>
+<li>间奏曲</li>
+<li>怪怪守护神</li>
+<li>Landreaall</li>
+<li>无责任银河☆泰勒</li>
+<li>欢迎来到实力至上主义的教室</li>
+<li>十二大战</li>
+<li>调教咖啡厅 （属性咖啡厅）</li>
+<li>Code:Realize ~ 创世的姬君 ~</li>
+<li>如果能写小说就好了</li>
+<li>博多豚骨拉面团</li>
+<li>魔法少女 俺</li>
+<li>斩服少女</li>
+<li>平成警察</li>
+<li>樱花庄的宠物女孩</li>
+<li>房东妹子青春期！（房东青春期）</li>
+<li>这样算是僵尸吗？ （魔装少女就是本少爷）</li>
+<li>宅男腐女恋爱真难 （阿宅的恋爱真难）</li>
+<li>线上游戏的队友不可能是女生？  （线上游戏的老婆不可能是女生？）</li>
+</ul>
+<ul>
+<li>枪之国度</li>
+<li>拉瓦拳星球</li>
+<li>海岸物语</li>
+<li>潜艇代号707R</li>
+<li>兽爪</li>
+<li>童话枪手小红帽</li>
+<li>黑血兄弟</li>
+<li>妖逆门</li>
+<li>公主公主</li>
+<li>梦使</li>
+<li>声优白皮书</li>
+<li>小心啊公主</li>
+<li>铳皇无尽的法夫纳</li>
+<li>终结的炽天使</li>
+<li>UG☆极限女孩</li>
+<li>IGPX</li>
+<li>新释·真田十勇士</li>
+<li>LOVELESS</li>
+<li>麟光之翼</li>
+<li>增血鬼果林</li>
+<li>次元舰队</li>
+<li>DEARS亲爱一族</li>
+<li>老师的时间</li>
+<li>向北</li>
+<li>战区88</li>
+<li>天上天下</li>
+</ul>
+<ul>
+<li>翼神传说多元变奏曲</li>
+<li>LOVE STAGE!! OAD</li>
+<li>学园怪物！ <del>狼男少女不会屈服</del></li>
+<li>天保异闻妖奇士 奇士神曲</li>
+<li>地球守护者21</li>
+<li>机甲兵团</li>
+<li>野性之七人 another -谋略运河-</li>
+<li>极速战警</li>
+<li>七人之奈奈</li>
+<li>零花</li>
+<li>银河五虎将</li>
+<li>校园外星人</li>
+<li>破邪巨星G弹勃凰</li>
+<li>星之海洋</li>
+<li>德玛娜说少女</li>
+<li>天空断罪Skelter Heaven</li>
+<li>机兽超世纪</li>
+<li>注视着你</li>
+<li>拘束衣</li>
+<li>战地启示录</li>
+<li>梦物语</li>
+<li>我太受欢迎了该怎么办</li>
+<li>黑白来看守所</li>
+</ul>
+<ul>
+<li>恶魔之谜</li>
+<li>死亡台球</li>
+<li>弥留之国的爱丽丝</li>
+<li>NEXT A-Class</li>
+<li>武士弗拉明戈</li>
+<li>人鱼又上钩</li>
+<li>兄弟战争</li>
+<li>视而不见</li>
+<li>浮浮瞅瞅</li>
+<li>Sacred Seven 银月之翼</li>
+<li>百合星人奈绪子OVA</li>
+<li>实乃里Scramble!</li>
+<li>宵星传奇 ～ The First Strike ～ （薄暮传说剧场版2009:首鸣）</li>
+<li>11eyes （11eyes - 罪与罚与赎的少女）</li>
+<li>苹果核战记2</li>
+<li>风之少女艾米莉</li>
+<li>兽旋战斗MONSUNO</li>
+<li>恋爱与选举与巧克力</li>
+<li>枪械少女!! （Upotte!!）</li>
+<li>Ozuma</li>
+<li>武装中学生</li>
+<li>罗马浴场</li>
+<li>拯救德尔托拉</li>
+<li>FREEDOM</li>
+<li>G-九</li>
+<li>水色</li>
+</ul>
+<ul>
+<li>觉醒的方舟</li>
+<li>侍铳</li>
+<li>我永远的圣诞老人</li>
+<li>飞天都市计划</li>
+<li>蓝色潮痕</li>
+<li>我是小粘粘</li>
+<li>初恋怪兽</li>
+<li>魔法少女☆伊莉雅 3REI!!</li>
+<li>绝对正义vs外道少女队</li>
+<li>闪耀计划</li>
+<li>甲虫王者</li>
+<li>星际少年队</li>
+<li>魔法少女朱可奈</li>
+<li>爆裂鼻毛真拳</li>
+<li>超变身巫女祈斗士</li>
+<li>煌罗万象</li>
+<li>学园都市巴拉诺瓦尔</li>
+<li>内阁权力犯罪强制取缔官 财前丈太郎</li>
+</ul>
+<ul>
+<li>日常</li>
+<li>刀锋战士</li>
+<li>Rio RainbowGate! （兔女郎的诱惑）</li>
+<li>MM一族</li>
+<li>无法逃离的背叛</li>
+<li>由土里酱</li>
+<li>科拉蒂每日的笑话</li>
+<li>游魂-Kiss on my Deity-</li>
+<li>红Kurenai</li>
+<li>水晶之焰</li>
+<li>你是主人我是仆</li>
+<li>神枪少女</li>
+<li>BUS GAMER</li>
+<li>大江户火箭</li>
+<li>桃华月惮</li>
+<li>火箭女孩</li>
+<li>月面兔兵器米娜</li>
+<li>家庭教师HITMAN REBORN!</li>
+<li>复苏的天空-救援之翼-</li>
+<li>女生爱女生</li>
+<li>柠檬天使计划</li>
+<li>不公正抽签</li>
+<li>春原庄的管理人小姐</li>
+</ul>
+<ul>
+<li>刃牙</li>
+<li>中间管理录利根川</li>
+<li>Angels of Death （杀戮的天使）</li>
+<li>致命紫罗兰编号044</li>
+<li>Fate/kaleid liner 魔法少女☆伊莉雅：雪下的誓言</li>
+<li>牵牛花与加濑同学。</li>
+<li>中二病也要谈恋爱！剧场版-Take On Me-</li>
+<li>我家女仆有够烦！</li>
+<li>隔壁的吸血鬼美眉 （邻家索菲）</li>
+<li>终将成为你</li>
+<li>只要贝尔哲布布大小姐喜欢就好 （只要别西卜大小姐喜欢就好）</li>
+<li>圣子到</li>
+<li>天使降临到我身边</li>
+</ul>
+<ul>
+<li>我的妹妹哪有这么可爱！ 第一季 （俺妹 一）</li>
+<li>我的妹妹哪有这么可爱！ 第二季 （俺妹 二）</li>
+<li>迷糊女战士</li>
+<li>Punch Line</li>
+<li>乱步奇谭Game of Laplace</li>
+<li>VENUS PROJECT -CLIMAX-</li>
+<li>萝球社！</li>
+<li>萝球社！SS</li>
+</ul>
+<h2 id="bilibili-欠妥动画名称修改目录"><a href="#bilibili-欠妥动画名称修改目录" class="headerlink" title="bilibili 欠妥动画名称修改目录"></a>bilibili 欠妥动画名称修改目录</h2><p>bilibili 2019.6.2 扫黄打非 净网行动 欠妥动画名称修改目录</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1560251697/blog/094126dda3cc7cd9885ebb453701213fb90e912d.jpg" alt="bilibili 2019.6.2 扫黄打非 净网行动 欠妥动画名称修改目录"></p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>随口说</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GitHub+Hexo 搭建个人网站详细教程</title>
+    <url>/archives/c137e341.html</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着互联网浪潮的翻腾，国内外涌现出越来越多优秀的社交网站让用户分享信息更加便捷。然后，如果你是一个不甘寂寞的程序猿（媛），是否也想要搭建一个属于自己的个人网站，如果你曾经或者现在正有这样的想法，请跟随这篇文章发挥你的Geek精神，让你快速拥有自己的博客网站，写文章记录生活，享受这种从0到1的过程。</p>
+<h2 id="什么是Hexo"><a href="#什么是Hexo" class="headerlink" title="什么是Hexo ?"></a>什么是Hexo ?</h2><p>Hexo是一款基于Node.js的静态博客框架，依赖少易于安装使用，可以方便的生成静态网页托管在GitHub和Heroku上，是搭建博客的首选框架。这里我们选用的是GitHub，你没看错，全球最大的同性恋交友网站（逃……）。Hexo同时也是GitHub上的开源项目，参见：<a href="https://github.com/hexojs/hexo">hexojs/hexo</a> 如果想要更加全面的了解Hexo，可以到其官网  <a href="https://hexo.io/">Hexo</a>  了解更多的细节，因为Hexo的创建者是台湾人，对中文的支持很友好，可以选择中文进行查看。这里，默认各位猿/媛儿都知道GitHub就不再赘述。</p>
+<span id="more"></span>
+
+<h2 id="搭建步骤："><a href="#搭建步骤：" class="headerlink" title="搭建步骤："></a>搭建步骤：</h2><ul>
+<li>获得个人网站域名</li>
+<li>GitHub创建个人仓库</li>
+<li>安装Git</li>
+<li>安装Node.js</li>
+<li>安装Hexo</li>
+<li>推送网站</li>
+<li>绑定域名</li>
+<li>更换主题</li>
+<li>初识MarkDown语法</li>
+<li>发布文章</li>
+<li>寻找图床</li>
+<li>个性化设置</li>
+<li>其他</li>
+<li>附录</li>
+</ul>
+<h3 id="获得个人网站域名"><a href="#获得个人网站域名" class="headerlink" title="获得个人网站域名"></a>获得个人网站域名</h3><p>域名是网站的入口，也是网站的第一印象，比如饿了么的官网的域名是：<a href="https://www.ele.me/">https://www.ele.me/</a> ，很是巧妙。常见的有com,cn,net,org等后缀，也有小众的xyz,me,io等后缀，根据你自己的喜好，选择不同的后缀，比如我选择就是常见的com后缀。很多小众奇特的后缀在大陆是没办法备案的，网站也就无法上线。然而使用GitHub托管我们的网站，完全不需要备案，因为托管我们的网站内容的服务器在美国，而且在国内备案流程也比较繁杂，时间需要一周左右。</p>
+<h3 id="GitHub创建个人仓库"><a href="#GitHub创建个人仓库" class="headerlink" title="GitHub创建个人仓库"></a>GitHub创建个人仓库</h3><p>登录到GitHub,如果没有GitHub帐号，使用你的邮箱注册GitHub帐号：<a href="https://github.com/">Build software better, together</a> 点击GitHub中的New repository创建新仓库，仓库名应该为：你的用户名.github.io 这个用户名使用你的GitHub帐号名称代替，这是固定写法，比如我的仓库名为：byhiorg.github.io</p>
+<p>任何人都可以申请GitHub，并开通GItHub Pages，这都是免费的。</p>
+<p>假如您的GitHub帐号为alice，则需要创建一个这样的GitHub repo作为您的GitHub Pages托管仓库：alice.github.io，只有这样的仓库名称才可以作为您的GitHub Pages的入口页面，而其他的GitHub Pages则是在该页面的子级URL下，如 <a href="http://alice.github.io/blog%E3%80%81http://alice.github.io/project">http://alice.github.io/blog、http://alice.github.io/project</a> 等。</p>
+<h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>什么是Git ?简单来说Git是开源的分布式版本控制系统，用于敏捷高效地处理项目。我们网站在本地搭建好了，需要使用Git同步到GitHub上。如果想要了解Git的细节，参看廖雪峰老师的<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git教程</a>：Git教程  从Git官网下载：<a href="https://git-scm.com/downloads">Git - Downloading Package</a> 现在的机子基本都是64位的，选择64位的安装包，下载后安装，在命令行里输入git测试是否安装成功，若安装失败，参看其他详细的Git安装教程。安装成功后，将你的Git与GitHub帐号绑定，鼠标右击打开Git Bash</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523740302/blog/v2-8b1cbe253d6e0301bd9a68c6f98a9f52_hd.jpg" alt="鼠标右击打开Git Bash" title="鼠标右击打开Git Bash"></p>
+<p>或者在菜单里搜索Git Bash，设置user.name和user.email配置信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;你的GitHub用户名&quot;</span><br><span class="line">git config --global user.email &quot;你的GitHub注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>生成ssh密钥文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;你的GitHub注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>然后直接三个回车即可，默认不需要设置密码<br>然后找到生成的.ssh的文件夹中的id_rsa.pub密钥，将内容全部复制</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
+<p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#x69;&#x74;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;">&#103;&#x69;&#x74;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;</a> ：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
+<p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
+<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-76ea38e9545e606f975781e47933b010_hd.jpg"></p>
+<p>检测npm是否安装成功，在命令行中输入npm -v :</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-bede250b8456df92475b455fda8c1dd9_hd.jpg"></p>
+<p>到这了，安装Hexo的环境已经全部搭建完成。</p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Hexo就是我们的个人博客网站的框架， 这里需要自己在电脑常里创建一个文件夹，可以命名为Blog，Hexo框架与以后你自己发布的网页都在这个文件夹中。创建好后，进入文件夹中，按住shift键，右击鼠标点击命令行</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-a5450a466c0927c25dff8ad6f1d2046c_hd.jpg"></p>
+<p>使用npm命令安装Hexo，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>这个安装时间较长耐心等待，安装完成后，初始化我们的博客，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里的命令都是作用在刚刚创建的Blog文件夹中。</p>
+<p>为了检测我们的网站雏形，分别按顺序输入以下三条命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new test_my_site</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>这些命令在后面作介绍，完成后，打开浏览器输入地址：</p>
+<p>localhost:4000</p>
+<p>可以看出我们写出第一篇博客，只不过我下图是我修改过的配置，和你的显示不一样。</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-123e73c0630d299b1c856d99b04b55bb_hd.jpg"></p>
+<p>现在来介绍常用的Hexo 命令</p>
+<p>npm install hexo -g     #安装Hexo<br>npm update hexo -g    #升级<br>hexo init    #初始化博客</p>
+<p>命令简写<br>hexo n  “我的博客” == hexo new  “我的博客”   #新建文章<br>hexo g == hexo generate   #生成<br>hexo s == hexo server   #启动服务预览<br>hexo d == hexo deploy   #部署</p>
+<p>hexo server     #Hexo会监视文件变动并自动更新，无须重启服务器<br>hexo server -s    #静态模式<br>hexo server -p 5000     #更改端口<br>hexo server -i 192.168.1.1     #自定义 IP<br>hexo clean     #清除缓存，若是网页正常情况下可以忽略这条命令</p>
+<p>刚刚的三个命令依次是新建一篇博客文章、生成网页、在本地预览的操作。</p>
+<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h3><p>上面只是在本地预览，接下来要做的就是就是推送网站，也就是发布网站，让我们的网站可以被更多的人访问。在设置之前，需要解释一个概念，在blog根目录里的_config.yml文件称为站点配置文件，如下图</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-cb1fd5e5a2e73f513234e434724c7c55_hd.jpg"></p>
+<p>进入根目录里的themes文件夹，里面也有个_config.yml文件，这个称为主题配置文件，如下图</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-4252029e5634bf91c7d58916ae2b8ac3_hd.jpg"></p>
+<p>下一步将我们的Hexo与GitHub关联起来，打开站点的配置文件_config.yml，翻到最后修改为：</p>
+<p>deploy:<br>type: git<br>repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git<br>branch: master参考如下：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523745633/blog/2018-04-15_063959.png"></p>
+<p>保存站点配置文件。</p>
+<p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>这时，我们分别输入三条命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+
+<p>其实第三条的 hexo d 就是部署网站命令，d是deploy的缩写。完成后，打开浏览器，在地址栏输入你的放置个人网站的仓库路径，即 <a href="http://xxxx.github.io/">http://xxxx.github.io</a> 。你就会发现你的博客已经上线了，可以在网络上被访问了。</p>
+<h3 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h3><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的，比如: xxxx.github.io 而我们想使用我们自己的个性化域名，这就需要绑定我们自己的域名。这里演示的是在阿里云万网的域名绑定，在国内主流的域名代理厂商也就阿里云和腾讯云。登录到阿里云，进入管理控制台的域名列表，找到你的个性化域名，进入解析</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-47323ad4490e206aef93a3d68f0670b6_hd.jpg"></p>
+<p>然后添加解析</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-40222b3a295bb692aac22829a8ec3be2_hd.jpg"></p>
+<p>包括添加三条解析记录，192.30.252.153是GitHub的地址，你也可以ping你的 xxxx.github.io 的ip地址，填入进去。第三个记录类型是CNAME，CNAME的记录值是：你的用户名.github.io 这里千万别弄错了。第二步，登录GitHub，进入之前创建的仓库，点击settings，设置Custom domain，输入你的域名</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-85ba6dda906f22dea4c03df2b47d994b_hd.jpg"></p>
+<p>点击save保存。第三步，进入本地博客文件夹 ，进入blog/source目录下，创建一个记事本文件，输入你的域名，对，只要写进你自己的域名即可。如果带有www，那么以后访问的时候必须带有www完整的域名才可以访问，但如果不带有www，以后访问的时候带不带www都可以访问。所以建议，不要带有www。这里我还是写了www(不建议带有www):</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-79abfff91af3f520e24cb91acf6aa994_hd.jpg"></p>
+<p>保存，命名为CNAME ，注意保存成 <em>所有文件</em> 而不是 <em>txt文件</em>。</p>
+<p>完成这三步，进入blog目录中，按住shift键右击打开命令行，依次输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+
+<p>这时候打开浏览器在地址栏输入你的个性化域名将会直接进入你自己搭建的网站。</p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>如果你不喜欢Hexo默认的主题，可以更换不同的主题，主题传送门：<a href="https://hexo.io/themes/">Themes</a> 我自己使用的是Next主题，可以在blog目录中的themes文件夹中查看你自己主题是什么。现在把默认主题更改成Next主题，在blog目录中（就是命令行的位置处于blog目录）打开命令行输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<p>这是将Next主题下载到blog目录的themes主题下的next文件夹中。打开 <em>站点</em> 的_config.yml配置文件，修改主题为next</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-b1997377e82408cb15b485c65ae00f70_hd.jpg"></p>
+<p>打开 <em>主题</em> 的_config.yml配置文件，不是站点主题文件，找到Scheme Settings</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-1ac152c4aabe4c10b762ee27552f1105_hd.jpg"></p>
+<p>next主题有三个样式，我用的是Pisces，你们可以自己试试看，选择你自己喜欢的样式（只需要把行首的#去除，#是注释），选择好后，再次部署网站，hexo g、hexo d，查看效果。选择其他主题，按照上述过程即可实现。</p>
+<h3 id="初识Markdown语法"><a href="#初识Markdown语法" class="headerlink" title="初识Markdown语法"></a>初识Markdown语法</h3><p>Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。Markdown语法简洁明了、容易掌握，而且功能比纯文本更强，因此写博客使用它，可以让用户更加专注的写文章，而不需要费尽心力的考虑样式，相对于html已经算是轻量级语言，像有道云笔记也支持Markdown写作。并且Markdown完全兼容html，也就是可以在文章里直接插入html代码。比如给博文添加音乐，就可以直接把音乐的外链html代码插入文章中。具体语法参看：<a href="https://www.appinn.com/markdown/">Markdown 语法说明(简体中文版)</a> 可以说十分钟就可以入门。当然，工欲善其事必先利其器，选择一个好的Markdown编辑器也是非常重要的，这里推荐 <a href="http://code52.org/DownmarkerWPF/">MarkPad</a> 和 <a href="http://www.markdownpad.com/">The Markdown Editor for Windows</a> 以及前端神器 <a href="https://atom.io/">Atom</a> 和 <a href="https://code.visualstudio.com/">VScode</a> ，这是带有预览效果的编辑器，也可以使用本地的文本编辑器，更多的Markdown的语法与编辑器自己可以搜索了解。</p>
+<h3 id="发布文章"><a href="#发布文章" class="headerlink" title="发布文章"></a>发布文章</h3><p>我们开始正式发布上线博客文章，在命令行中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo n &quot;博客名字&quot;</span><br></pre></td></tr></table></figure>
+
+<p>我们会发现在blog根目录下的source文件夹中的_post文件夹中多了一个 <em>博客名字.md</em> 文件，使用Markdown编辑器打开，就可以开始你的个人博客之旅了，Markdown常用的样式也就十来种，完全能够满足一般博文的样式要求，这是我的一篇博文内容示例：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-4f96cd03a88e68b8ae86c38bfb0808ac_hd.jpg"></p>
+<p>通过带有预览样式的Markdown编辑器实时预览书写的博文样式，也可以通过命令 hexo s –debug 在本地浏览器的localhost:4000 预览博文效果。写好博文并且样式无误后，通过hexo g、hexo d 生成、部署网页。随后可以在浏览器中输入域名浏览。</p>
+<h3 id="寻找图床"><a href="#寻找图床" class="headerlink" title="寻找图床"></a>寻找图床</h3><p>图床，当博文中有图片时，若是少量图片，可以直接把图片存放在source文件夹中，但这显然不合理的，因为图片会占据大量的存储的空间，加载的时候相对缓慢 ，这时考虑把博文里的图片上传到某一网站，然后获得外部链接，使用Markdown语法， <code>![图片信息](外部链接)</code> 完成图片的插入，这种网站就被称为图床。常见的简易的图床网站有：<a href="http://www.tietuku.com/">贴图库图片外链</a> 。</p>
+<p><strong>国内算比较好的图床：</strong></p>
+<p>新浪微博</p>
+<p><a href="https://www.qiniu.com/">七牛云</a></p>
+<p><a href="https://www.upyun.com/">又拍云</a></p>
+<p><strong>国外比较好的图床：</strong></p>
+<p><a href="https://www.flickr.com/">flickr</a></p>
+<p>flickr是一个很好的图床，是由加拿大Ludicorp公司所开发设计。该公司于2004年2月正式推出 Flickr网站。Flickr于2005年3月被雅虎收购，在6月,所有的资料都从原本位于加拿大的服务器迁入美国，使得所有的资料都受到美国联邦法的 管辖。flickr上传速度还不错而且还支持外链，有很多图片网站都是利用这个相册来装图片的，还能对你的图片进行特效外理以及在线图片编辑功能，每月上传空间限制在 100M，但如果超过90天未登录，你帐号下的图片将会被删除。</p>
+<p><a href="https://imgur.com/">Imgur</a></p>
+<p>Imgur 是来自美国的一个免费网络相册，非常简单实用。Imgur由美国俄亥俄州大学的学生Alan Schaaf创建，Imgur的服务器位于美国得克萨斯州达拉斯市，其Alexa世界排名为1283，Imgur免费相册流行于美国、印度、英国、德国、 加拿大、澳大利亚等国家。</p>
+<p><a href="http://www.photobucket.com/">Photobucket</a></p>
+<p>PhotoBucket在国外非常有名，因为它相当的稳定，而且国内速度也不赖，口碑是非常不错的哦！相比 Flickr 个人认为速度上有大优势，而且也没 Flickr 那么容易受某土·啬的光顾。</p>
+<p>免费支持图片外链可以说是 Photobucket 的最大特色，注册免费账号会拥有500MB图片空间，单张图片限制1M大小，图片格式无限制，每个月 10G 外链图片流量配额，对于一般的个人用户来说应该是足够使用的了</p>
+<p>Photobucket 支持建立相册，自定义相册的URL，多种图片上传方式，批量上传，手机上传，简单的在线图片处理、制作幻灯片等。而且还有各种各样的客户端、浏览器插件、管理工具神马的，功能相当的全面。如果你升级到Pro的话，还能增加诸如无限外链流量、无限空间、支持swf等Flash文件、FTP上传下载、图片统计等高级功能。</p>
+<p><a href="https://cloudinary.com/">Cloudinary</a></p>
+<p>Cloudinary提供了一个强大实用的API，并在寻求更为合理的定价计划，对于小批量的图片处理目前为用户提供了免费的服务，有兴趣者可以去试用一下。</p>
+<p><a href="http://www.freeimagehosting.net/">freeimagehosting</a></p>
+<p>无需注册即可上传,<br>支持格式：gif、jpg、jpeg、bmp、png<br>图床容量：不限<br>图床流量：不限<br>文件限制：3M   </p>
+<p><a href="http://tinypic.com/">tinypic</a></p>
+<p>加拿大tinypic提供免费的相册和视频空间，成立于2003年，无需注册就能上传，图床空间无限制，上传时可以改变图片的大小，有多种大小供选择，当然注册了更好，能建立自己的相册和视频空间，支持多个文件同时上传，图片上传后会产生一个很短的地址，能直接进行外部引用链接！</p>
+<p><a href="http://thumbsnap.com/">thumbsnap</a></p>
+<p>Thumbsnap是美国的免费图片存储空间。界面简洁无广告，无需注册即可上传图片，对上传图片张数无限制，支持jpg、jpeg、gif、png等格式的图片，最大上传单图片大小2M！上传非常简单，进入网站首页后，点击“UPLOAD Photo”按钮，选择一张图片即可自动上传，上传速度非常不错。上传完成后可获得图片的分享代码，提供4种代码，可通过点击“More Link Codes”来获得图片的直接外链地址！</p>
+<p>图床最重要的就是稳定速度快，所以在挑选图床的时候一定要仔细，下图是博文插入图片，使用图床外链的示例：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-92372e522595af139ace5f371aae3ff3_hd.jpg"></p>
+<h3 id="个性化设置"><a href="#个性化设置" class="headerlink" title="个性化设置"></a>个性化设置</h3><p>所谓的个性化设置就是根据个人需要添加不同的插件及功能。</p>
+<p>基本的有：</p>
+<p>在站点配置文件_config.yml修改基本的站点信息</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-78bc0e4e6498c9c3cb269b3254d8379f_hd.jpg"></p>
+<p>依次是网站标题、副标题、网站描述、作者、网站头像外部链接、网站语言、时区等。</p>
+<p>在主题配置文件_config.yml修改基本的主题信息，如：</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-451c5cb2fd6516650ad8ca608031bf0d_hd.jpg"></p>
+<p>博文打赏的微信、支付宝二维码图片，这里我是直接把这两张放在根目录的source文件夹中，并没有使用图床外链。</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-69bbc45e973eb6916e08187ed8b33a55_hd.jpg"></p>
+<p>社交外链的设置，即在侧栏展示你的个人社交网站信息。</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-5b3f6e02e0d3a0cdb685a4d2fd2718cb_hd.jpg"></p>
+<p>博文分享的插件jiathis，值设置为true。在配置文件中有很多的个性化设置，可以自尝试更多的修改。</p>
+<p>进阶个性化：</p>
+<ul>
+<li>添加网易云音乐</li>
+</ul>
+<p>打开网页版的网易云音乐，选择喜欢的音乐，点击生成外链播放器</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-fcb7d44ccdca3760c98db0d13817f2b5_hd.jpg"></p>
+<p>复制外链的代码</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-16eec195312cde7b1d257fac6f3c8d0b_hd.jpg"></p>
+<p>比如在侧栏插入这首歌的音乐播放器，修改 blog\themes\next\layout_macro的sidebar.swig文件，添加刚刚复制的外链代码</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-03db51002497b27e4d5888e0efd577c7_hd.jpg"></p>
+<p>重新生成、部署网页，效果如下</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-3d587bf919df92db38e2608f034e50f1_hd.jpg"></p>
+<ul>
+<li>设置背景</li>
+</ul>
+<p>把你挑选的背景图片命名为：background.jpg，放在blog\themes\next\source\images里，在blog\themes\next\source\css_custom文件的custom.styl首部添加：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>:<span class="built_in">url</span>(<span class="string">/images/background.jpg</span>);</span><br><span class="line">  <span class="attribute">background-attachment</span>: fixed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>background-attachment: fixed;是固定背景图片。</p>
+<p>这是设置一张静态图片作为背景，其实Next主题自带有动态的背景效果，修改主题配置文件中的canvas_nest: false 为 canvas_nest: true 即可。</p>
+<ul>
+<li>增加侧栏菜单条目</li>
+</ul>
+<p>默认的侧栏菜单条目有：首页、归档、标签、关于、搜索等。如果你想要增加其他的菜单条目，修改主题配置文件_config.yml里的Menu Settings中的menu和menu_icons两个地方</p>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-666a22fedbba95d979eeb26e52fc29e2_hd.jpg"></p>
+<p>其中menu里是配置菜单项对应的页面位置（如：/love），menu_icons对应菜单项的图标，这里的图标是来自于Font Awesome ，所以你需要在<a href="https://fontawesome.com/">Font Awesome</a>网站上找到你需要的icon，然后把该icon的名字写在menu_icons对应菜单名后面，注意冒号有一个英文输入状态的空格。设置好后，在命令行里输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page &quot;你所要增加的菜单项名称（要和你在menu中的填写要匹配）&quot;</span><br></pre></td></tr></table></figure>
+
+<p>新建的页面在博客根目录下的source文件里，这时你就可以对新建的页面自定义设计。</p>
+<p>还有更多的进阶个性化设置，如SEO、评论系统、个人头像、博客分享、订阅功能、High功能、404网页设置等，可以参看：</p>
+<p><a href="http://theme-next.iissnan.com/theme-settings.html">主题配置 - NexT 使用文档</a></p>
+<p><a href="http://theme-next.iissnan.com/third-party-services.html">第三方服务集成 - NexT 使用文档 </a></p>
+<p><a href="http://theme-next.iissnan.com/tag-plugins.html">内置标签 - NexT 使用文档</a></p>
+<p><a href="http://theme-next.iissnan.com/advanced-settings.html">进阶设定 - NexT 使用文档</a></p>
+<p>有很多人私信问我High功能特效如何设置，这里推荐一篇同是Next主题网站博主的文章：<a href="http://www.iamlj.com/2016/08/add-special-effect-harlem-shake-for-hexo/">为Hexo Next主题添加哈林摇特效（五）</a></p>
+<h3 id="博客展示"><a href="#博客展示" class="headerlink" title="博客展示"></a>博客展示</h3><p><a href="http://jmyblog.top/">…Miss.j BlogDiary…</a></p>
+<p><a href="http://blog.sunxinfei.com/">Xin’s Notes</a></p>
+<p><a href="https://guguant.github.io/">飞鸟与鱼</a></p>
+<p><a href="http://helloqa.com/">iTesting软件测试知识分享</a></p>
+<p><a href="http://bolg.upsky.top/">赵小源的个人博客</a></p>
+<p><a href="http://www.huajiayi.top/">华嘉熠’s Blog</a></p>
+<p><a href="http://asmire.site/">Cocoon</a></p>
+<p><a href="https://www.dandyweng.com/">翁天信 · Dandy Weng</a></p>
+<p><a href="http://chaoxuprime.com/">chaoxuprim</a></p>
+<p><a href="http://kenjiendo.com/">KENJI ENDO</a></p>
+<p><a href="http://shenzekun.cn/">Moorez</a></p>
+<p><a href="https://codesky.me/">CodeSky 代码之空</a></p>
+<p><a href="http://www.helloshawn.cn/">大江东去</a></p>
+<p><a href="http://iconmoon.com/">UI Design Portfolio of JJ Ying</a></p>
+<p><a href="http://www.jeyzhang.com/">JeyZhang</a></p>
+<p><a href="http://blog.lightina.cn/">jacklightChen | 得到的都是侥幸</a></p>
+<p><a href="https://qingpei.me/">edwardtoday</a></p>
+<p><a href="https://rafaltomal.com/">Rafal Tomal - Web Designer and Genesis Developer</a></p>
+<p><a href="http://strml.net/">Projects and Work</a></p>
+<p><a href="http://miaoxiaoer.com/">绘画爱好者</a></p>
+<p><a href="https://ursocute.github.io/">万世奇的博客</a></p>
+<p><a href="https://rauchg.com/">Guillermo Rauch</a></p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Telegram群组/频道/机器人推荐</title>
+    <url>/archives/b39da0c2.html</url>
+    <content><![CDATA[<h2 id="Telegram简介"><a href="#Telegram简介" class="headerlink" title="Telegram简介"></a>Telegram简介</h2><p>Telegram是一款即时通信软件，客户端是自由及开放源代码软件。用户可以相互交换加密与自析构的消息，发送照片、影片等所有类型文件。官方提供手机版（Android、iOS、Windows Phone）、桌面版（Windows、macOS、Linux）和网页版等多种平台客户端；同时官方开放应用程序接口，因此拥有许多第三方的客户端可供选择。</p>
+<p>2015年6月，Telegram 开放了机器人API，2017年5月支持了付款功能。机器人是 Telegram 上以程序运作的账号，可以回复人类的指令、消息。</p>
+<h2 id="Telegram-群組-頻道-機器人-公眾索引系統"><a href="#Telegram-群組-頻道-機器人-公眾索引系統" class="headerlink" title="Telegram 群組/頻道/機器人 公眾索引系統"></a>Telegram 群組/頻道/機器人 公眾索引系統</h2><p><a href="https://tg.weils.net/">https://tg.weils.net/</a></p>
+<p>提交後，短時間內就會在網站、頻道及機器人的列表中呈現出來。所以你還在用群組推廣群宣傳群組嗎？那你可能跟不上時代了~</p>
+<p>它的廣播頻道：你可以先加入頻道，觀察別人宣傳的群組</p>
+<p><a href="https://t.me/TG_index_channel">https://t.me/TG_index_channel</a></p>
+<p>使用說明：</p>
+<p><a href="https://tg.weils.net/manual.php">https://tg.weils.net/manual.php</a></p>
+<p>提交及瀏覽除了網站也可以透過機器人：</p>
+<p><a href="https://t.me/TG_index_bot">https://t.me/TG_index_bot</a></p>
+<p>註.如果你不習慣和機器人對話，其實用電腦連網站及登入會較容易操作。</p>
+<h2 id="Telegram-Analytics-（电报分析）"><a href="#Telegram-Analytics-（电报分析）" class="headerlink" title="Telegram Analytics （电报分析）"></a>Telegram Analytics （电报分析）</h2><p>官网：<a href="https://tgstat.com/">https://tgstat.com</a></p>
+<p>收录全世界各国电报群。自动索引俄语，乌克兰语，英语，乌兹别克语和白俄罗斯语频道。创建排名（全球和主题），进行详细分析并跟踪所有渠道电报中的提及和转发。</p>
+<ul>
+<li>超过150’000个频道，</li>
+<li>每天增加500多个频道，</li>
+<li>超过2.5亿个索引帖子</li>
+</ul>
+<p>官方频道：Telegram Analytics <a href="https://t.me/tg_analytics">https://t.me/tg_analytics</a></p>
+<p>官方群组：Telegram Analytics Support <a href="https://t.me/tg_analytics_chat">https://t.me/tg_analytics_chat</a></p>
+<h2 id="与编程语言相关令人敬畏的印度尼西亚Telegram群组"><a href="#与编程语言相关令人敬畏的印度尼西亚Telegram群组" class="headerlink" title="与编程语言相关令人敬畏的印度尼西亚Telegram群组"></a>与编程语言相关令人敬畏的印度尼西亚Telegram群组</h2><p><a href="https://github.com/hendisantika/List-All-Programming-Telegram-Group">https://github.com/hendisantika/List-All-Programming-Telegram-Group</a></p>
+<h2 id="Telegram-Desktop-下載"><a href="#Telegram-Desktop-下載" class="headerlink" title="Telegram Desktop 下載"></a>Telegram Desktop 下載</h2><p><a href="https://desktop.telegram.org/">https://desktop.telegram.org/</a></p>
+<span id="more"></span>
+
+<h2 id="TG群组（Group）"><a href="#TG群组（Group）" class="headerlink" title="TG群组（Group）"></a>TG群组（Group）</h2><p>Jetbrains Tools （Jetbrains全家桶交流，进群后请讲英语）：<a href="https://t.me/joinchat/CMNNZEXv8LrCCbcxOeir7A">https://t.me/joinchat/CMNNZEXv8LrCCbcxOeir7A</a></p>
+<p>Jetbrains （进群后请讲英语） ：<a href="https://t.me/sniarbtej">https://t.me/sniarbtej</a></p>
+<p>GoogleFans交流群: <a href="https://t.me/GoogleFans">https://t.me/GoogleFans</a></p>
+<p>🌏生活 读书 新知™: <a href="https://t.me/du_shu">https://t.me/du_shu</a></p>
+<p>峰哥分享技术交流超级群: <a href="https://t.me/fengsharegroup">https://t.me/fengsharegroup</a></p>
+<p>Newlearnerの水群：<a href="https://t.me/NewlearnerGroup">https://t.me/NewlearnerGroup</a></p>
+<p>iOS：<a href="https://t.me/iOSdevotee">https://t.me/iOSdevotee</a></p>
+<p> App Store：<a href="https://t.me/AppstoreCN">https://t.me/AppstoreCN</a></p>
+<p>iPad：<a href="https://t.me/aboutipad">https://t.me/aboutipad</a></p>
+<p>macOS：<a href="https://t.me/getosx">https://t.me/getosx</a></p>
+<p>苹果旧版交流：<a href="https://t.me/xinapp">https://t.me/xinapp</a></p>
+<p>Apple Talk 交流群：<a href="https://t.me/AppleTalk2018">https://t.me/AppleTalk2018</a></p>
+<p>iOS &amp; Mac · Free Talk：<a href="https://t.me/joinchat/BC6PtDwOzSNWFpXosJUnYw">https://t.me/joinchat/BC6PtDwOzSNWFpXosJUnYw</a></p>
+<p>Cydia越狱：<a href="https://t.me/iOS_Cydia">https://t.me/iOS_Cydia</a></p>
+<p>黑苹果osx86项目中文讨论/Hackintosh：<a href="https://t.me/osx86cn">https://t.me/osx86cn</a></p>
+<p>安卓手机交流圈：<a href="https://t.me/androidsee">https://t.me/androidsee</a></p>
+<p>Android · Free Talk：<a href="https://t.me/joinchat/BC6PtDwBMhfDu6pnrg2wgw">https://t.me/joinchat/BC6PtDwBMhfDu6pnrg2wgw</a></p>
+<p>Microsoft users：<a href="https://t.me/Microsofthelp">https://t.me/Microsofthelp</a></p>
+<p>PTT鄉民聊天群：<a href="https://t.me/pttlive">https://t.me/pttlive</a></p>
+<p>Linux窝：<a href="https://t.me/linux_home">https://t.me/linux_home</a></p>
+<p>主机百科：<a href="https://t.me/zhujiwiki">https://t.me/zhujiwiki</a></p>
+<p>锤子科技 Smartisan 讨论组：<a href="https://t.me/smartisan_unofficial">https://t.me/smartisan_unofficial</a></p>
+<p>小米手机讨论群：<a href="https://t.me/M_Phone">https://t.me/M_Phone</a></p>
+<p>NAS私有云交流：<a href="https://t.me/NASteam">https://t.me/NASteam</a></p>
+<p>图拉丁：<a href="https://t.me/lajilao">https://t.me/lajilao</a></p>
+<p>SM.MS 图床粉丝群：<a href="https://t.me/smms_images">https://t.me/smms_images</a></p>
+<p>萌娘百科水群（tg分部）（官方）：<a href="https://t.me/joinchat/Cou1XELZC0G4OdZwuBddWA">https://t.me/joinchat/Cou1XELZC0G4OdZwuBddWA</a></p>
+<p>显卡吧驻 TG 大使馆：<a href="https://t.me/xiankaba">https://t.me/xiankaba</a></p>
+<p>南京大学 （本群主要是面向南大学生，校友以及报考南大研究生的朋友。也欢迎南京及周边的朋友参与讨论。）：<a href="https://t.me/joinchat/IILlVUkMuW60J_PWnZpD0g">https://t.me/joinchat/IILlVUkMuW60J_PWnZpD0g</a></p>
+<p>Chrome：<a href="https://t.me/ChromeCN">https://t.me/ChromeCN</a></p>
+<p>Google Voice讨论组：<a href="https://t.me/swatpc1">https://t.me/swatpc1</a></p>
+<p>Google Voice 中文群：<a href="https://t.me/googlevoiceus">https://t.me/googlevoiceus</a></p>
+<p>Google Play Party：<a href="https://t.me/GooglePlayParty">https://t.me/GooglePlayParty</a></p>
+<p>Google Fans Club 中文：<a href="https://t.me/googlecn">https://t.me/googlecn</a></p>
+<p>Firefox：<a href="https://telegram.me/joinchat/AoTJxz4J3JSViMCij18RHA">https://telegram.me/joinchat/AoTJxz4J3JSViMCij18RHA</a></p>
+<p>Dropbox：<a href="https://t.me/joinchat/E0ZmVUQDAlckUMbGmCjV9w">https://t.me/joinchat/E0ZmVUQDAlckUMbGmCjV9w</a></p>
+<p>Shortcuts：<a href="https://t.me/SiriShortcuts">https://t.me/SiriShortcuts</a></p>
+<p>Surge 交流：<a href="https://t.me/loveapps">https://t.me/loveapps</a></p>
+<p>Shadowrocket：<a href="https://t.me/ShadowrocketApp">https://t.me/ShadowrocketApp</a></p>
+<p>Quantumult交流：<a href="https://t.me/quantumultapp">https://t.me/quantumultapp</a></p>
+<p>Clash：<a href="https://t.me/clash_discuss">https://t.me/clash_discuss</a></p>
+<p>Shuttle：<a href="https://t.me/joinchat/GrRxoBJXAKTdZBrTIJfIbQ">https://t.me/joinchat/GrRxoBJXAKTdZBrTIJfIbQ</a></p>
+<p>Kitsunebi：<a href="https://t.me/kitsunebi">https://t.me/kitsunebi</a></p>
+<p>Kitsunebi交流：<a href="https://t.me/Kitsunebi_funs">https://t.me/Kitsunebi_funs</a></p>
+<p>Mac上网SpechtLite交流群：<a href="https://t.me/SpechtLite">https://t.me/SpechtLite</a></p>
+<p>Surfboard 交流群：<a href="https://t.me/surfboardapp">https://t.me/surfboardapp</a></p>
+<p>Pepi（原ShadowRay）：<a href="https://t.me/ShadowRay">https://t.me/ShadowRay</a></p>
+<p>Thor+Shu+Anubis：<a href="https://t.me/thorshu">https://t.me/thorshu</a></p>
+<p>Pin：<a href="https://t.me/PinTG">https://t.me/PinTG</a></p>
+<p>奇点：<a href="https://t.me/jidian">https://t.me/jidian</a></p>
+<p>落格工作室：<a href="https://t.me/joinchat/DGZalT6pMAHNNg8JyfPLXw">https://t.me/joinchat/DGZalT6pMAHNNg8JyfPLXw</a></p>
+<p>iMazing 用户群：<a href="https://t.me/joinchat/Ag98Fw2RLnb5qW6OorHyQw">https://t.me/joinchat/Ag98Fw2RLnb5qW6OorHyQw</a></p>
+<p>iTools：<a href="https://t.me/toolinbox">https://t.me/toolinbox</a></p>
+<p>Aria2 中文交流：<a href="https://t.me/Aria2_CN">https://t.me/Aria2_CN</a></p>
+<p>X.cat Pro：<a href="https://t.me/PcatApp">https://t.me/PcatApp</a></p>
+<p>IINA：<a href="https://t.me/joinchat/AAAAAEBemW7dU8X7IHShwQ">https://t.me/joinchat/AAAAAEBemW7dU8X7IHShwQ</a></p>
+<p>汤友群-tumblr：<a href="https://t.me/SkimTumbloger">https://t.me/SkimTumbloger</a></p>
+<p>汤友俱乐部正规群：<a href="https://t.me/tumblrcenter">https://t.me/tumblrcenter</a></p>
+<p>HyperApp 与?喂养艺术：<a href="https://t.me/hyperapp">https://t.me/hyperapp</a></p>
+<p>印象笔记 Evernote 用户群：<a href="https://t.me/yinxiangbiji">https://t.me/yinxiangbiji</a></p>
+<p>网易云音乐 | 猪场正式版 [CN/EN/Sticker]：<a href="https://t.me/NetEaseMusic">https://t.me/NetEaseMusic</a></p>
+<p>捷径社区: <a href="https://t.me/joinchat/AdppXUoZtbG9-epQcWptpA">https://t.me/joinchat/AdppXUoZtbG9-epQcWptpA</a></p>
+<p>內涵段子总群：<a href="https://t.me/neihanduanziall">https://t.me/neihanduanziall</a></p>
+<p>内涵段子：<a href="https://t.me/duanzige">https://t.me/duanzige</a></p>
+<p>Docker：<a href="https://t.me/dockertutorial">https://t.me/dockertutorial</a></p>
+<p>Telegram 种植园交流群：<a href="https://t.me/joinchat/C_3D-EHmBSrpjF44dabHxg">https://t.me/joinchat/C_3D-EHmBSrpjF44dabHxg</a></p>
+<p>Project V （使用与反馈）-V2ray官方群：<a href="https://t.me/projectv2ray">https://t.me/projectv2ray</a></p>
+<p>Shadowsocks：<a href="https://t.me/joinchat/A1lxzDuvcioTtic84c12vQ">https://t.me/joinchat/A1lxzDuvcioTtic84c12vQ</a></p>
+<p>ShadowsocksR第三方交流群：<a href="https://t.me/shadowsocksr16">https://t.me/shadowsocksr16</a></p>
+<p>Wingy Halal Group：<a href="https://t.me/wingytg">https://t.me/wingytg</a></p>
+<p>VPN讨论：<a href="https://t.me/gouwu">https://t.me/gouwu</a></p>
+<p>SSTap Rule：<a href="https://t.me/SSTapRule">https://t.me/SSTapRule</a></p>
+<p>SocksCap64官方群：<a href="https://t.me/tarolab">https://t.me/tarolab</a></p>
+<p>WireGuard：<a href="https://t.me/WireGuard">https://t.me/WireGuard</a></p>
+<p>TOR技术讨论：<a href="https://t.me/tortalk">https://t.me/tortalk</a></p>
+<p>PdoMo-DNS 水群：<a href="https://t.me/pdodns">https://t.me/pdodns</a></p>
+<p>科学上网|番羽土番|讨论组：<a href="https://t.me/vpnsos">https://t.me/vpnsos</a></p>
+<p>代理「配置·规则」分享：<a href="https://t.me/RuleConfig">https://t.me/RuleConfig</a></p>
+<p>SS/SSR/V2Ray机场+科学上网+高速番羽土番：<a href="https://t.me/songssr">https://t.me/songssr</a></p>
+<p>SSR节点国际共享：<a href="https://t.me/ShadowsocksRssr">https://t.me/ShadowsocksRssr</a></p>
+<p>某不科学的跑路插件-路由器fancyss固件交流：<a href="https://t.me/joinchat/AAAAAEC7pgV9vPdPcJ4dJw">https://t.me/joinchat/AAAAAEC7pgV9vPdPcJ4dJw</a></p>
+<p>老毛子Padavan固件自助交流群：<a href="http://t.me/pdcn2">http://t.me/pdcn2</a></p>
+<p>koolshare merlin firmware：<a href="https://t.me/xbchat">https://t.me/xbchat</a></p>
+<p>koolshare OpenWRT X64-软路由：<a href="https://t.me/joinchat/ERO9vEMMVu1dzQ-F8nP6kA">https://t.me/joinchat/ERO9vEMMVu1dzQ-F8nP6kA</a></p>
+<p>搬瓦工 (BandwagonHost)：<a href="https://t.me/BandwagonHostGroup">https://t.me/BandwagonHostGroup</a></p>
+<p>GigsGigsCloud.com 意见交流：<a href="https://t.me/gigsgigscloudgroup">https://t.me/gigsgigscloudgroup</a></p>
+<p>全球主机交流中心：<a href="https://t.me/vpschat">https://t.me/vpschat</a></p>
+<p>主机测评：<a href="https://t.me/joinchat/IQsdaE2-WLQZvZiboc9esA">https://t.me/joinchat/IQsdaE2-WLQZvZiboc9esA</a></p>
+<p><a href="https://t.me/zhujiceping_group">https://t.me/zhujiceping_group</a></p>
+<p>91yun.co 大海航行靠舵手：<a href="https://t.me/im91yun">https://t.me/im91yun</a></p>
+<p>逗比根据地：<a href="https://t.me/doubi">https://t.me/doubi</a></p>
+<p>ssmgr交流群：<a href="https://t.me/ssmgr">https://t.me/ssmgr</a></p>
+<p>233Blog：<a href="https://t.me/blog233">https://t.me/blog233</a></p>
+<p>编程随想：<a href="https://t.me/programthinkreader">https://t.me/programthinkreader</a></p>
+<p>lhie1 Rules：<a href="https://t.me/lhie1x">https://t.me/lhie1x</a></p>
+<p>翻墙交流|XX-Net分群：<a href="https://t.me/xxnet">https://t.me/xxnet</a></p>
+<p>Affyun.com 买买买大会 | 线路讨论 | 三网监测 | VPS评测交流：<a href="https://t.me/pingcat">https://t.me/pingcat</a></p>
+<p>wxkxsw纯公益站-公益飞机场交流：<a href="https://t.me/joinchat/F6lKrUMKir4jj-jiTn7oQQ">https://t.me/joinchat/F6lKrUMKir4jj-jiTn7oQQ</a></p>
+<p>肥宅瘦宅和不宅吹水群：<a href="https://t.me/joinchat/K5hKwle9NvfbSLOViD7M7g">https://t.me/joinchat/K5hKwle9NvfbSLOViD7M7g</a></p>
+<p>正规群：<a href="https://t.me/zhenggui">https://t.me/zhenggui</a></p>
+<p>极客方式交流群：<a href="https://t.me/joinchat/CR2RIDzyWY9OntGm8qPtgQ">https://t.me/joinchat/CR2RIDzyWY9OntGm8qPtgQ</a></p>
+<p>Oasis 的时光杂货店（冯大安卓开发）：<a href="https://t.me/oasisfeng_apps">https://t.me/oasisfeng_apps</a></p>
+<p>暗网讨论群：<a href="https://t.me/anwang001">https://t.me/anwang001</a></p>
+<p>V2EX后花园: <a href="https://t.me/joinchat/Bg3MFjv5FgYrWI0WqHDo8Q">https://t.me/joinchat/Bg3MFjv5FgYrWI0WqHDo8Q</a></p>
+<p>V2EX后花园 v2.0：<a href="https://t.me/goV2EX">https://t.me/goV2EX</a></p>
+<p>RSSHub – 万物皆可 RSS：<a href="https://t.me/rsshub">https://t.me/rsshub</a></p>
+<p>烧饼博客粉丝群：<a href="https://t.me/sbfans">https://t.me/sbfans</a></p>
+<p>Github 死宅日常：<a href="https://t.me/github_cn">https://t.me/github_cn</a></p>
+<p>全球最大开中文发者社群：<a href="https://t.me/dllio">https://t.me/dllio</a></p>
+<p>Go：<a href="https://t.me/GolangCN">https://t.me/GolangCN</a></p>
+<p>Gopher 台灣：<a href="https://t.me/golangtw">https://t.me/golangtw</a></p>
+<p>The Go Programming Language for Memes and dating advice for weebs and autists ： <a href="https://telegram.me/joinchat/BN3aiwcy8VOZQqn4wJBlkg">https://telegram.me/joinchat/BN3aiwcy8VOZQqn4wJBlkg</a></p>
+<p>Golang Indonesia（印尼人为主）：<a href="https://telegram.me/golangID">https://telegram.me/golangID</a></p>
+<p>Python 中文交流：<a href="https://t.me/pythonzh">https://t.me/pythonzh</a></p>
+<p>Java 编程语言：<a href="https://t.me/Javaer">https://t.me/Javaer</a></p>
+<p>台灣 PHP 社區：<a href="https://t.me/PHP_TW">https://t.me/PHP_TW</a></p>
+<p>C 语言中文交流：<a href="https://t.me/Clanguagezh">https://t.me/Clanguagezh</a></p>
+<p>C++ 中文交流：<a href="https://t.me/cpluspluszh">https://t.me/cpluspluszh</a></p>
+<p>代码与远方粉丝群：<a href="https://t.me/joinchat/F9bsvg6ISK-08oYPbWOJ3g">https://t.me/joinchat/F9bsvg6ISK-08oYPbWOJ3g</a></p>
+<p>～现代前端魔法部～：<a href="https://t.me/joinchat/C_3D-D-XG21h-qWlqiZacg">https://t.me/joinchat/C_3D-D-XG21h-qWlqiZacg</a></p>
+<p>JavaScript: ITyped?：<a href="https://t.me/typescript_zh">https://t.me/typescript_zh</a></p>
+<p>[PHP]～ 劲爆大象部落 ～：<a href="https://t.me/MagicPHP">https://t.me/MagicPHP</a></p>
+<p><del>现代前端膜法军团 暨 咸鱼天才吧</del>：<a href="https://t.me/joinchat/FlgxflI3mAHtRicBCsKc_g">https://t.me/joinchat/FlgxflI3mAHtRicBCsKc_g</a></p>
+<p>[CN] Android Dev-安卓开发：<a href="https://t.me/AndroidDevCn">https://t.me/AndroidDevCn</a></p>
+<p>Kali / BlackArch Linux 中文交流：<a href="https://t.me/hackerzh">https://t.me/hackerzh</a></p>
+<p>Debian 中文：<a href="https://t.me/debianzh">https://t.me/debianzh</a></p>
+<p>Ubuntu 中文：<a href="https://t.me/ubuntuzh">https://t.me/ubuntuzh</a></p>
+<p>Gentoo-zh：<a href="https://telegram.me/joinchat/0557494901586680e50d77eebd2986d2">https://telegram.me/joinchat/0557494901586680e50d77eebd2986d2</a></p>
+<p>Machine Learning CN-机器学习：<a href="https://t.me/ml_cn">https://t.me/ml_cn</a></p>
+<p>树莓派 Raspberry Pi：<a href="https://t.me/raspicn">https://t.me/raspicn</a></p>
+<p>数据库技术交流：<a href="https://t.me/DataSearch">https://t.me/DataSearch</a></p>
+<p>科技圈 ：<a href="https://t.me/TechnologyCN">https://t.me/TechnologyCN</a></p>
+<p>香港 IT 群:<a href="https://t.me/din_lo_it">https://t.me/din_lo_it</a></p>
+<p>掘金 iOS 开发交流群：<a href="https://t.me/joinchat/BAjjKkLl8h5wfynrpFvOwQ">https://t.me/joinchat/BAjjKkLl8h5wfynrpFvOwQ</a></p>
+<p>掘金 Android 开发交流群：<a href="https://t.me/joinchat/BAjjKkMXyR2_SrASapNZ0A">https://t.me/joinchat/BAjjKkMXyR2_SrASapNZ0A</a></p>
+<p>掘金前端开发交流群：<a href="https://t.me/joinchat/GHBekUNwxatD53Xcw_CVtw">https://t.me/joinchat/GHBekUNwxatD53Xcw_CVtw</a></p>
+<p>LAMP交流群：<a href="https://t.me/qiushui2018">https://t.me/qiushui2018</a> （ <a href="https://teddysun.com/">秋水逸冰</a> 维护的LAMP交流群。LAMP一键安装 （<a href="https://lamp.sh)/">https://lamp.sh）</a> 官方群，话题随意，但禁止黄赌毒，禁止政治讨论，禁止讨论免流，禁止讨教DDCC，禁止谩骂和人身攻击，禁止钓鱼倾向言论，禁止传播没有依据的谣言。未经管理人员同意禁止打广告，违者随机飞机票。）</p>
+<p>WordPress 中文群組：<a href="https://t.me/Wordpress_zh">https://t.me/Wordpress_zh</a></p>
+<p>Python （与其他编码人员聊天，分享您的知识或提出问题，以便从其他Python开发人员那里获得全面的答案。）： <a href="https://t.me/Python">https://t.me/Python</a></p>
+<p>C / C ++ （这是一个由C和C ++开发人员组成的国际组织，负责讨论组装，黑客和调试。）： <a href="https://t.me/programminginc">https://t.me/programminginc</a></p>
+<p>开发者 （电报中的Develeper圣经。针对编码人员的提示，教程，文章和更多资源。该频道还有12个小组讨论诸如Java和Go编程，C＃和JavaScript以及专用于设计的sepatate聊天等主题。）： <a href="https://thedevs.network/">https://thedevs.network</a></p>
+<p>BSD （该小组的创建是为了学习和聊聊Berkeley Software Distributions，FreeBSD，OpenBSD，NetBSD。）： <a href="https://t.me/usebsd">https://t.me/usebsd</a></p>
+<p>PHP （不是真正的Telegram频道，它是PHP开发人员讨论编程问题的一个小组。寻找志同道合的人，向你的同伴寻求建议或给小费。）： <a href="https://t.me/joinchat/AAAAAEI7auDV7fUlhQpKbw">https://t.me/joinchat/AAAAAEI7auDV7fUlhQpKbw</a></p>
+<p>Angular Developers （几乎任何国家的就业市场都严重缺乏Angular开发人员。也许你想成为一名罕见的专家？然后加入小组，尽力掌握这项技术！）： <a href="https://t.me/angularDevelopers">https://t.me/angularDevelopers</a></p>
+<p>Git.tw：<a href="https://t.me/GitTw">https://t.me/GitTw</a> （討論跟 Git 相關的各種話題）</p>
+<p>围棋之萌：<a href="https://t.me/joinchat/Bhcuyz9CoHEt07zu5fpKtw">https://t.me/joinchat/Bhcuyz9CoHEt07zu5fpKtw</a> （telegram上首个华语围棋群。每天晚上都会安排对战，有兴趣可报名，棋力不限，一般会安排是棋力相近的对战，或者可以找群主下，盘后会复盘，做练习遇到什么问题都可以问，围观可到 <a href="https://www.playok.com/zh/go/">https://www.playok.com/zh/go/</a> 一般在300+号桌子）</p>
+<p>EOS：<a href="https://t.me/EOSproject">https://t.me/EOSproject</a> （EOS英文社区，进群请讲英文）</p>
+<p>福利吧：<a href="https://t.me/joinchat/Flss8kODK2lymMREEdHagw">https://t.me/joinchat/Flss8kODK2lymMREEdHagw</a>  （车群，R18 未成年禁入）</p>
+<p>福利吧聊天群(本群禁H)：<a href="https://t.me/fulibachat">https://t.me/fulibachat</a></p>
+<p>嗶咔 iOS 技術支援群：<a href="https://t.me/joinchat/JkZ9nVUdbmZN6flSkbXE4g">https://t.me/joinchat/JkZ9nVUdbmZN6flSkbXE4g</a></p>
+<p>嗶咔遊戲區討論交流：<a href="https://t.me/joinchat/KWcffknkO_MexTrtAFvYeQ">https://t.me/joinchat/KWcffknkO_MexTrtAFvYeQ</a></p>
+<p>[NSFW]嗶咔紳士淑女團：<a href="https://t.me/joinchat/KWcffk-CkZmuqJF2EkKR-Q">https://t.me/joinchat/KWcffk-CkZmuqJF2EkKR-Q</a>  （车群，R18 未成年禁入）</p>
+<p>[NSFW]嗶咔大眾澡堂：<a href="http://t.me/picdzzt">http://t.me/picdzzt</a>  （车群，R18 未成年禁入）</p>
+<p>港台电视直播，美剧等视频APP交流：<a href="https://t.me/tvbox002">https://t.me/tvbox002</a></p>
+<p>電影谷 HKNC：<a href="https://t.me/joinchat/AAAAAEDRXcmrp-eRtppD0A">https://t.me/joinchat/AAAAAEDRXcmrp-eRtppD0A</a></p>
+<p>Netflix迷：<a href="https://t.me/NetflixFun">https://t.me/NetflixFun</a></p>
+<p>Netflix-剧天堂：<a href="https://t.me/NetflixGod">https://t.me/NetflixGod</a></p>
+<p>Netflix 讨论：<a href="https://t.me/joinchat/C94vkUP2WbygEhA59U4mZA">https://t.me/joinchat/C94vkUP2WbygEhA59U4mZA</a></p>
+<p>好莱坞大片分享交流：<a href="https://t.me/haolaidapian">https://t.me/haolaidapian</a></p>
+<p>羊毛党–TG支部 (薅死羊不偿命系列)：<a href="https://t.me/cn_coupon">https://t.me/cn_coupon</a></p>
+<p>小道新闻破解吾爱资源薅羊毛交流：<a href="https://t.me/dajiajia">https://t.me/dajiajia</a></p>
+<p>资源分享交流群：<a href="https://t.me/aucee123">https://t.me/aucee123</a></p>
+<p>虚数学区：<a href="https://t.me/nekopara">https://t.me/nekopara</a> （萌图志官方群组）</p>
+<p>★免费资源共享，技术交流群：<a href="https://t.me/joinchat/IoT3JQ-KtzlCb7IbPH6e2g">https://t.me/joinchat/IoT3JQ-KtzlCb7IbPH6e2g</a></p>
+<p>百度云资源共享群：<a href="https://t.me/joinchat/Hm5yTFD-aA-EewJG8Q4mlQ">https://t.me/joinchat/Hm5yTFD-aA-EewJG8Q4mlQ</a></p>
+<p>百度云SVIP分享：<a href="https://t.me/baiduyun">https://t.me/baiduyun</a></p>
+<p>频道/群组/机器人分享：<a href="https://t.me/hao123f">https://t.me/hao123f</a></p>
+<p>中文频道/群组/机器人分享：<a href="https://t.me/hao1238">https://t.me/hao1238</a></p>
+<p>Telegram 機器人應用交流 Bot Discuss：<a href="https://t.me/joinchat/AtZvGj3ENpFCcWoHsyeXmQ">https://t.me/joinchat/AtZvGj3ENpFCcWoHsyeXmQ</a></p>
+<p>世界杯：<a href="https://t.me/shijiebei2">https://t.me/shijiebei2</a></p>
+<p>读书会：<a href="https://t.me/readingclub1984">https://t.me/readingclub1984</a></p>
+<p>车友会：<a href="https://t.me/joinchat/IXq5bkN9i-TMN65mKx2eYw">https://t.me/joinchat/IXq5bkN9i-TMN65mKx2eYw</a></p>
+<p>极客公园：<a href="https://t.me/geekpark">https://t.me/geekpark</a></p>
+<p>PS4交流group：<a href="https://t.me/playstation4group">https://t.me/playstation4group</a></p>
+<p>kindle电子书读书会：<a href="https://t.me/zebook">https://t.me/zebook</a></p>
+<p>kindle中文圈：<a href="https://t.me/kindlezh">https://t.me/kindlezh</a></p>
+<p>不鳥萬通讯：<a href="https://t.me/igiveafuck">https://t.me/igiveafuck</a></p>
+<p>一天世界：<a href="https://t.me/ipn_yitianshijie">https://t.me/ipn_yitianshijie</a></p>
+<p>女装群：<a href="https://t.me/prpr233">https://t.me/prpr233</a> （因为群名经常变，所以暂定为女装群）</p>
+<p>萌娘百科水群（tg分部）（官方）： <a href="https://t.me/joinchat/Cou1XELZC0G4OdZwuBddWA">https://t.me/joinchat/Cou1XELZC0G4OdZwuBddWA</a></p>
+<p>貼圖群：<a href="https://t.me/StickerGroup">https://t.me/StickerGroup</a></p>
+<p>電子工程群：<a href="https://t.me/joinchat/AAAAAEGlKss3XVhEhh1hQg">https://t.me/joinchat/AAAAAEGlKss3XVhEhh1hQg</a></p>
+<p>Language: Chinese (Traditional)：<a href="https://t.me/translation_zh_hant">https://t.me/translation_zh_hant</a></p>
+<p>Telegram 討論區：<a href="https://t.me/PublicGroupForzh">https://t.me/PublicGroupForzh</a></p>
+<p>Automate喵喵喵：<a href="https://t.me/goautomate">https://t.me/goautomate</a></p>
+<p>绅士仓库：<a href="https://t.me/joinchat/JNE1eQ1DkN2iZCsnWps3cg">https://t.me/joinchat/JNE1eQ1DkN2iZCsnWps3cg</a></p>
+<p>3C|健身|生活常识|读书：<a href="https://t.me/joinchat/BWsrpTzHdNG2ovCuVKDMdQ">https://t.me/joinchat/BWsrpTzHdNG2ovCuVKDMdQ</a></p>
+<p>Telegram 新手帮助：<a href="https://t.me/Newbie_Chat">https://t.me/Newbie_Chat</a></p>
+<p>TG经济文化交流群：<a href="https://t.me/talktelegram">https://t.me/talktelegram</a></p>
+<p>Steam：<a href="https://t.me/SteamCN">https://t.me/SteamCN</a></p>
+<p>ACGN 劇透版：<a href="https://t.me/joinchat/AAAAAEFLhJtUjxsxiADORA">https://t.me/joinchat/AAAAAEFLhJtUjxsxiADORA</a></p>
+<p>ACGN☆Taiwan （🔸主群禁止 R18<br>🔸任何新片兩天禁止在主群及R18群劇透，劇透群則不受限制<br>🔸群組任何對話將被記錄在第三方伺服器，請理性發言<br>🔸發送多檔案請包成壓縮檔<br>🔸禁止洗版<br>🔸建議使用書面體<br>🔸推廣請先徵求管理員同意）：<a href="https://t.me/TaiwanAnime">https://t.me/TaiwanAnime</a></p>
+<p>ACGN-COSPLAY （COS群組）：<a href="https://t.me/joinchat/BpvqNEumP2_WCtwgcNCsyw">https://t.me/joinchat/BpvqNEumP2_WCtwgcNCsyw</a></p>
+<h2 id="TG频道（Channel）"><a href="#TG频道（Channel）" class="headerlink" title="TG频道（Channel）"></a>TG频道（Channel）</h2><p>Telegram-zh_CN 简体中文语言包：<a href="https://t.me/zh_CN">https://t.me/zh_CN</a></p>
+<p>Telegram 繁体中文: <a href="https://t.me/Tele_zh_TW">https://t.me/Tele_zh_TW</a></p>
+<p>Telegram 简体中文：<a href="https://t.me/Tele_zh_CN">https://t.me/Tele_zh_CN</a></p>
+<p>Telegram Features：<a href="https://t.me/features">https://t.me/features</a></p>
+<p>Telegram News：<a href="https://t.me/telegram">https://t.me/telegram</a></p>
+<p>Telegram Geeks：<a href="https://t.me/geekschannel">https://t.me/geekschannel</a></p>
+<p>Telegram Beta：<a href="https://t.me/tgbeta">https://t.me/tgbeta</a></p>
+<p>Telegram Beta Blog：<a href="https://t.me/tgrambeta">https://t.me/tgrambeta</a></p>
+<p>Telegram 种植园：<a href="https://t.me/TelePlanting">https://t.me/TelePlanting</a></p>
+<p>DogeRobot 封禁列表：<a href="https://t.me/CNBlackList">https://t.me/CNBlackList</a></p>
+<p>Telegram 新手入口：<a href="https://t.me/StartTG">https://t.me/StartTG</a></p>
+<p>Telegram 新手指南：<a href="https://t.me/Newbie_Guide">https://t.me/Newbie_Guide</a></p>
+<p>新手入门頻道：<a href="https://t.me/AkinaLake">https://t.me/AkinaLake</a></p>
+<p>Desktop Themes Channel：<a href="https://t.me/themes">https://t.me/themes</a></p>
+<p>Telegram Desktop Themes：<a href="https://t.me/desktopThemes">https://t.me/desktopThemes</a></p>
+<p>Telegram Themes：<a href="https://t.me/themechannel">https://t.me/themechannel</a></p>
+<p>Android Themes Channel：<a href="https://t.me/AndroidThemes">https://t.me/AndroidThemes</a></p>
+<p>Telegram Theme By Shana：<a href="https://t.me/ShanaThemes">https://t.me/ShanaThemes</a></p>
+<p>Telegram安全使用方案：<a href="https://t.me/protecttelegram">https://t.me/protecttelegram</a></p>
+<p>Telegram 种植园 （Telegram 非官方中文新闻频道，主力推送简体中文消息和相关新闻翻译。）： <a href="https://t.me/TelePlanting">https://t.me/TelePlanting</a></p>
+<p>TGCN-群组索引计划 Feed: <a href="https://t.me/zh_groups">https://t.me/zh_groups</a></p>
+<p>台灣群組/頻道廣播站 Topics TW：<a href="https://t.me/TopicsTW">https://t.me/TopicsTW</a></p>
+<p>電報群組廣播：<a href="https://t.me/FOCUSTELEGRAMGROUPLINK">https://t.me/FOCUSTELEGRAMGROUPLINK</a></p>
+<p>電報新群推送：<a href="https://t.me/linkpush">https://t.me/linkpush</a></p>
+<p>频道/群组/机器人分享：<a href="https://t.me/hao123f">https://t.me/hao123f</a></p>
+<p>Google官方频道: <a href="https://t.me/google">https://t.me/google</a></p>
+<p>Google Play Public：<a href="https://t.me/GooglePlayPublic">https://t.me/GooglePlayPublic</a></p>
+<p>wikipedia-zh patrol（中文维基百科社群巡查频道。推送中文维基百科最新页面、首页栏目供稿、官方推文）：<a href="https://t.me/wikipedia_zh_patrol">https://t.me/wikipedia_zh_patrol</a></p>
+<p>编程技巧 （来自该领域专家的有用编码技巧。英文） : <a href="https://t.me/ProgrammingTip">https://t.me/ProgrammingTip</a></p>
+<p>机器学习世界 （机器学习是当今的一个热门世界。您可以从这个渠道了解更多关于它的特点 - ML课程，最新研究和有关人工智能的文章。英文） ：<a href="https://t.me/ml_world">https://t.me/ml_world</a></p>
+<p>计算机科学与编程 （想更多地了解人工智能吗？这是一个适合您的渠道 - 机器和深度学习，计算机视觉和Python开发。英文）：<a href="https://t.me/computer_science_and_programming">https://t.me/computer_science_and_programming</a></p>
+<p>Linuxgram （需要跟上Linux更新吗？这个给你！英文）：<a href="https://t.me/linuxgram">https://t.me/linuxgram</a></p>
+<p>惊人的PHP （熟悉Yii和其他框架的PHP开发人员社区分享他们的经验。英文） <a href="https://t.me/phpme">https://t.me/phpme</a></p>
+<p>前端世界 （前端新闻的终极集合 - 关于CSS和JavaScript的文章，教程，评论和视频，包括其框架。英文）： <a href="https://t.me/front_end_first">https://t.me/front_end_first</a></p>
+<p>FrontEnd （TheFrontEnd是一个拥有超过4K用户的Telegream频道。管理员分享了面试技巧，最新的网络开发新闻，文章和UI / UX技巧。英文）：<a href="https://t.me/thefrontend">https://t.me/thefrontend</a></p>
+<p>iOS开发 （iOS开发最有趣的细节，特别强调Swift。英文）： <a href="https://t.me/iosdevio">https://t.me/iosdevio</a></p>
+<p>Android ReId （这个电报频道突出了顶级的Android新闻，应用程序架构，应用程序开发和测试的特点。英文）：<a href="https://t.me/AndroidResId">https://t.me/AndroidResId</a></p>
+<p>Apple （咬苹果的禁果，讨论产品并发现泄漏。英文）：<a href="https://t.me/AppleUsersGroup">https://t.me/AppleUsersGroup</a></p>
+<p>电子书编程 （程序员，程序员，软件工程师和许多其他人的电子书的终极来源。英文）： <a href="https://t.me/javaebooks">https://t.me/javaebooks</a></p>
+<p>编程挑战 （感到无聊？以下是一些需要解决的编程挑战。英文）： <a href="https://t.me/prograchallenges">https://t.me/prograchallenges</a></p>
+<p>Telegram Geeks （频道的名称不言自明 - 这是极客们更多地了解机器人，社交网络和技术的地方。如果您想讨论您阅读的新闻，Geeks Chat欢迎您！英文）： <a href="https://t.me/geekschannel">https://t.me/geekschannel</a></p>
+<p>编码新闻 （有关Web开发的重要信息来源 - HTML，CSS，JavaScript，TypeScript，Angular，React，Vue.js，Node.js等。阅读文章，观看视频，找到符合您关卡的最佳教程。英文）：<a href="https://t.me/CodingNews">https://t.me/CodingNews</a></p>
+<p>Jetbrains Channel（Jetbrains crack 英文）：<a href="https://t.me/sniarbtejchannel">https://t.me/sniarbtejchannel</a></p>
+<p>Rust 日报：<a href="https://t.me/rust_daily_news">https://t.me/rust_daily_news</a></p>
+<p>围棋之萌习题和复盘教室：<a href="https://t.me/gomoesgf">https://t.me/gomoesgf</a> （telegram上一个专注于下棋的频道）</p>
+<p>Leonn的博客：<a href="https://t.me/liyuans">https://t.me/liyuans</a></p>
+<p>vps仓-推荐/补货提醒：<a href="https://t.me/vpscang">https://t.me/vpscang</a></p>
+<p>vps干货(vpsgh.com)：<a href="https://t.me/lao4j">https://t.me/lao4j</a></p>
+<p>Discovery探索频道&lt;垃圾勿看&gt;：<a href="https://t.me/tele_event_share">https://t.me/tele_event_share</a></p>
+<p>线路爆炸：<a href="https://t.me/boomagain">https://t.me/boomagain</a></p>
+<p>tg代理（直连telegram）：<a href="https://t.me/socks5list">https://t.me/socks5list</a></p>
+<p>翻墙广播：<a href="https://t.me/fanqiangguangbo">https://t.me/fanqiangguangbo</a></p>
+<p>mtproxy公益代理：<a href="https://t.me/tgdaili">https://t.me/tgdaili</a></p>
+<p>Project V 官方公告：<a href="https://t.me/v2msg">https://t.me/v2msg</a></p>
+<p>ShadowsocksRR 发布频道：<a href="https://t.me/ShadowsocksRR_Akkariiin">https://t.me/ShadowsocksRR_Akkariiin</a></p>
+<p>SS 实用规则片段：<a href="https://t.me/ssrule">https://t.me/ssrule</a></p>
+<p>V2rayFree：<a href="https://t.me/V2ray_FREE">https://t.me/V2ray_FREE</a></p>
+<p>V2ray,Vmess节点免费发放：<a href="https://t.me/V2list">https://t.me/V2list</a></p>
+<p>shadowsocks公益组织：<a href="https://t.me/ssfree">https://t.me/ssfree</a></p>
+<p>SS节点免费发放：<a href="https://t.me/sslist">https://t.me/sslist</a></p>
+<p>SSR SHARE | 免费SSR | SSRSHARE.COM：<a href="https://t.me/gyjclub">https://t.me/gyjclub</a></p>
+<p>SSR节点免费分享：<a href="https://t.me/FreeSSR666">https://t.me/FreeSSR666</a></p>
+<p>PdoMo-DNS 纯净无污染可翻墙的DNS：<a href="https://t.me/pdodns">https://t.me/pdodns</a></p>
+<p>one SSR 一个公益节点发布频道：<a href="https://t.me/onessr">https://t.me/onessr</a></p>
+<p>wxkxsw纯公益站：<a href="https://t.me/freenode8">https://t.me/freenode8</a></p>
+<p>免费vpn评测-免费,安全,稳定：<a href="https://t.me/vpnchina">https://t.me/vpnchina</a></p>
+<p>逗比根据地 News：<a href="https://t.me/doubi_a">https://t.me/doubi_a</a></p>
+<p>秋水逸冰：<a href="https://t.me/qiushuiyibing">https://t.me/qiushuiyibing</a></p>
+<p>Shadowrocket News：<a href="https://t.me/ShadowrocketNews">https://t.me/ShadowrocketNews</a></p>
+<p>ssrcloud公告板：<a href="https://t.me/googlessrr">https://t.me/googlessrr</a></p>
+<p>TG论坛 （是一个可以通过bot转发消息的频道）：<a href="https://t.me/bbscn">https://t.me/bbscn</a></p>
+<p>Cydia Updates：<a href="https://t.me/cydiaupdate">https://t.me/cydiaupdate</a></p>
+<p>Quantumult News：<a href="https://t.me/quantumultappnews">https://t.me/quantumultappnews</a></p>
+<p>Surge News：<a href="https://t.me/surgenews">https://t.me/surgenews</a></p>
+<p>Flow/Script News：<a href="https://t.me/Flow_Script">https://t.me/Flow_Script</a></p>
+<p>印象笔记|科技 News：<a href="https://t.me/yinxiangbiji_news">https://t.me/yinxiangbiji_news</a></p>
+<p>TestFlight News：<a href="https://t.me/testflights">https://t.me/testflights</a></p>
+<p>TestFlight News：<a href="https://t.me/testflights">https://t.me/testflights</a></p>
+<p>Thor 日常消息：<a href="https://t.me/thornotice">https://t.me/thornotice</a></p>
+<p>Rules Channel：<a href="https://t.me/RuleNews">https://t.me/RuleNews</a></p>
+<p>Solidot：<a href="https://t.me/solidot">https://t.me/solidot</a></p>
+<p>V2EX：<a href="https://t.me/v2ex001">https://t.me/v2ex001</a></p>
+<p>卖桃者说 （极客邦科技总裁 池建强）：<a href="https://t.me/mactalk">https://t.me/mactalk</a></p>
+<p>小道消息 （数据库技术专家 冯大辉）：<a href="https://t.me/WebNotes">https://t.me/WebNotes</a></p>
+<p>萌图志（不定时推送一些二次元插画，请注意 #NSFW 与 #R18 内容）：<a href="https://t.me/moepic">https://t.me/moepic</a></p>
+<p>白丝即正义 （不定时推送一些绅士老爷们喜闻乐见的福利）：<a href="https://t.me/baisi">https://t.me/baisi</a></p>
+<p>AIM扩散力场 （不定时推送一些段子、ACG、科技、时事资讯等内容）：<a href="https://t.me/nekosc">https://t.me/nekosc</a></p>
+<p>綺凜的随波逐流 （日常(怠惰)推送各种沙雕笑点和梗，顺带收录一些实用的东西，分享和转发一些羊毛和重要通知等。）：<a href="https://t.me/kirin_no_manimani">https://t.me/kirin_no_manimani</a></p>
+<p>绝对萌域：<a href="https://t.me/moeisland">https://t.me/moeisland</a></p>
+<p>cosplay分享：<a href="https://t.me/cosplay_show">https://t.me/cosplay_show</a></p>
+<p>Danbooru [NSFW]：<a href="https://t.me/danbooru_nsfw">https://t.me/danbooru_nsfw</a> （车频道，R18 未成年禁入）</p>
+<p>𝗞𝗼𝗻𝗮𝗰𝗵𝗮𝗻日榜：<a href="https://t.me/KonachanPopular">https://t.me/KonachanPopular</a> （车频道，R18 未成年禁入）</p>
+<p>エロ奇譚：<a href="https://t.me/erokitan">https://t.me/erokitan</a> （车频道，R18 未成年禁入）</p>
+<p>写生機械 β：<a href="https://t.me/shasei">https://t.me/shasei</a> （车频道，R18 未成年禁入）</p>
+<p>nHentai：<a href="https://t.me/nhentai">https://t.me/nhentai</a> （车频道，R18 未成年禁入）</p>
+<p>iEHentai - 热门本子推荐：<a href="https://t.me/iEHentai">https://t.me/iEHentai</a> （车频道，R18 未成年禁入）</p>
+<p>🚗 老司機 🌄 Tumblr 汤不热精选频道 ：<a href="https://t.me/zh_Tumblrs">https://t.me/zh_Tumblrs</a> （车频道，R18 未成年禁入）</p>
+<p>福利姬 - 永久免费的精品福利：<a href="https://t.me/fuligirls">https://t.me/fuligirls</a> （车频道，R18 未成年禁入）</p>
+<p>CosAV 资源频道：<a href="https://t.me/CosAV1">https://t.me/CosAV1</a> （车频道，R18 未成年禁入）</p>
+<p>盛夏私房：<a href="https://t.me/shengxiasifang">https://t.me/shengxiasifang</a> （车频道，R18 未成年禁入）</p>
+<p>绅士仓库公告栏： <a href="https://t.me/cangku_offical">https://t.me/cangku_offical</a></p>
+<p>每日嗶咔漫畫觀察：<a href="https://t.me/PicACG">https://t.me/PicACG</a></p>
+<p>萌娘百科： <a href="https://t.me/moegirlwiki">https://t.me/moegirlwiki</a></p>
+<p>For Work 系列频道</p>
+<p>梗频道：<a href="https://t.me/JISFW">https://t.me/JISFW</a></p>
+<p>图频道：<a href="https://t.me/GfWR16">https://t.me/GfWR16</a></p>
+<p>读频道：<a href="https://t.me/NewsFW">https://t.me/NewsFW</a></p>
+<p>妹频道：<a href="https://t.me/GfW3DS">https://t.me/GfW3DS</a></p>
+<p>NLP研究频道：<a href="https://t.me/NLPfW">https://t.me/NLPfW</a></p>
+<p>投稿·反馈·吹水群：<a href="https://t.me/FishingFW">https://t.me/FishingFW</a></p>
+<p>咕咕咕，放假啦!‽?：<a href="https://t.me/GuGuGuIncoming">https://t.me/GuGuGuIncoming</a></p>
+<p>Sugar Pic： <a href="https://t.me/SugarPic">https://t.me/SugarPic</a></p>
+<p>METO 的涂鸦板：<a href="https://t.me/metooooo">https://t.me/metooooo</a></p>
+<p>Linux Update （Linux 软件包更新通知）：<a href="https://t.me/linuxUpdate">https://t.me/linuxUpdate</a></p>
+<p>電腦玩物：<a href="https://t.me/playpcesor">https://t.me/playpcesor</a></p>
+<p>抽奖活动导航：<a href="https://t.me/LotteryHome">https://t.me/LotteryHome</a></p>
+<p>TestFlight 软件内测：<a href="https://t.me/TestFlightCN">https://t.me/TestFlightCN</a></p>
+<p>老毛子Padavan固件发布：<a href="https://t.me/pdcn1">https://t.me/pdcn1</a></p>
+<p>Thor 过滤器集散中心：<a href="https://t.me/f4thor">https://t.me/f4thor</a></p>
+<p>暗网教学频道：<a href="https://t.me/cntor">https://t.me/cntor</a></p>
+<p>安卓中国：<a href="https://t.me/anzhuo001">https://t.me/anzhuo001</a></p>
+<p>Google Voice 靓号：<a href="https://t.me/voice_google">https://t.me/voice_google</a></p>
+<p>IT之家：<a href="https://t.me/ithome001">https://t.me/ithome001</a></p>
+<p>互联网大事件：<a href="https://t.me/dashijian">https://t.me/dashijian</a></p>
+<p>知乎：<a href="https://t.me/zhihu001">https://t.me/zhihu001</a></p>
+<p>账号圈：<a href="https://t.me/XRAcc">https://t.me/XRAcc</a></p>
+<p>今日头条：<a href="https://t.me/jinritoutiao">https://t.me/jinritoutiao</a></p>
+<p>Evernote非官方频道（与印象笔记（Evernote）有关的Tips、产品资讯和第三方App）：<a href="https://t.me/evernoter">https://t.me/evernoter</a></p>
+<p>Netflix高分好剧推介：<a href="https://t.me/NetflixFans">https://t.me/NetflixFans</a></p>
+<p>内涵段子：人人都来发段子 <a href="https://t.me/duanzitg">https://t.me/duanzitg</a></p>
+<p>中国数字时代消息推送：<a href="https://t.me/cdtchinesefeed">https://t.me/cdtchinesefeed</a></p>
+<p>SAKURAの花园：<a href="https://t.me/tygonchhy">https://t.me/tygonchhy</a></p>
+<p>安全上网，注意事项：<a href="https://t.me/anquanshangwang">https://t.me/anquanshangwang</a></p>
+<p>少数派sspai：<a href="https://t.me/sspai">https://t.me/sspai</a></p>
+<p>电报时报：<a href="https://t.me/times001">https://t.me/times001</a></p>
+<p>GIF頻道：<a href="https://t.me/joinchat/AAAAAEPGlHyKjq2kX1YnMQ">https://t.me/joinchat/AAAAAEPGlHyKjq2kX1YnMQ</a></p>
+<p>极客公园：<a href="https://t.me/geekpark001">https://t.me/geekpark001</a></p>
+<p>南方周末 / Southern Weekly：<a href="https://t.me/infzm">https://t.me/infzm</a></p>
+<p>澎湃新闻：<a href="https://t.me/thepaper001">https://t.me/thepaper001</a></p>
+<p>威锋网：<a href="https://t.me/macx001">https://t.me/macx001</a></p>
+<p>简书：<a href="https://t.me/jianshu001">https://t.me/jianshu001</a></p>
+<p>KomaShare：<a href="https://t.me/ttshare">https://t.me/ttshare</a></p>
+<p>Netflix封锁摆脱地：<a href="https://t.me/NetflixUnblock">https://t.me/NetflixUnblock</a></p>
+<p>每周一书：<a href="https://t.me/weekly_books">https://t.me/weekly_books</a></p>
+<p>『得到』电子书：<a href="https://t.me/dedao_eBook">https://t.me/dedao_eBook</a></p>
+<p>最美壁纸©极简派：<a href="https://t.me/yidu520">https://t.me/yidu520</a></p>
+<p>无损FLAC音乐：<a href="https://t.me/losslessflac">https://t.me/losslessflac</a></p>
+<p>主机博客公告栏：<a href="https://t.me/zhujiboke">https://t.me/zhujiboke</a></p>
+<p>91yun优惠快讯：<a href="https://t.me/express91yun">https://t.me/express91yun</a></p>
+<p>App 限免精选：<a href="https://t.me/appfans">https://t.me/appfans</a></p>
+<p>「meeta」分享中心：<a href="https://t.me/meetaclub">https://t.me/meetaclub</a></p>
+<p>反斗软件更新板：<a href="https://t.me/apprcn">https://t.me/apprcn</a></p>
+<p>免费资源：<a href="https://t.me/freeresource">https://t.me/freeresource</a></p>
+<p>如有乐享：<a href="https://t.me/ruyoblog">https://t.me/ruyoblog</a></p>
+<p>福利软件分享：<a href="https://t.me/guanmojie">https://t.me/guanmojie</a></p>
+<p>美剧资源推送：<a href="https://t.me/SSKMJBTS">https://t.me/SSKMJBTS</a></p>
+<p>動漫花園RSS：<a href="https://t.me/dmhyrss">https://t.me/dmhyrss</a></p>
+<p>帮找资源：<a href="https://t.me/lovesource">https://t.me/lovesource</a></p>
+<p>频道?吾爱破解资源薅羊毛中心：<a href="https://t.me/Pojieapp">https://t.me/Pojieapp</a></p>
+<p>薅羊毛吧优惠快讯：<a href="https://t.me/mjjer">https://t.me/mjjer</a></p>
+<p>Affyun.com – 每日offers优选：<a href="https://t.me/affyunpush">https://t.me/affyunpush</a></p>
+<p>限時免費 LimitFree：<a href="https://t.me/limitfree">https://t.me/limitfree</a></p>
+<p>地铁服务信息更新：<a href="https://t.me/Metro_Service_Update">https://t.me/Metro_Service_Update</a></p>
+<p>Cancer Themes：<a href="https://t.me/cancerthemes">https://t.me/cancerthemes</a></p>
+<p>苹果旧版应用发布频道：<a href="https://t.me/guoold">https://t.me/guoold</a></p>
+<p>Koolshare openwrt/LEDE固件：<a href="https://t.me/koollede">https://t.me/koollede</a></p>
+<p>臺北網路：<a href="https://t.me/TaipeiNetwork">https://t.me/TaipeiNetwork</a> （PTT.CC 科技板塊）</p>
+<h2 id="TG机器人（Bot）"><a href="#TG机器人（Bot）" class="headerlink" title="TG机器人（Bot）"></a>TG机器人（Bot）</h2><p>BotFather：<a href="https://t.me/BotFather">https://t.me/BotFather</a></p>
+<p>SpamBot （官方处理 spam 事务的机器人，检查自己是否被举报了）：<a href="https://t.me/SpamBot">https://t.me/SpamBot</a></p>
+<p>storebot（机器人大全）：<a href="https://t.me/storebot">https://t.me/storebot</a></p>
+<p>TGCN-群组频道猪🐷 : <a href="https://t.me/zh_groups_bot">https://t.me/zh_groups_bot</a></p>
+<p>TG群组娘：<a href="https://t.me/Jqs7Bot">https://t.me/Jqs7Bot</a></p>
+<p>hao1234bot 频道大全：<a href="https://t.me/hao1234bot">https://t.me/hao1234bot</a></p>
+<p>TG搜：<a href="https://t.me/TGSoBot">https://t.me/TGSoBot</a></p>
+<p>Stickers：<a href="https://t.me/Stickers">https://t.me/Stickers</a></p>
+<p>Telegram Bot Store：<a href="https://storebot.me/">https://storebot.me/</a></p>
+<p>Controller Bot （适合频道所有者的强大机器人，可帮助您创建丰富的帖子，查看统计数据等。支持markdown，HTML，定时发消息等功能）：<a href="https://t.me/ControllerBot">https://t.me/ControllerBot</a></p>
+<p>中文维基百科：<a href="https://t.me/ZHWP_bot">https://t.me/ZHWP_bot</a></p>
+<p>NewlearnerのRSS bot：<a href="https://t.me/newlearner_rss_bot">https://t.me/newlearner_rss_bot</a></p>
+<p>匿名发言：<a href="https://t.me/Anonymous_telegram_bot">https://t.me/Anonymous_telegram_bot</a></p>
+<p>Spotify：<a href="https://t.me/DeezloaderRMX_bot">https://t.me/DeezloaderRMX_bot</a></p>
+<p>网易云音乐：<a href="https://t.me/NetEaseCloudMusicBot">https://t.me/NetEaseCloudMusicBot</a></p>
+<p>SoundCloud：<a href="https://t.me/scdlbot">https://t.me/scdlbot</a></p>
+<p>APK Downloader(Android APK 搜索和下载，输入App 名即可提供多个来自国外网站APK 下载链接，点Preview 可以查看图标)：<a href="https://t.me/apkdl_bot">https://t.me/apkdl_bot</a></p>
+<p>下载GIF：<a href="https://t.me/dlgifbot">https://t.me/dlgifbot</a></p>
+<p>下载网易云音乐：<a href="https://t.me/chino_nyan_bot">https://t.me/chino_nyan_bot</a></p>
+<p>BT磁力链接解析：<a href="https://t.me/magnet_link_bot">https://t.me/magnet_link_bot</a></p>
+<p>Gmail Bot(可以在这里就方便的收发Gmail，Telegram 官方认证)：<a href="https://t.me/GmailBot">https://t.me/GmailBot</a></p>
+<p>抽奖助手：<a href="https://t.me/LotteryHelperBot">https://t.me/LotteryHelperBot</a></p>
+<p>thesafebot （一个利用 telegram 存储功能实现额外加密的云存储服务）：<a href="https://t.me/thesafebot">https://t.me/thesafebot</a></p>
+<p>MyTeleCloudBot （另一个云存储服务，没有额外加密，不过功能还行）：<a href="https://t.me/MyTeleCloudBot">https://t.me/MyTeleCloudBot</a></p>
+<p>topdf_bot （转换文件为 PDF 格式）：<a href="https://t.me/topdf_bot">https://t.me/topdf_bot</a></p>
+<p>imdb （提供电影电视在 IMDB 上的信息）：<a href="https://t.me/imdb">https://t.me/imdb</a></p>
+<p>动漫搜索：<a href="https://t.me/WhatAnimeBot">https://t.me/WhatAnimeBot</a></p>
+<p>CNBlackListR-中文圈ban机器人：<a href="https://t.me/CNBlackListRBot">https://t.me/CNBlackListRBot</a></p>
+<p>电报红包：<a href="https://t.me/luck_money_bot">https://t.me/luck_money_bot</a></p>
+<p>RustRssBot(中文 Telegram RSS 机器人)：<a href="https://t.me/RustRssBot">https://t.me/RustRssBot</a></p>
+<p>Feed Reader Bot： <a href="https://t.me/TheFeedReaderBot">https://t.me/TheFeedReaderBot</a></p>
+<p>Music Bot：<a href="https://t.me/The_MusicBot">https://t.me/The_MusicBot</a></p>
+<p>VoteBot：<a href="https://t.me/vote">https://t.me/vote</a></p>
+<p>投票：<a href="https://t.me/tgPollBot">https://t.me/tgPollBot</a></p>
+<p>搜索引擎：<a href="https://t.me/letmebot">https://t.me/letmebot</a></p>
+<p>dmhy-telegram （ 自動抓取動漫花園RSS並發到Telegram，开源地址：<a href="https://github.com/james58899/dmhy-telegram">https://github.com/james58899/dmhy-telegram</a> ）：<a href="https://t.me/dmhyBot">https://t.me/dmhyBot</a></p>
+<p>小萌（买gv号请找）：<a href="https://t.me/GDGreetBot">https://t.me/GDGreetBot</a></p>
+<p>YouTube Bot （YouTube视频搜索）：<a href="https://t.me/youtube">https://t.me/youtube</a></p>
+<p>X.cat（视频下载）：<a href="https://t.me/XcatBot">https://t.me/XcatBot</a></p>
+<p>Sticker Download（png贴图下载）：<a href="https://t.me/Stickerdownloadbot">https://t.me/Stickerdownloadbot</a></p>
+<p>telegraph （管理Telegra.ph文章）：<a href="https://t.me/telegraph">https://t.me/telegraph</a></p>
+<p>mdrobot (Markdown 机器人）：<a href="https://t.me/mdrobot">https://t.me/mdrobot</a></p>
+<p>GIFDownloader_bot（gif下载）：<a href="https://t.me/GIFDownloader_bot">https://t.me/GIFDownloader_bot</a></p>
+<p>IFTTT（ifttt 官方机器人）：<a href="https://t.me/IFTTT">https://t.me/IFTTT</a></p>
+<p>APK Downloader（安卓软件下载）：<a href="https://t.me/apkdl_bot">https://t.me/apkdl_bot</a></p>
+<p>PTRankBot（iOS/mac软件下载）：<a href="https://t.me/PTRankBot">https://t.me/PTRankBot</a></p>
+<p>MaribelBot （ 一个简单的电报机器人，可以返回随机图片，也可以对贴图进行打包下载。开源地址：<a href="https://github.com/Sg4Dylan/MaribelBot">https://github.com/Sg4Dylan/MaribelBot</a> ）：<a href="https://t.me/MaribelBot">https://t.me/MaribelBot</a></p>
+<p>StickerSetBot （ 下载telegram上的贴图，返回格式为 webp，png。开源地址：<a href="https://github.com/phoenixlzx/telegram-stickerimage-bot">https://github.com/phoenixlzx/telegram-stickerimage-bot</a> ）：<a href="https://t.me/stickerset2packbot">https://t.me/stickerset2packbot</a></p>
+<p>QRCodeRoBot（二维码识别） ：<a href="https://t.me/QRCodeRoBot">https://t.me/QRCodeRoBot</a></p>
+<p>ehForwarderBot （ ehForwarderBot能够将微信和 Telegram 连接在一起，你可以在 Telegram 上收发微信消息，详情查看：<a href="http://www.appinn.com/eh-forwarder-bot/%E3%80%82">http://www.appinn.com/eh-forwarder-bot/。</a> GitHub 地址： <a href="https://github.com/blueset/ehForwarderBot">https://github.com/blueset/ehForwarderBot</a> ）：<a href="https://t.me/EFBSupport">https://t.me/EFBSupport</a></p>
+<p>utubebot （YouTube 视频下载或者音频转换服务，把YouTube 的链接发过去它就会帮你转换格式并为你提供文件，便于你下载此视频）：<a href="https://t.me/utubebot">https://t.me/utubebot</a></p>
+<p>隐藏加群信息：<a href="https://t.me/joinhider_bot">https://t.me/joinhider_bot</a></p>
+<p>加emoji按钮：<a href="https://t.me/like">https://t.me/like</a></p>
+<p>整点报时：<a href="https://t.me/sticker_time_bot">https://t.me/sticker_time_bot</a></p>
+<p>MTProxy：<a href="https://t.me/MTProxybot">https://t.me/MTProxybot</a></p>
+<p>加空格：<a href="https://t.me/kongebot">https://t.me/kongebot</a></p>
+<p>GIF倒放：<a href="https://t.me/GifReverseBot">https://t.me/GifReverseBot</a></p>
+<p>收录别人的语录：<a href="https://t.me/saysthbot">https://t.me/saysthbot</a></p>
+<p>转为 Instant View：<a href="https://t.me/chotamreaderbot">https://t.me/chotamreaderbot</a></p>
+<p>LikeBot （一个很酷的机器人，用基于表情符号的按钮创建帖子，可以点击表情符号投票）：<a href="https://t.me/LikeBot">https://t.me/LikeBot</a></p>
+<p>getidsbot （这个机器人可以告诉你”你的tg 注册时间”）：<a href="https://t.me/getidsbot">https://t.me/getidsbot</a></p>
+<p>TeleMe （TeleMe 是一个方便好用的Telegram 社群管理和统计Bot）：<a href="https://www.teleme.io/">https://www.teleme.io/</a></p>
+<p>gamebot（游戏机器人）： <a href="https://t.me/gamebot">https://t.me/gamebot</a></p>
+<p>狼人杀：<a href="https://t.me/werewolfbot">https://t.me/werewolfbot</a></p>
+<p>阿瓦隆：<a href="https://t.me/Avalonbg_bot">https://t.me/Avalonbg_bot</a></p>
+<p>侦探任务：<a href="https://t.me/SpyfallBot">https://t.me/SpyfallBot</a></p>
+<p>踩雷竞速：<a href="https://t.me/minroobot">https://t.me/minroobot</a></p>
+<p>屏风四子棋：<a href="https://t.me/inlinegamesbot">https://t.me/inlinegamesbot</a></p>
+<p>UNO （游戏）：<a href="https://t.me/unobot">https://t.me/unobot</a></p>
+<p>ddoc_bot（可以ddos的机器人） ：<a href="https://t.me/ddoc_bot">https://t.me/ddoc_bot</a></p>
+<p>NoSticker（删除群贴图）：<a href="https://t.me/nosticker_bot">https://t.me/nosticker_bot</a></p>
+<p>socks5_bot（获得socks5代理）：<a href="https://t.me/socks5_bot">https://t.me/socks5_bot</a></p>
+<p>AntiServiceMessageBot （自动删除进退群提示）：<a href="https://t.me/AntiServiceMessageBot">https://t.me/AntiServiceMessageBot</a></p>
+<p>AntiHyperlinkBot （自动删除聊天链接）：<a href="https://t.me/AntiHyperlinkBot">https://t.me/AntiHyperlinkBot</a></p>
+<p>AntiCommandBot （自动删除 /命令 的消息）：<a href="https://t.me/AntiCommandBot">https://t.me/AntiCommandBot</a></p>
+<p>AntiArabicScriptBot （removes all messages which contain arabic script）：<a href="https://t.me/AntiArabicScriptBot">https://t.me/AntiArabicScriptBot</a></p>
+<p>rJailbreakBot (越狱机器人，帮助解决iOS越狱相关的问题)</p>
+<p>Instasave_bot（下载ins）：<a href="https://t.me/Instasave_bot">https://t.me/Instasave_bot</a></p>
+<p>stockprice_bot（查看股票）：<a href="https://t.me/stockprice_bot">https://t.me/stockprice_bot</a></p>
+<p>temp_mail_bot（临时邮件服务）：<a href="https://t.me/temp_mail_bot">https://t.me/temp_mail_bot</a></p>
+<p>ehForwarderBot（绑定微信和tg）：<a href="https://t.me/ehForwarderBot">https://t.me/ehForwarderBot</a></p>
+<h2 id="再推荐一些-防广告机器人"><a href="#再推荐一些-防广告机器人" class="headerlink" title="再推荐一些 防广告机器人"></a>再推荐一些 防广告机器人</h2><h3 id="看门狗"><a href="#看门狗" class="headerlink" title="看门狗"></a>看门狗</h3><p>该bot用于验证进群的是人类还是bot (人机验证)</p>
+<p>bot：<a href="https://t.me/WatchDoorBot">https://t.me/WatchDoorBot</a></p>
+<p>作者：<a href="https://t.me/smailzhu">https://t.me/smailzhu</a></p>
+<p>文档: <a href="https://hackmd.io/s/BkwAIgrL7">https://hackmd.io/s/BkwAIgrL7</a></p>
+<p>介绍: <a href="https://www.jkg.tw/?p=1690">https://www.jkg.tw/?p=1690</a></p>
+<p>最后，开启验证别忘了设置 !welcome 指令，这类指令属于回复指令，需要管理员自己先发消息，然后管理员再发送 !welcome 指令，回复管理员自己发的消息。</p>
+<h3 id="hexlightning"><a href="#hexlightning" class="headerlink" title="hexlightning"></a>hexlightning</h3><p>该bot用于清理广告，色情，欺诈，黑产，等讯息。具有反清真功能。</p>
+<p>bot：<a href="https://t.me/hexlightning_bot">https://t.me/hexlightning_bot</a></p>
+<p>作者：<a href="https://t.me/hexlightning">https://t.me/hexlightning</a></p>
+<p>群组：<a href="https://t.me/hexjudge">https://t.me/hexjudge</a></p>
+<p>文档：<a href="https://hackmd.io/c/r1YHXXW-4/%2Fs%2FHJh4WBkp7">https://hackmd.io/c/r1YHXXW-4/%2Fs%2FHJh4WBkp7</a></p>
+<h3 id="Jqs7ZweiBot"><a href="#Jqs7ZweiBot" class="headerlink" title="Jqs7ZweiBot"></a>Jqs7ZweiBot</h3><p>Telegram 进群验证码机器人，用于人机验证</p>
+<p>bot：<a href="https://t.me/Jqs7ZweiBot">https://t.me/Jqs7ZweiBot</a></p>
+<p>作者：<a href="https://t.me/Jqs_7">https://t.me/Jqs_7</a></p>
+<p>开源地址：<a href="https://github.com/jqs7/zwei">https://github.com/jqs7/zwei</a></p>
+<h3 id="牧羊犬"><a href="#牧羊犬" class="headerlink" title="牧羊犬"></a>牧羊犬</h3><p>簡易型中文驗證機器人，可以简单的管理spammer</p>
+<p>bot：<a href="https://t.me/group_captcha_bot">https://t.me/group_captcha_bot</a></p>
+<p>作者：<a href="https://t.me/mxssl">https://t.me/mxssl</a></p>
+<p>开源地址：<a href="https://github.com/mxssl/tg-captcha-bot">https://github.com/mxssl/tg-captcha-bot</a></p>
+<h3 id="CNBlackListR"><a href="#CNBlackListR" class="headerlink" title="CNBlackListR"></a>CNBlackListR</h3><p>中文圈Spam记录处理</p>
+<p>bot：<a href="https://t.me/CNBlackListRBot">https://t.me/CNBlackListRBot</a></p>
+<p>作者：<a href="https://t.me/NeverBehave">https://t.me/NeverBehave</a></p>
+<p>群组：<a href="https://t.me/joinchat/FfbG_kGwWyC_V89hct-CNw">https://t.me/joinchat/FfbG_kGwWyC_V89hct-CNw</a></p>
+<p>项目说明：<a href="https://github.com/CNBlackListR/white-book">https://github.com/CNBlackListR/white-book</a></p>
+<p>相关bot：<a href="https://t.me/CNBlackListRTicketBot">https://t.me/CNBlackListRTicketBot</a> （申诉）</p>
+<h3 id="验证机器人"><a href="#验证机器人" class="headerlink" title="验证机器人"></a>验证机器人</h3><p>用于人机验证</p>
+<p>bot：<a href="https://t.me/group_confirmation_bot">https://t.me/group_confirmation_bot</a></p>
+<p>作者：<a href="https://t.me/Jqs_7">https://t.me/Jqs_7</a></p>
+<p>群组：<a href="https://t.me/dockertutorial">https://t.me/dockertutorial</a></p>
+<p>开源地址：<a href="https://github.com/jqs7/zwei">https://github.com/jqs7/zwei</a></p>
+<h3 id="combot"><a href="#combot" class="headerlink" title="combot"></a>combot</h3><p>bot：<a href="https://telegram.me/combot">https://telegram.me/combot</a></p>
+<p>官网：<a href="https://combot.org/">https://combot.org/</a></p>
+<p>作者：</p>
+<p><a href="https://telegram.me/teodorix">https://telegram.me/teodorix</a></p>
+<p><a href="https://telegram.me/flugdreka">https://telegram.me/flugdreka</a></p>
+<p>群组：<a href="https://t.me/combotchat">https://t.me/combotchat</a></p>
+<p>频道：<a href="https://t.me/combotnews">https://t.me/combotnews</a></p>
+<p><em>如有群组（Group），频道（Channel），机器人（Bot）失效的，请在下方评论留言，测试过后会及时更新。</em></p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>telegram</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>北大法学院：非法集资背后的是与非</title>
+    <url>/archives/b0441bd.html</url>
+    <content><![CDATA[<p>** 我不保证你能在10分钟内读完,但我保证这篇文章对得起你的时间。**</p>
+<p><em>在中国，目前正规的金融机构提供不了民营企业需要的融资服务，民间融资市场非常混乱，而政府又没办法划出一个准确的界线，在这种情况下，如果我们可以给出这样一个安全港，至少它划出了一个相对来说比较明确的路径，或者说政府有把握地说你沿着这个路径走我们就能够认定你是安全的、合法的。这就给所有企业家提供了一个相对比较安全和确定的非正规融资渠道，不至于让很多人在灰色地带摸索、在刀尖上行走。</em></p>
+<p>在出事之前，地方政府是鼓励企业非法集资的。为什么？第一，可以最大限度地动员本地的闲散资金；第二，可以把外地的闲散资金吸引到本地来。所以地方政府在你没有出风险的时候是纵容、支持非法集资的。我们看到过很多这样的案例，比如湖南湘西自治州的“曾成杰案”，一开始地方政府是完全支持他非法集资的，可是后来崩盘了，投资者一闹事，就把他抓起来，以“非法集资罪”判了他死刑。由此可见，政府事权的划分是有问题的。</p>
+<p>2015年，北京市开展“打击非法集资专项整治活动”，非法集资再次成为政府关注的重点。大家如果关注时事，就会知道最近一个月又出了很多事，比如e租宝，而且昨天新闻又曝出上海的大大宝也出事了，都是几百亿的规模。</p>
+<p>如果你去查中国政府的文献，如果你从传统法律规范的层面分析、研究“非法集资”现象，你就会发现从1993年的中国第一起非法集资案件“长城机电案”起，大概每隔4-5年时间，政府就会掀起一次对“非法集资”的整治运动。并且你会发现，随着整治，“非法集资”数量越来越多：每次开展打击非法集资活动时，政府都会这样讲：“非法集资现象比原来还要猖獗，金额越来越大，手段越来越多”。</p>
+<p>为什么会这样？我最近对政府的监管策略、监管手段有一些不成熟的想法，希望跟大家讨论讨论。</p>
+<p>** 我主要讲四部分的内容：首先谈谈监管集资行为的基本理论，谈谈如何监管，以及如何界定集资行为，最后谈谈监管策略。前面三部分其实都是比较成熟的理论，最后一部分是我的一些最新想法。 **</p>
+<span id="more"></span>
+
+<h2 id="集资是天赋人权吗——为什么要监管集资活动"><a href="#集资是天赋人权吗——为什么要监管集资活动" class="headerlink" title="集资是天赋人权吗——为什么要监管集资活动"></a>集资是天赋人权吗——为什么要监管集资活动</h2><p>集资是天赋人权吗？最近老听到人这么说，这些人抗议说根本就不该有非法集资的概念。国外也许没有非法集资的概念，但类似概念，诸如非法发行证券还是有的。</p>
+<p>我举一个例子：自由行走是每个人的“天赋人权”，这没有什么争议。你出门步行没人管你，但是如果你开车，就有一个监管要求——要拿驾照。尽管现在的新政策说拿驾照不用上驾校，可以直接去考，但是仍然要拿驾照。从理论上讲，驾照是一个行政许可，你要拿一个行政许可，才允许你开车。</p>
+<p>大家对驾照没什么质疑，对吧？但为什么要对自由行走的天赋人权加上一个监管要求呢？因为你开车的行为会给社会增加风险，所以我们希望开车的人具备一定的技能。</p>
+<p>集资本身是一个很正常的社会需求。在人类社会的任何一个时间点，资金的分布都是不均匀的，有的人处于资金的短缺状态，有的人处于资金的闲余状态。为什么会这样？有天赋、资源分配的不平等等原因，但这里我们不管这些。</p>
+<p>只要资金分布不均匀的状态存在，理论上讲，它就会有资金融通的需求。就是说，资金的短缺方愿意从资金的闲置方处融入资金，并给他一定的回报，回报的方式肯定是各种各样的。这是一个典型的金融交易，这个交易的发生，我们把它叫作“直接融资”。</p>
+<p>这讲起来很简单，但是在大多数社会，大规模的直接融资活动都很难发生。为什么？信息不对称会导致在事前有逆向的选择，在事后有所谓的道德风险（在此不展开讲了）。</p>
+<p>因此，在信息不对称的情况下，我们会看到在大多数社会，大规模的直接融资市场都很难自发形成。人类历史上唯一能看到的就是美国、英国形成了一个大规模的资本市场，效率还比较高，而在其他国家我们都看到的是一个商业解决方案——“间接融资”，就是一些金融中介机构在社会上沟通融资的双方，比如：商业银行、保险公司、投资基金、信托公司，它们都是经过上百年的市场竞争，最后生存下来并为人们所接受的一个比较简单的商业模式。</p>
+<p>大家比较熟悉的典型的间接融资模式，就是商业银行。银行是一个最典型、最简单的商业模式，这个商业模式大家都能理解，所以它能够在这个社会上生存下来。当然，它本身有问题，所以需要一套严格的监管制度来对这个中介金融机构进行监管。</p>
+<p>商业银行大家都很熟悉，我就不说了。有一套法律制度来配合这套间接融资模式，核心是要管这个金融中介机构，目的是要保证它健康，让市场能够树立起对它的信心，这样大家就不用管什么信息不对称，不用管比如你对银行是否了解。你不需要了解它，因为政府在背后监管着它。</p>
+<p>在西方，政府监管让你觉得它安全。在中国，大家觉得政府对几大国有银行都有一个隐含的担保，不管政府有没有这么说，大家都知道四大行是不会倒的，任何一家倒掉了，中国都崩溃掉。所以，大家把钱放进去，从来不去想这家银行经营得好不好。</p>
+<p>这当然有它的问题，但是在政府帮助建立了银行的市场信用之后，它运作得很好，大多数国家都是通过金融中介机构的间接融资来动员社会上的闲散资金完成资源的配置。</p>
+<p>如果不用金融中介机构能不能建立起来？很困难。实际上，2010年中国温州民间融资市场的崩溃就是一个直接融资市场在自发形成过程中没有成功的例子。</p>
+<p>如果你们去关注温州民间融资市场，你会知道它原来很发达，一开始它是熟人之间的融资，温州商人相互之间融资，建立起了一些市场信用，中间也有一些所谓的资金掮客，其实它也是民间自发产生的一些类似金融中介的机构。</p>
+<p>一开始他们做得很好，特别是借助中国经济的增长，他们的资金很多，温州的融资市场从熟人之间慢慢地扩展到陌生人之间。当时的一些新闻报道描述过这种状况：有人缺钱了，给资金掮客打一个电话，一天、两天就能调动几个亿的资金给他。</p>
+<p>但是，这个市场是一个完全自发形成的、民间的直接融资市场，因为信息不对称，它非常脆弱，没有办法建立起足够的信心，特别是在经济下行的情况下，市场信心很容易崩溃。假如中国银行今天提早关门，你没取到钱，你在网上发一个抱怨，没有什么影响。</p>
+<p>但是，在温州当时的市场上，如果有一个企业家有一天因为坐飞机关了手机，他的债权人打电话找不到他，这个消息一传出去，这个企业家的资金链就会立刻全部崩溃——所有的债权人立刻就会担心：“这个人是不是跑路了？”于是，大家赶快到他的工厂抢钱、抢财产。所以当时的新闻说，温州的企业主上飞机不敢关手机。我记得当时最极端的一个例子：一个企业家跟一个检察官朋友吃饭，这本来是很荣耀的事情，因为被人看到了，人家说他要被检察院带走了，结果这边还没吃完饭，那边工厂就被债权人抢了。</p>
+<p>直接融资市场因为信息不对称，没有办法建立起信心或者信任机制，所以它很容易崩溃。那法律能不能起一定的作用呢？</p>
+<p>从目前来看，法律在这方面做得还很少。直接融资从理论上来讲，因为信息的不对称，它存在事前和事后两种不利的状态，事后就是所谓的道德风险，因为你没有办法监控他，你即使看中了他，把钱给了他，但是因为你没有办法24小时监控他，也就没有办法管他每一笔钱到底怎么花的，所以你没有办法对他有信心。</p>
+<p>因此，1840年英国的现代《公司法》试图处理这个问题。如果大家学过《公司法》就知道，它有一个最核心的概念就叫“信义义务”，就是董事和高管的信义义务。从本质上来讲，董事和高管的信义义务，就是法律强制要求资金的使用方对资金的提供方承担责任，因为资金提供方没有办法对其进行24小时的监控，所以我们规定了一个原则叫“信义义务”。</p>
+<p>从长期来看、从《公司法》将近200年的发展历史来看，目前为止，“信义义务”还不成熟。“信义义务”一般区分两块：一是“忠实义务”，就是你拿了钱要为资金提供方或者说整体股东的利益服务。这一块现在做得不错。中国在这方面还起了很大的作用。英美法的“忠实义务”原来都是原则、判例，在上个世纪90年代的时候，中国公司要到香港上市，香港联交所就说：</p>
+<blockquote>
+<p>你连公司法都没有，公司的信义义务更没有，你怎么能跑我这儿来上市？你拿了投资者的钱怎么保护他们？</p>
+</blockquote>
+<p>当时我们就想了一个主意，虽然当时（1993年）我们还没颁布《公司法》，但是我们可以搞一个《公司章程》，可以在章程里面把信义义务规定下来。传统的信义义务在公司法里面只是一个原则，但在《公司章程》中只规定原则不够，当时高西庆等人说：</p>
+<blockquote>
+<p>你们的忠实义务到底是什么？你们不是有判例吗？你们把你们判例的原则都总结出来，我们就一条一条地写上。</p>
+</blockquote>
+<p>所以第一次公司法信义义务的成文法化是当时中国国务院规定的《企业到境外上市公司公司章程必备条款》，然后在2005年我们修改《公司法》时又把它放了进去。现在中国《公司法》的第148条关于董事忠实义务的规定是全球第一次把信义义务成文法。</p>
+<p>但是这一块需要注意的，我们只在忠实义务这一块做到了这一点。信义义务有两点：</p>
+<blockquote>
+<p>第一点叫忠实义务，就是你要为我的利益服务；</p>
+</blockquote>
+<blockquote>
+<p>第二点叫“勤勉义务”。就是你拿了钱要真干事，不能拿了钱坐在那儿打游戏、赌博。</p>
+</blockquote>
+<p>这一块现在全球都发展得不够，我认为未来《公司法》在这一块可能还有新的发展。</p>
+<p>《公司法》的核心是要解决资金提供之后的监控问题，1933年美国《证券法》确立的证券法体系就是要解决事前的信息不对称问题。因为事前信息不对称，投资者不知道把钱给谁，不知道怎么样来定价，因此，在1933年美国《证券法》确立了一套体系，叫“强制信息披露”。</p>
+<p>这套体系的核心理念很简单，既然信息不对称，那我就立法要求筹资者提供信息，如果发行人提供了充分的信息，投资者不就可以信息平等了吗？这是它的核心理念。在这个理念基础上，确立了一套现代《证券法》的监管体系，大家都学美国，它要解决的问题就是在融资交易发生之前通过某种监管手段把信息拉平。</p>
+<p>这个理念有很大的争议，1933年通过《证券法》没多久，当时道格拉斯还在哈佛当教授时就发表了一篇论文，他认为这是不对的。最大的问题是什么呢？就是投资者看不懂，你披露再多的信息没用。这个理论争论一直吵到现在，每次股市出现危机，大家都会把它拿回来重新讨论。当然，这个问题今天我们没办法展开讨论。</p>
+<h2 id="如何监管集资行为"><a href="#如何监管集资行为" class="headerlink" title="如何监管集资行为"></a>如何监管集资行为</h2><p>为什么要监管集资行为？上面说了，它的基础理论是因为融资者的信息跟投资者的信息不对称，所以为了保护投资者，我们要求融资者披露信息，即强制信息披露制度。但“强制信息披露”制度不是简单的披露信息就OK了，它需要通过一系列的制度安排来实现。</p>
+<p>这个制度安排里面，第一核心当然是披露要求，就是要求你融资的时候提供充分的信息，同时还有一套“持续披露”的要求。实际上，资金提供方（投资者）的权益完全依赖于融资者未来的发展，在固定收益承诺下相对好一些，但是能不能兑现他的固定收益承诺？这要看他的金融状况，如果他破产了，他就没法还你钱。在非固定收益承诺下能不能拿回来，你能分多少钱，主要看他经营得好不好。所以“发行披露”和“持续披露”的要求是“强制披露”最重要的内容。</p>
+<p>** 除此之外，它有一套制度来让这个制度得以实现，不是说我让你披露，你自愿披露就OK了，它有一套行政许可程序。这套行政许可程序在美国叫作“注册”，在中国叫“核准”——当然我们马上也要改为“注册”。 **</p>
+<p>** 这套程序的核心是两个重要的目标：一个目标就是“统一披露标准”。 **</p>
+<p>虽然都是信息披露，但可以想像，如果只要求他披露，那么每个人都会披露对自己有利的信息，而对自己不利的信息他可能少披露或者不披露。做法律的人会知道，每年年底都会看到各个律所的各种排名，这个所披露说“我是年收入前五”，那个所会披露“我们是人均律师收入最高的所”，你也不能讲他错，他一定会选对自己最有利的方式来披露，但这样一来，投资者就没有办法来比较他们。</p>
+<p>** 因此，这个行政许可程序的核心就是规范披露的要求或者标准。它有一套固定的格式，要求披露人都必须按此格式披露，这样就有统一的标准可以比较。 **</p>
+<p>同时，这个程序是一个有意控制发行速度的程序。在立法的时候大家曾经想过这件事：融资中最大的风险是什么呢？发行证券既是一个融资的过程，也是一个销售的过程，在这个过程中它会对投资者施加很大的市场压力。</p>
+<p>我们经常会看到铺天盖地的广告，无数的人给你打电话，向你推销某个东西，这个时候投资者就很容易在销售压力下不冷静地买了。因此，大家如果看这个注册程序，就会发现它是一个有意控制销售速度的程序。</p>
+<p>如果你去看美国的注册制，他要求你上报材料之前不允许任何销售，上报材料之后到你的注册文件真正生效一般有两、三个月的时间，在这个时间内，他允许你口头销售，但是不允许真正地卖。一直到注册文件生效，它才允许你可以把证券卖给他，完成销售。这是一个减缓销售压力、控制销售过程，让投资者有一个冷静思考作投资决策的过程，这套程序是要实现强制信息披露。</p>
+<p>** 但是，“强制信息披露”的实现不能仅仅依赖投资者冷静决策，因为大部分投资者看不懂这些信息，所以还会有一套证券中介机构提供服务，比较典型的有大家熟悉的投资银行，还有律师、会计师都要对信息披露进行验证，甚至他们本身就是来帮助发行人提供信息披露和验证这些信息的。 **</p>
+<p>还有人负责把信息消化给市场，最典型的就是投资顾问，他给你一个简单的结论，买还是不买，投资者都能看懂，而发行人的财务报表大家都看不懂，也没人看。法律对证券中介机构有一套监管要求，要求证券中介机构必须注册，必须获得许可等等。</p>
+<p>最后是反欺诈制度，包括大家比较熟悉的虚假陈述、内幕交易、操纵市场等，这些反欺诈制度从本质上来讲，都是为了保证信息披露的真实、准确、完整。</p>
+<p>强制披露要求、统一注册、证券中介机构监管和反欺诈制度，这是对直接融资进行监管的现有法律制度，但这套制度争议很大，比如：强制信息披露到底能否实现？能否克服信息不对称？到底能否保护投资者？等等，在理论上都有争议。这个我们今天没办法展开讲。</p>
+<p>今天我们要讨论的是：</p>
+<blockquote>
+<p>这套制度从1933年建立以来一直面临一个很大的监管困境，就是在投资者保护和便利企业融资之间存在冲突。“强制信息披露”制度不管它是否有效果，但是它带来了很大的成本，这是无可质疑的。</p>
+</blockquote>
+<p>因为“强制信息披露”制度要求你聘请各种证券中介机构来出具文件，来对信息进行验证，所以成本很高。美国人测算过，在美国IPO的固定成本是250万美元，因为律师、会计师都是按小时付费的。高昂的成本给企业融资带来了很大的困难。</p>
+<p>你们可以想像，大企业的融资额度很高，动不动就融几十亿、几百亿，它花250万美元成本没问题，但是如果企业很小，融资额度也很低，你要他花250万去融200万的资，那他不疯掉了吗？如果企业不融资，那么你保护投资者也就没有意义。如果企业融资遇到巨大困难，当然你的经济发展就会面临问题。</p>
+<p>所以自从有了监管的要求之后，一直有两个豁免：一是小额豁免。我只融200万，而你却要我花250万去融，那肯定不行。基于成本收益的考量，一般都有一个小额豁免，如果你的融资额度在一定限度以下，你就不需要走这么复杂的监管程序，给你一个简化的程序。</p>
+<p>这个办法到目前为止一直都有争议：融资额度低我们就可以完全不管吗？1992年-1999年美国SEC曾经尝试过一次，就是100万美元以下的融资不要信息披露，也不管投资者是谁，你就随便去融，结果出了很多欺诈案。后来大家发现，虽然总额度不高，但是他骗一个投资者就是一个投资者，投资者如果只投10万被骗了，他还是会来闹事。于是，美国证券监管者发现不行，1999年SEC又把监管的要求加上去了，虽然不需要走正式的注册程序，但是还是有一些监管要求。</p>
+<p>但这样一来，大家还是抱怨监管成本太高，特别是中小企业融资受到了阻碍。因此，2012年《JOBS法》又有所突破，今天我们没时间展开讲。但这个到底成不成功呢？也很难讲。</p>
+<p>** 现行的中国《证券法》没有给予小额豁免，所以中国没有小额豁免的途径。 **</p>
+<p>** 另外一个豁免是在市场上得到普遍适用的“私募豁免”。在美国法上叫“非公开发行”，只要这个融资不涉及公开就可以豁免。这个中国法有，中国《证券法》第十条讲公开发行需要获得中国证券会核准，反过来说，就是只要是非公开就不需要核准，所以私募豁免是中国目前为止得到最广范适用的豁免。 **</p>
+<p>问题是什么叫私募？到目前为止，这个问题在理论上很清楚，在美国有明确的要求，在中国目前这块划得非常不清楚，结果带来了很多问题，最突出的就是非法集资的界定问题。</p>
+<h2 id="如何界定非法集资行为"><a href="#如何界定非法集资行为" class="headerlink" title="如何界定非法集资行为"></a>如何界定非法集资行为</h2><p>尽管我用“非法集资”，但我觉得这个名字不准确，梁老师一开始说要打个引号，我觉得更正确的说法叫“非正规融资”，就是它不是走公开发行去注册或者核准的途径，而是在那个途径之外来做融资。</p>
+<p>在中国，非法集资非常活跃，为什么？这其实很正常：</p>
+<blockquote>
+<p>** 一是直接融资的正常门槛太高。 ** 如果大家对中国IPO资本市场有所了解，就知道我们IPO的门槛极高。当然高也不是核心问题，核心问题是它不但高，而且不确定，你不知道要符合什么条件就能拿到“核准”，也不知道什么时候能拿到。所以，在这个过程中你就耗费了无数的成本，很多企业就在这个过程中被拖垮。</p>
+</blockquote>
+<blockquote>
+<p>** 二是我们的主体金融机构或者正规金融机构由国家垄断。 ** 在国家垄断下，它的融资对象是偏向国有企业的，当然民间企业从正规金融机构获得融资的不是没有，近几年好一些，但是应该说还是受到了很多限制。</p>
+</blockquote>
+<blockquote>
+<p>** 三是中国经过这么多年的经济发展，民间沉淀了不少的闲散资金，这些民间闲散资金缺乏投资渠道。 **  然而私募豁免到底什么是合法、什么是非法？我们又没有明确的界线。因此，导致的结果自然就是所谓的非正规融资非常活跃。</p>
+</blockquote>
+<p>这里面既有合法融资，也有非法融资。那么怎么界定非法与合法？私募的边界怎么划分？2010年最高人民法院出台了一个关于非法集资的司法解释——《最高人民法院关于审理非法集资刑事案件具体应用法律若干问题的解释》（法释2010]18号），里面有一个界定，规定了四个条件，包括：</p>
+<blockquote>
+<p>（1）未经有关部门依法批准或者借用合法经营的形式吸收资金；</p>
+</blockquote>
+<blockquote>
+<p>（2）通过媒体、推介会、传单、手机短信等途径向社会公开宣传；</p>
+</blockquote>
+<blockquote>
+<p>（3）承诺在一定期限内以货币、实物、股权等方式还本付息或者给付回报；</p>
+</blockquote>
+<blockquote>
+<p>（4）向社会公众即社会不特定对象吸收资金。</p>
+</blockquote>
+<p>这四个条件很简单：一和三讲的是交易的性质，它是不是一个集资交易或者它是不是一个投资性的交易？二和四也讲的是一件事，就是有没有向社会公开发行、公开募集？涉不涉及公众？</p>
+<p>所以按我的说法，界定非法集资活动就两个条件：</p>
+<blockquote>
+<p>（1）这个交易是什么性质？如果是一个正常的商品买卖，它肯定不是集资交易，我们不需要去管它；</p>
+</blockquote>
+<blockquote>
+<p>（2）如果它不涉及公众，就是我们刚才讲的私募性质，也不需要管它，它本来就是合法的。</p>
+</blockquote>
+<h3 id="1、交易的集资性质"><a href="#1、交易的集资性质" class="headerlink" title="1、交易的集资性质"></a>1、交易的集资性质</h3><p>我们先讲交易的集资性质：交易的集资性质很简单，就是看它有没有投资性，我认为最高院这些看法都是错的，他们界定的着眼点是资金的吸收方，就是拿钱的这个人的目的是什么，看这个规定“未经批准向社会公众吸收资金”，讲的是“吸收资金”。这个界定我觉得没有意义——所有商品的销售者卖商品的目的都是要吸收资金，所以你没有办法区别他们。</p>
+<p style="color:#007AAA;font-size:16px;font-weight:bold;">我们看这个案例：</p>
+
+<blockquote>
+<p>** 案例1：山西璞真灵芝酒业有限公司 **</p>
+</blockquote>
+<blockquote>
+<p>1999年1月，山西璞真公司向公众推出“返本销售”模式：公众向公司购买灵芝酒（产品抵押金），公司向其出具产品抵押金收据和提货单，经过一段时间后，公司全额返还产品抵押金。如出资者未提货，公司将代替出资者销售产品，并保证在一定时间内再按照一定比例向出资者支付货款。同时对发展下线，吸收款项达到一定金额的人给予补助和奖励。</p>
+</blockquote>
+<p>从2000年－2003年，公司吸收资金5.78亿元，其中绝大多数出资者未提取货物，公司总计返还本金3.4亿元，返利0.97亿元。</p>
+<p>其实这个骗局早就被人识破了，法院早就判决过了，但目前还有人在用，叫“返本销售”。看起来他是在卖东西，只是他便宜卖，说我先卖给你东西，回头还把钱还给你。这看起来不错，但这些投资者买这个东西的目的是什么？“返本销售”的核心就是你从我这儿买了酒，但你不提酒，你把酒放在我这儿，我帮你销售，过一段时间我把帮你卖酒的钱加上利润都给你。所以从资金提供方的角度来看，很明确，不是看好他的酒，而是为了获得未来的利润。而从资金的收入方来看，它跟其他的商品销售没有什么区别。所以，这是一个典型的非法集资。</p>
+<p style="color:#007AAA;font-size:16px;font-weight:bold;">这是最高法院公布的一个案例：</p>
+
+<blockquote>
+<p>** 案例2：渭南市尤湖塔园公司、惠庆祥等非法吸收公众存款案 **</p>
+</blockquote>
+<blockquote>
+<p>（载《最高人民法院公报》2008年第6期）<br>尤湖塔园公司将用于安放死者骨灰的塔位分为使用型（选位型）和投资型（不选位型），向公众宣传购买投资型塔位可以保值、增值，并承诺在塔位购买合同规定的期限内可以更名、退单。公司不定期随意调整塔位价格，并向客户公布价格调整情况。<br>购买投资型塔位的群众4334人，塔园公司吸收资金9698万元。</p>
+</blockquote>
+<p>案例2 其实跟“返本销售”是差不多的，这里的塔位原来卖得不好，因为每年每个地方死的人都差不多，所以它的销售量不可能大幅度上升。怎么样才能让塔位的销售量上升呢？于是他们把安放骨灰的塔位分为两种类型：</p>
+<p>** 一种是你要用的，叫“选位型”；另一种是你不用的，你是作为投资的，你买它就是为了再卖掉，这叫“不选位型”。 **</p>
+<p>一下子这个公司的销售量就上来了，法院说非法集资。很典型，从投资者的角度或者说从提供资金方的角度看，他提供资金的目的如果他不是以消费为目的，而是以投资为目的、以获取未来的利润为目的，这就是一个集资的交易。</p>
+<p>但在春天的时候，农民经常买些猪仔回来饲养，到年底卖掉挣钱。我们知道，这个农民买猪仔的目的也不是自己消费，而是要挣这头猪未来的利润，但是这个利润是他自己辛辛苦苦养猪挣来的，所以这是一个生产经营活动，而不是一个集资交易。</p>
+<p>案例3 就是仿照生产经营活动来设计的，这种其实在中国最典型，由三个合同组成，看起来很像是一个正常的养殖生产经营活动，但实际上仍然是伪装的集资交易。</p>
+<blockquote>
+<p>案例3许官成等集资诈骗案</p>
+</blockquote>
+<blockquote>
+<p>《最高人民法院公报》2009年第10期<br>法院认定：被告人与客户签订特种药蚁销售合同、特种药蚁委托养殖合同、特种药蚁回收合同等三种系列合同，承诺客户每窝蚂蚁投资人民币460元，1年后返还人民币640元，年回报率为39.13％。法院认为这构成了非法集资。</p>
+</blockquote>
+<p>我们民间用这三个合同的交易结构，养殖了无数的各种小动物，本质上都是集资交易。当然这也不是中国创造的，美国早在1940年就有集资者干这事了。三个合同，先卖蚂蚁给你，但是如果他只卖坚蚂蚁这个交易肯定做不大，为什么？一是愿意把蚂蚁带回家养的人有没有？我不知道，但是肯定很少。二是大家觉得养蚂蚁这事很恶心。所以，他说:第一,你买蚂蚁；第二，你不用自己养，我帮你养；第三，你如果担心到时候卖不掉，那么我再给你一个回购合同。三个合同就锁定了你未来的利润。</p>
+<p>非法集资者们用这个合同结构在中国干了无数的事情，如：内蒙古“万里大造林”、南京“联合养殖蚯蚓”案等。总之，这是一个典型的非法集资交易，我把它叫作“投资的被动性”，就是你获取的利润并不是来自于你的劳动。刚才讲养猪，他的利润是来自养猪者的辛苦劳动，而“蚂蚁案”的利润则是来自于他人，所以它是一个典型的集资交易。</p>
+<p>这个模式使用比较普遍之后，监管者都了解这种模式是非法集资，就需要进一步创新了。</p>
+<blockquote>
+<p>案例4：蚁力神案</p>
+</blockquote>
+<blockquote>
+<p>蚁力神的交易模式经历过一次变迁。一开始是代养方式：公司向社会公众出售蚂蚁，但签订代养合同，由公司代为养殖并且回购，最终，虽然采取的是购买蚂蚁的形式，但购买者并不需要养殖蚂蚁，购买的目的在于公司回购蚂蚁所带来的收益。后来又采用了一种租养方式：公司委托社会公众养殖蚂蚁，到期回收，向养殖户支付养殖劳务费，但社会公众必须向公司缴纳一笔保证金，才能有养殖资格，回收时保证金全额退回。</p>
+</blockquote>
+<p>具体的租养模式：养殖户交纳蚁种最低保证金1万元，可以领取2大1小三箱蚂蚁在家养殖。14个半月后，公司回收养殖好的蚂蚁，退还全部保证金并支付3250元劳务费。</p>
+<p>2007年11月29日，蚁力神公司向法院申请破产。此时，蚁力神持有78.8万份养殖合同，涉及保证金228.33亿元。</p>
+<p>“蚁力神”就是一个典型的创新模式。“蚁力神”的发明者是一个比较聪明的人，他把这个交易模式反着做了一遍。大家看，最早它用的是代养模式，就是刚才讲的“三个合同”模式，但这个很容易被大家识破。为什么“蚁力神”能做这么大？因为他是反向做了一次，他把这个交易结构调了，他说：我不卖蚂蚁，我委托你们公众帮我养蚂蚁，然后向你们付劳务费，但是你拿了我的蚂蚁回家养，你如果不给我怎么办呢？你跑了怎么办呢？所以你要先交付我一笔保证金。</p>
+<p>“蚁力神”的交易结构很简单：你交一万元的保证金领三箱蚂蚁回家去养，然后14个半月我把蚂蚁收回来，付你3250元钱。这看起来是一个很正常的劳务合同，但实际上“蚁力神”真正的突破在哪里呢？他创造了一种养蚂蚁很简单的模式，他的蚂蚁是密封在一个箱子里的，所以你不用担心看到蚂蚁很恶心，你也看不见它，然后它在你家也不会到处乱爬，因为它是密封的。</p>
+<p>交易规模只取决于你能交多少钱的保证金，以及你家有多大的地方放蚂蚁箱。你算一下就知道，一万元钱的保证金你的收益是3250，两万元钱就是6500，……这跟你付出多少劳动没有关系，因为按照它的模式养蚂蚁非常简单：蚁箱是封闭的，你只要给它撒点水，保持阴凉的环境，然后撒点公司给你配好的饲料就可以了。</p>
+<p>在这个交易模式中，投资者的劳务与收益是完全不匹配的，根本就没有什么劳务。你收益的多少只取决于你能交多少钱的保证金，所以它是一个隐含的集资交易。</p>
+<p>** 我们总结一下，界定交易的性质其实是一个很简单的事，就是从资金提供方（而不是最高院说的，从资金募集者角度）来看，他提供资金的目的是什么？ **</p>
+<p>他如果以消费为目的，就是要买这个商品便宜一点或者怎么样，这就是一般的商品交易。我们会看到各种预售交易，包括健身房的年卡，虽然看起来它也像是一个集资交易，但实质不是，因为购买年卡的人主要目的还是去健身，享受服务。</p>
+<p>去年上海有一家健身房连锁店老板跑了，法院给我打电话问：“这是不是非法集资？”我说：“不是”。虽然他从大家手里搞了好几个亿，然后跑掉了，但是从这个逻辑来看，购买者在那儿交年费的目的是消费，尽管他诱使你买年卡，用年卡很便宜，但实际上持卡人的目的仍然是消费，整个交易的安全在于他是否提供后续的消费服务，而跟我们讲的资金安全问题其实关系不大，所以他完全可以用《合同法》、《产品质量责任法》来管理，而不需要用《证券法》、《金融法》来管理。即使资金募集者吸收资金之后就跑掉了，也是一般的欺诈，而不是集资诈骗。</p>
+<h3 id="2、交易的公开性"><a href="#2、交易的公开性" class="headerlink" title="2、交易的公开性"></a>2、交易的公开性</h3><p>** 第二个要素就是交易的公开性，它是涉及公众的。如果只是私人之间的交易，按照刚才的理论，它是一个私募，豁免监管。 **</p>
+<p>大家看这几个典型的案例如“孙大午案”。</p>
+<p>** “孙大午案” ** 的交易性质没有争议——他就是借钱，这个案子争议之点就在于到底涉不涉及公众？律师辩护也集中在这儿，说他不涉及公众，都是邻近乡亲。这个能不能成立？我们呆会再讲。当然这个案子法院没理他，法院仍然判了，说构成“非法吸收公众存款罪”。</p>
+<p>还有 ** “赵典飞案” ** ，村委会向全体村民集资，定了一个标准：23周岁以上的男性村民均要认领一份，每人一万。全村符合条件的有438人，共收取集资费438万元。村委会主任赵飞典等人被抓了，检察院说他非法集资。法院说不是，无罪，说“特定对象，不涉及公众”。</p>
+<p>在中国法上，我们区分公众和非公众时，用了一个词叫“特定对象”，《证券法》第十条说：“向特定对象发行累计超过200人的构成公开发行”，我们是先用“特定对象”作为标准，然后再加了个人数标准。</p>
+<p>问题就是什么是特定对象？23周岁的男性村民是特定对象，那么所有在座的戴眼镜的人是不是特定对象？全北京市戴眼镜的人是不是特定对象？所以美国最高法院在1953年的<a href="https://en.wikipedia.org/wiki/Ralston_Purina">RalstonPurina</a> 案中讲了一段话，我觉得很有意义：</p>
+<blockquote>
+<p> 就其最广泛的意义而言，’公开’意指一般大众，与共同具有某些利益或者特征的个人群体不同。不过，从实践角度来看，这种区分意义不大；很明显，向所有红头发的人、向芝加哥或者旧金山的所有居民、向通用汽车公司或者美国电报电话公司的所有现存股东发出证券要约，其’公共性’——就这个词的任何现实意义来说——并不比不受限制地向全世界发出要约要少。这种要约虽然并非任何人都可以自由接受，但从性质上来说完全具有’公共性’，因为用来挑选特定受要约人的方法与挑选的目的之间并无合理的关联……在任何特定情况下区分’公开’与’特定’（private），都应当考量用来建立区别的决定因素和寻求建立这种区别的目的。                                                                                                                                         ** （SEC v. Ralston Purina Co., 346 U.S. 119, 124(1953）). **</p>
+</blockquote>
+<p>也就是说，理论上，我们可以用任何一个标准划出一个群体来作为特定对象，但这没有什么意义，有意义的划分标准必须是和立法目的之间有关联，能够体现立法划分特定对象的目的。</p>
+<p>那立法区公开与非公开，对于向公众集资要给予严格监管的目的是什么呢？很明确，是要保护公众投资者。它的基本假设是公众投资者不能自己保护自己，所以需要立法给予特别保护。</p>
+<p>因此，美国最高法院在这个案子中讲了一个私募的标准，它说如果这个融资是向那些能够自己保护自己的人去融资，它就是私募，就不涉及公众。所以这个案子定了一个非常有意思的界定私募的标准，它集中在投资者的资质上：如果这个投资者能够自己保护自己，他就不是公众，他就是特定对象。</p>
+<p>这个案子因此就变成经典案例，所有教材讲证券发行的时候都要讲这个案例。这个标准大家都能接受，都觉得很好，很有道理。但是，大家发现用起来很困难：什么样的人能自己保护自己呢？</p>
+<blockquote>
+<p>一是有丰富投资经验的人能够自己保护自己，他不需要《证券法》这么多信息披露的要求，他自己能收集信息、自己能判断风险，像巴菲特、李嘉诚这样的人。</p>
+</blockquote>
+<blockquote>
+<p>二是和发行人有特殊关系的人，就是和集资者关系很密切的人，比如集资者的直系亲属。</p>
+</blockquote>
+<blockquote>
+<p>我经常举的例子是董事长的丈母娘。董事长的丈母娘尽管也许大字不识，什么财务报表也看不懂，但是因为她的丈母娘身份，她基本上能够保护自己，女婿不敢骗她。</p>
+</blockquote>
+<blockquote>
+<p>三是财富状况，就是有钱人。</p>
+</blockquote>
+<blockquote>
+<p>有钱人是不是就能自己保护自己呢？其实在理论上不是那么确定，有争议，这个我们后面会讲。这三个标准在理论上和实践上用得比较多，这样我们就能划出一个特定对象的人群来。</p>
+</blockquote>
+<h3 id="3、吴英案"><a href="#3、吴英案" class="headerlink" title="3、吴英案"></a>3、吴英案</h3><p>我们刚才讲的两个概念：一个是集资性质，一个是是否公众。我们可以看看争议很大的“吴英案”。</p>
+<blockquote>
+<p>“吴英案”在交易性质上没有争议，吴英也是高息借钱。有争议的地方就是它是否涉及公众。另一个争议就是她有没有采用欺诈手段，如果采用欺诈手段就判它“集资诈骗”，如果没有采取欺诈手段，就是“非法吸收公众存款”。吴英当时自己辩护是说“非法吸收公众存款”，没有使用诈骗手段。而律师给她作的无罪辩护是说她不涉及公众，因为她真正的集资对象只有11个人，且这11个人中大部分是专业的放高利贷人员。浙江把放高利贷者叫“资金掮客”，其中一个叫林卫平的人是她的最大债权人，他一个人就给了吴英4.2亿。</p>
+</blockquote>
+<blockquote>
+<p>但法院说：虽然只有11个人，但这11个人是她的集资中介，吴英是通过这11个人向社会公众募得的钱，所以涉及公众，最后判的是集资诈骗罪。</p>
+</blockquote>
+<p>** 我不同意这个观点。这里不讨论吴英是否有欺诈手段，这是一个事实问题，需要更多证据，但这里很明确的是吴英借钱不涉及公众。 **</p>
+<p>因为没有一个足够的证据来支撑法院对集资中介的解释——这11个人只有在两种情况下才能构成吴英的集资中介，即：</p>
+<blockquote>
+<p>第一，吴英委托、明确跟他们讲“你帮我去社会上筹钱”，但你仔细去看判决书就知道没有证据支撑这个观点。</p>
+</blockquote>
+<blockquote>
+<p>第二，吴英知道这11个人的钱不是他们自己的，是来自社会的，同时社会公众提供资金的时候，也知道这个钱是要给吴英的。</p>
+</blockquote>
+<p>前面，吴英知道资金来源是有证据的，但是没有证据证明社会公众拿钱给这11个人的时候也知道他们把钱给了吴英。而如果没有后面这个条件，我觉得集资中介的概念是不能成立的。</p>
+<p>我们从银行贷款，我们贷款的时候都知道银行不是自己在用这个钱借给我们，这钱来自社会公众。但是，如果我从银行借了钱不还，最多构成的是“贷款诈骗”，而不说是“集资诈骗”。就是说，它要一个双向知道，才能形成我们刚才讲的这个链条。在吴英案上我一直批评的就是这一点，它没有证据证明这一点。</p>
+<h3 id="结论："><a href="#结论：" class="headerlink" title="结论："></a>结论：</h3><blockquote>
+<p>划清非法集资的边界，两个核心要素。第一个核心要素是界定交易的性质，这些年这些集资者、筹资人越来越聪明，他们使用了各种交易模式来伪装其交易性质，或者变成商品销售，或者伪装成各种东西。特别最近这些年又添加互联网金融等各种新的商业模式，显得很“高大上”、很时髦。</p>
+</blockquote>
+<p>所以，我们首先要识别的就是商业模式具不具有集资性质。而界定交易的性质也很简单，就看两点：</p>
+<blockquote>
+<p>（1）资金提供者提供资金的目的是什么？是消费还是以获取利润为目的，后者就构成投资；</p>
+</blockquote>
+<blockquote>
+<p>（2）利润主要来自于他人的努力。因此，可以总结为一句话：被动的投资性。</p>
+</blockquote>
+<p>在具有集资性质的情况下，我们就要判断第二个核心要素：是否涉及公众。如果不涉及公众，我们就不用管它，尽管它可能不是正规的融资，但它仍然是合法的。判断交易是否公开，则主要看起是否涉及公众，即对投资者的资质是否有限定。如果对投资者的资质没有限定，或者这个资质要求是个随意的标准，与其能否保护自己无关，则交易就涉及公众，是公开融资，就构成了非法集资。</p>
+<h2 id="监管非法集资行为的策略"><a href="#监管非法集资行为的策略" class="headerlink" title="监管非法集资行为的策略"></a>监管非法集资行为的策略</h2><p>我们刚才讲了私募是要豁免的，划这个标准理论上讲很简单，《证券法》经过几十年的发展，大家得出的基本的结论就是：私募的标准主要是看投资者的资质，就是提供资金方的资质，看他能不能自己保护自己。但是，这个标准划分起来很困难。你怎么知道他能否保护自己？</p>
+<p>美国的条例D对私募有一个界定，当然这个界定最近几年一直有争议。条例D第506条里面使用财富标准划定了一个“合格投资者”的界线，这个标准划定之后争议很大。</p>
+<p>尽管如此，但因为这个标准很确定，所以在1982年发布条例D的当年，美国私募融资的融资额就翻一番，后来越来越大。最近几年美国每年私募融资的金额远远超过公开发行IPO的金额，私募融资每年大概在1万亿-1.2万亿左右，而IPO金额才2千多亿美元，所以条例D的效果很好。当然，理论上争议也很大。</p>
+<p>目前为止，中国没有划定“合格投资者”的标准，实践中没有标准，大家只看到所谓的“正规”和“非正规”这样的说法，私募有所谓的“正规私募”和“非正规的私募”，并且它们都很多。同时，政府对“非法集资”每隔几年就打一次，但越打越多。</p>
+<p>为什么？我觉得有两个原因：</p>
+<blockquote>
+<p>一是政府不愿意划这个标准。 不愿意划这个标准当然有他的理由，这个标准若要划出来确实很难划得非常精确，无论你怎么划，一定是要么过宽，要么过窄，因为它只是个原则。在这种情况下，政府可能不愿意承担责任或者没有专业能力来划出一个相对精确的标准来。</p>
+</blockquote>
+<blockquote>
+<p>二就是政府也害怕阻碍创新。</p>
+</blockquote>
+<blockquote>
+<p>我们老批评政府打击创新，所以政府也担心背上这个罪名。在某种程度上，我觉得这是政府的一个无奈的选择。就是刚才我们讲的，我们的正规金融体系能够给民间企业、民间市场提供的融资非常有限，政府这些年试图来改革它们，让它们给民间企业提供更多的融资，尽管有进步，但仍然很不令人满意。也就是说，政府没有能力让正规的金融机构给民间企业提供融资或者提供让大家满意的金融服务。</p>
+</blockquote>
+<blockquote>
+<p>既然政府没有办法给你提供正规的金融服务，它就只能让你采用非正规的手段获得资金支持。否则，企业没法生存，中国经济没法增长。所以，政府只能允许你做非正规融资，但在允许你做的同时，它又担心风险存在。这就是我们现在所看到的这个局面！</p>
+</blockquote>
+<p>换句话说，目前政府的监管策略是：如果你去做非正规融资，一开始的时候是没人管的，但如果你做失败了，资金链断了，投资者来找你闹事了，你就会被抓起来，这就是“非法集资”，这是“风险被引爆”。如果这样的事情越来越多，政府发现风险在急剧增加，那么政府就开始出面清理整顿、集中打击。</p>
+<p>我们在2015年看到的就是新的一轮对非法集资的集中打击，这次打击是因为前几年对非正规金融的放任导致的风险聚集。这次打击之后风险就会降下来了，当然企业融资的市场也就缩小了。但是，打击完了也就完了，政府又会开始放任对非正规金融的监管，非法集资又开始慢慢死灰复燃，政府一开始也不管你，你就接着干，再过四、五年，风险又聚集了，政府接着打。这些年我们看到的就是这样一个循环的过程。</p>
+<p>** 我昨天跟一些人谈起这个事，他们提出一个观点，我觉得有道理，就是在政府金融监管的事权划分上有问题。现在打击非法集资主要的职责是地方政府，我们要求地方政府要负责打击本地的非法集资行为。但是，地方政府没有动力去打击，因为地方政府要发展地方经济，他希望这里的钱越多越好。 **</p>
+<p>在出事之前，地方政府是鼓励企业非法集资的。为什么？第一，可以最大限度地动员本地的闲散资金；第二，可以把外地的闲散资金吸引到本地来。所以地方政府在你没有出风险的时候是纵容、支持非法集资的。我们看到过很多这样的案例，比如湖南湘西自治州的“曾成杰案”，一开始地方政府是完全支持他非法集资的，可是后来崩盘了，投资者一闹事，就把他抓起来，以“非法集资罪”判了他死刑。</p>
+<p>由此可见，政府事权的划分是有问题的。特别是在网络时代的今天，资金来源于全国，而我们要求一个地方政府去监管，最后的结果肯定是地方政府纵容他，只有当风险爆发后，地方政府才会去管他。</p>
+<p>刚才我们讲到界线的划分很困难，非法集资的界定是一个原则，很难划出一个清晰的界线。但我觉得有两种策略来解决它，核心是给民间融资提供更多的确定性。</p>
+<p>中国法上有这样一个标准，就是“公开”与“非公开”，但我们没有一个明确可操作的标准来提供确定性，来明确划定什么是“非公开”。所以民间融资者都走在“钢丝”上。如果你走过去了，就安全了；如果你没走过去，掉下来了，就是“非法集资”。</p>
+<p>大家看“e租宝案”。“e租宝”在去年的时候公司规模还是100个亿，2015年一年就涨到了700亿，为什么？他就是感觉到了风声紧，所以他要把自己的规模拼命做大，做大之后他其实想的是能够上市，上市之后他就安全了，他就走完这段“钢丝”，他就有了正规融资渠道了。但是，现在却是他没走完就被掉下来了。</p>
+<p>我们觉得理论上讲政府有义务、有责任给民间融资者提供一些确定性，尽管你没办法给他提供一个完整的或者非常标准的确定性，但我觉得政府有一些可以做的事情：</p>
+<p>** 第一就是非正式指导。 **</p>
+<p>理论上讲，大部分人还是希望能够合法、正常的融资的，但是因为你的界线划分得很模糊，所以大家都只能在灰色地带摸索。理论上政府应该有个渠道指导他，告诉他你这样做，我觉得“OK”，那样做我觉得“不行”。</p>
+<p>美国SEC有一个程序就叫“no-actionletter”（不起诉函），SEC负责证券法的执行，它执法在美国是需要提起民事诉讼的，这个“no-actionletter”就是表明SEC的态度：你这么做，我不会起诉你。</p>
+<p>实践中，如果某个公司对其融资行为或者商业模式是否会违反证券法没有把握，其就可以向SEC请示，告诉SEC“我要这么做”，SEC在研究后给你一个函，说：如果你完全按照你写的这么做，我就不会对你进行执法。这就叫</p>
+<p>“no-actionletter”，意思就是确认你的模式合法。</p>
+<p>虽然这是一个非正式的行政指导，不具有法律上的效应，但是它能提供很大的确定性。而且这往往成为SEC政策发布的一个途径。这些不起诉函都是公开的，有些人会把SEC在某一个领域的“no-actionletter”收集起来，然后进行分析，说：你看，SEC在这个方面其实是这么想，所以他有一套什么样的政策，我们就按照这个政策走就行。</p>
+<p>中国证监会目前在这一块有一些努力。大家去中国证监会网站看，中国证监会经常发布一些指导意见或者什么问答之类的信息，其实有一些这方面的意思，也有人在研究这个问题。</p>
+<p>** 第二个我觉得比较有意思的就是美国SEC经常用的叫“非排他性的安全港规则”。 **</p>
+<p>这个“安全港规则”是用来提供确定性的，比较典型的就是条例D。我们刚才讲私募的标准，在美国法上也不确定，SEC曾经试图把它确定，所以SEC最早界定私募用的是什么标准？跟我们一样，用的是人数标准，说：25人，超过25人就是“公开”，25人以下就是“非公开”。很确定、很好，但是理论上不能成立。凭什么25人以上就是“公开”，25人以下就是“非公开”？你满大街吆喝说我要卖股票，最后只有一个人来买，这是不是就是“非公开”呢？明显是“公开”嘛，明明你在满大街吆喝。</p>
+<p>所以刚才我们讲的美国最高法院的Ralston案其实就是这样的一个案例，就是SEC认定发行人超过了25人（有400多人），说这是公开发行，诉到了法院，而美国最高法院就在那个案子中说：我们认为人数标准不是一个用来界定私募的标准。它给了标准是什么呢？就是“能够自己保护自己”。</p>
+<p>这个很有道理，但是不好操作。不确定啊！什么叫“自己能够保护自己”？我们刚才讲的“特殊关系”、“投资经验”，理论上都有说服力，但是这两个标准你要真用，你就会发现它也不确定。</p>
+<p>** 我经常举的例子就是：上海的丈母娘跟北京的丈母娘对女婿的控制力完全不一样，所以同样的丈母娘，你不能说丈母娘就一定能够自己保护自己，你必须在个案中去讨论，说这个丈母娘能够保护自己，那个丈母娘不能保护自己。 **</p>
+<p>“投资经验”也一样，有些人有投资经验，注意保护自己，但是有些人看起来商业经验很多，不一定能保护自己，所以你必须也要在个案中来看。</p>
+<p>在1982年之前，美国一直用的是前两个标准，但是不确定，发行人或者说筹资者不喜欢、投资者也不喜欢、监管者也不喜欢，因为都要到个案中事后来判断。所以，1982年美国SEC颁布条例D，条例D用了一个概念，叫“合格投资者”。</p>
+<p>什么叫“合格投资者”？它说我就用一个标准——财富，家庭年收入连续两年20万美元收入以上，家庭净资产100万美元以上就是“合格投资者”。你向他们去卖股票、向他们去筹资就是私募。这个标准一划，私募融资量立刻大规模翻番，到现在是1万多亿。但是这个标准争议很大，为什么争议很大呢？因为没有道理，为什么有钱就能自己保护自己？这个今天不讨论，理论上讲这个争议很大，最近这些年一直在讨论这件事。</p>
+<p>但回过来说，从监管策略上来说，SEC讲得很清楚，说我这个标准不是排他性的，我是非排他性的，我给你的是一个安全港，你要愿意遵守我的这个规则，走这条路，向这些年收入20万美元以上或者家庭资产100万美元以上的人去筹资，我现在就可以告诉你，你是安全的、合法的，你是私募。</p>
+<p>但是，如果你说我就要向我丈母娘去融资，我觉得我的丈母娘能够自己保护自己，也可以，我不说你是非法的，但是如果你丈母娘回头起诉你，你要自己来证明，说她能自己保护自己。所以他的成本会高一点。</p>
+<p>你去看美国的数据，私募1万亿美元，大部分走的是条例D的第506条，就是“合格投资者”标准。但是它每年还有几十亿走的是之外的标准，就是他确实找不到“合格投资者”或者他愿意走原来的路，说：我要自己来证明这些人能“自己保护自己”。你只要自己有把握，这也可以，只是成本高一点、不确定性强一点。</p>
+<p>虽然我们理论上批评这个财富标准划得有问题，但你要真从理论上全面讨论的话，你还真没有办法批评他，因为他有道理，他只是说我给了你一个我认为安全的路径，可我并没有否定其他路径。</p>
+<p>我觉得对中国来说，这也会是一个比较好的策略。</p>
+<p>为什么？</p>
+<blockquote>
+<p>因为在中国，目前正规的金融机构提供不了民营企业需要的融资服务，民间融资市场非常混乱，而政府又没办法划出一个准确的界线，在这种情况下，如果我们可以给出这样一个安全港，至少它划出了一个相对来说比较明确的路径，或者说政府有把握地说你沿着这个路径走我们就能够认定你是安全的、合法的。这就给所有企业家提供了一个相对比较安全和确定的非正规融资渠道，不至于让很多人在灰色地带摸索、在刀尖上行走。</p>
+</blockquote>
+<p>我觉得这样的工作一个负责任的政府应该做的，这也是我们目前可以采用的一个相对好的监管策略。政府这么多年不做，使得民间融资者面临非常非常大的不确定风险，我觉得是有些失职。</p>
+<p>我的这些想法还不太成熟，欢迎大家批评！谢谢大家！</p>
+<p>文章作者：彭冰</p>
+<p>转载自： 洪范法律与经济</p>
+<p>原文链接： 《<a href="http://mp.weixin.qq.com/s?__biz=MzA5NDI0MzgyMA==&mid=402386587&idx=1&sn=2a6d3189e1bb9d88518ac36d735b8b2c&scene=23&srcid=0202J7a79qUtEJalW39pmkpE#rd">彭冰：“非法集资”现象背后的是与非 | 中法评 · 热点观察</a>》</p>
+]]></content>
+      <categories>
+        <category>综合</category>
+      </categories>
+      <tags>
+        <tag>economic</tag>
+        <tag>非法集资</tag>
+      </tags>
+  </entry>
+</search>
