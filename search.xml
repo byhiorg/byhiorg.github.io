@@ -168,37 +168,6 @@
       </tags>
   </entry>
   <entry>
-    <title>【防浏览器调试模式】And 防【防浏览器调试模式】</title>
-    <url>/archives/8b542dc4.html</url>
-    <content><![CDATA[<h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*!</span></span><br><span class="line"><span class="comment"> * source: https://github.com/sindresorhus/devtools-detect</span></span><br><span class="line"><span class="comment"> * Abbey改写</span></span><br><span class="line"><span class="comment"> * MIT License</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    &#x27;use strict&#x27;</span>;</span><br><span class="line">    <span class="keyword">var</span> devtools = &#123;</span><br><span class="line">        <span class="attr">open</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">orientation</span>: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> threshold = <span class="number">160</span>;</span><br><span class="line">    <span class="keyword">var</span> emitEvent = <span class="function"><span class="keyword">function</span> (<span class="params">state, orientation</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.dispatchEvent(<span class="keyword">new</span> CustomEvent(<span class="string">&#x27;devtoolschange&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">detail</span>: &#123;</span><br><span class="line">                <span class="attr">open</span>: state,</span><br><span class="line">                <span class="attr">orientation</span>: orientation</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> widthThreshold = <span class="built_in">window</span>.outerWidth - <span class="built_in">window</span>.innerWidth &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> heightThreshold = <span class="built_in">window</span>.outerHeight - <span class="built_in">window</span>.innerHeight &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> orientation = widthThreshold ? <span class="string">&#x27;vertical&#x27;</span> : <span class="string">&#x27;horizontal&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(heightThreshold &amp;&amp; widthThreshold) &amp;&amp; ((<span class="built_in">window</span>.Firebug &amp;&amp; <span class="built_in">window</span>.Firebug.chrome &amp;&amp; <span class="built_in">window</span>.Firebug.chrome.isInitialized) ||</span><br><span class="line">            widthThreshold || heightThreshold)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!devtools.open || devtools.orientation !== orientation) &#123;</span><br><span class="line">                emitEvent(<span class="literal">true</span>, orientation);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">true</span>;</span><br><span class="line">            devtools.orientation = orientation;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (devtools.open) &#123;</span><br><span class="line">                emitEvent(<span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">false</span>;</span><br><span class="line">            devtools.orientation = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="built_in">module</span>.exports) &#123;</span><br><span class="line">        <span class="built_in">module</span>.exports = devtools;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.devtools = devtools;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">&#x27;devtoolschange&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (e.detail.open)&#123;</span><br><span class="line">        <span class="keyword">debugger</span>;</span><br><span class="line">        <span class="built_in">window</span>.stop();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">window</span>.location.reload();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-
-<p>代码地址：<a href="https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f">https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f</a></p>
-<ol>
-<li>检测浏览器是否处于调试模式，如果是，则暂停加载内容；</li>
-<li>调试模式-&gt;非调试模式，则自动重新加载页面</li>
-<li>防君子不防小人，fiddler一样可以调试</li>
-</ol>
-<h2 id="防【防浏览器调试模式】"><a href="#防【防浏览器调试模式】" class="headerlink" title="防【防浏览器调试模式】"></a>防【防浏览器调试模式】</h2><p>打开Devtool之后，页面显示Paused in debugger。</p>
-<ol>
-<li>点击Source选项卡，下图的1。</li>
-<li>按Ctrl+F8，开启Deactive breakpoints，也就是禁用断点调试，也可以点击下图中的2，使其变蓝。</li>
-<li>按F8即可。也可以点击下图中的3。</li>
-</ol>
-<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1547828109/blog/5b83c1a0b4280.png" alt="防【防浏览器调试模式】"></p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://www.abbeyok.com/archives/48">https://www.abbeyok.com/archives/48</a></li>
-<li><a href="https://www.hostloc.com/thread-471522-1-1.html">https://www.hostloc.com/thread-471522-1-1.html</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>js</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在CentOS7下使用Tor 创建匿名服务和匿名网站</title>
     <url>/archives/f9abf4e9.html</url>
     <content><![CDATA[<h2 id="科普下什么是暗网"><a href="#科普下什么是暗网" class="headerlink" title="科普下什么是暗网"></a>科普下什么是暗网</h2><p>暗网（英语：Dark web）是存在于黑暗网络、覆盖网络上的万维网内容，只能用特殊软体、特殊授权、或对电脑做特殊设定才能访问。暗网构成了深网的一小部分，深网网络没有被网络搜索引擎索引，有时“深网”这一术语被错误地用于指代暗网。</p>
@@ -242,6 +211,37 @@
       </categories>
       <tags>
         <tag>tor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【防浏览器调试模式】And 防【防浏览器调试模式】</title>
+    <url>/archives/8b542dc4.html</url>
+    <content><![CDATA[<h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*!</span></span><br><span class="line"><span class="comment"> * source: https://github.com/sindresorhus/devtools-detect</span></span><br><span class="line"><span class="comment"> * Abbey改写</span></span><br><span class="line"><span class="comment"> * MIT License</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    &#x27;use strict&#x27;</span>;</span><br><span class="line">    <span class="keyword">var</span> devtools = &#123;</span><br><span class="line">        <span class="attr">open</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">orientation</span>: <span class="literal">null</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> threshold = <span class="number">160</span>;</span><br><span class="line">    <span class="keyword">var</span> emitEvent = <span class="function"><span class="keyword">function</span> (<span class="params">state, orientation</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.dispatchEvent(<span class="keyword">new</span> CustomEvent(<span class="string">&#x27;devtoolschange&#x27;</span>, &#123;</span><br><span class="line">            <span class="attr">detail</span>: &#123;</span><br><span class="line">                <span class="attr">open</span>: state,</span><br><span class="line">                <span class="attr">orientation</span>: orientation</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> widthThreshold = <span class="built_in">window</span>.outerWidth - <span class="built_in">window</span>.innerWidth &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> heightThreshold = <span class="built_in">window</span>.outerHeight - <span class="built_in">window</span>.innerHeight &gt; threshold;</span><br><span class="line">        <span class="keyword">var</span> orientation = widthThreshold ? <span class="string">&#x27;vertical&#x27;</span> : <span class="string">&#x27;horizontal&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(heightThreshold &amp;&amp; widthThreshold) &amp;&amp; ((<span class="built_in">window</span>.Firebug &amp;&amp; <span class="built_in">window</span>.Firebug.chrome &amp;&amp; <span class="built_in">window</span>.Firebug.chrome.isInitialized) ||</span><br><span class="line">            widthThreshold || heightThreshold)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!devtools.open || devtools.orientation !== orientation) &#123;</span><br><span class="line">                emitEvent(<span class="literal">true</span>, orientation);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">true</span>;</span><br><span class="line">            devtools.orientation = orientation;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (devtools.open) &#123;</span><br><span class="line">                emitEvent(<span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            devtools.open = <span class="literal">false</span>;</span><br><span class="line">            devtools.orientation = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">500</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="built_in">module</span>.exports) &#123;</span><br><span class="line">        <span class="built_in">module</span>.exports = devtools;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.devtools = devtools;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">&#x27;devtoolschange&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (e.detail.open)&#123;</span><br><span class="line">        <span class="keyword">debugger</span>;</span><br><span class="line">        <span class="built_in">window</span>.stop();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">window</span>.location.reload();</span><br><span class="line">     &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>代码地址：<a href="https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f">https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f</a></p>
+<ol>
+<li>检测浏览器是否处于调试模式，如果是，则暂停加载内容；</li>
+<li>调试模式-&gt;非调试模式，则自动重新加载页面</li>
+<li>防君子不防小人，fiddler一样可以调试</li>
+</ol>
+<h2 id="防【防浏览器调试模式】"><a href="#防【防浏览器调试模式】" class="headerlink" title="防【防浏览器调试模式】"></a>防【防浏览器调试模式】</h2><p>打开Devtool之后，页面显示Paused in debugger。</p>
+<ol>
+<li>点击Source选项卡，下图的1。</li>
+<li>按Ctrl+F8，开启Deactive breakpoints，也就是禁用断点调试，也可以点击下图中的2，使其变蓝。</li>
+<li>按F8即可。也可以点击下图中的3。</li>
+</ol>
+<p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1547828109/blog/5b83c1a0b4280.png" alt="防【防浏览器调试模式】"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://www.abbeyok.com/archives/48">https://www.abbeyok.com/archives/48</a></li>
+<li><a href="https://www.hostloc.com/thread-471522-1-1.html">https://www.hostloc.com/thread-471522-1-1.html</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
       </tags>
   </entry>
   <entry>
@@ -740,7 +740,7 @@
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#x6d;</a> ：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
@@ -1711,6 +1711,11 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>tags</title>
+    <url>/tags/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>关于</title>
     <url>/about/index.html</url>
     <content><![CDATA[<p><img data-src="index/about_header.jpg" alt="图片"></p>
@@ -1724,11 +1729,6 @@
 
 <p align="center"> 欢迎来换友链！ </p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>tags</title>
-    <url>/tags/index.html</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>404 Not Found: 该页无法显示</title>
