@@ -2902,7 +2902,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #d738eb;
+  background: #b6f92f;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2938,4 +2938,105 @@ hr {
 }
 .post-button {
   text-align: center;
+}
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+dd,
+del,
+details,
+dfn,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+html,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  cursor: url("/images/arrow.png"), auto;
+}
+code,
+p,
+pre,
+span {
+  cursor: url("/images/text.png"), auto;
+}
+a,
+a:hover,
+a:active,
+a:focus,
+a>span {
+  cursor: url("/images/link.png"), auto;
+}
+.sidebar-toggle {
+  cursor: url("/images/link.png"), auto;
+}
+.sidebar-toggle-line-wrap {
+  cursor: url("/images/link.png"), auto;
+}
+.back-to-top {
+  cursor: url("/images/link.png"), auto;
+}
+.disqus-loading p {
+  margin: 0;
+  font-size: 12px;
 }
