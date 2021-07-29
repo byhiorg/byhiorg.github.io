@@ -931,7 +931,7 @@ warranty; <span class="keyword">not</span> even <span class="keyword">for</span>
 <p>输入 make localmodconfig 它将询问您有关新驱动程序和内核支持的问题，如果您想定制您的内核，请按照提示一步步回答提示(有不明白的地方可以Google)。如果您不知道该如何配置，请按 Enter 键将问题的所有答案设置为默认值。</p>
 <p>Linux 内核构建系统提供了许多构建目标，了解它的最好方法可以运行 <code>make help</code></p>
 <h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre><code class="highlight elixir"><span class="variable">$ </span>make -j6</code></pre>
-<pre><div class="caption"><span>``` 的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)</span></div><code class="highlight -j6">编译完成之后首先安装模块
+<pre><div class="caption"><span>的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)</span></div><code class="highlight -j6```">编译完成之后首先安装模块
 
 ### 编译完成之后首先安装模块</code></pre>
 <p>$ sudo make modules_install -j6</p>
