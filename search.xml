@@ -332,6 +332,76 @@ window<span class="token punctuation">.</span><span class="token function">addEv
       </tags>
   </entry>
   <entry>
+    <title>允许空白referer防盗链图片的破解</title>
+    <url>/archives/6e64e2a1.html</url>
+    <content><![CDATA[<p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
+<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre class="language-js" data-language="js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">showImg</span><span class="token punctuation">(</span> <span class="token parameter">url</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> imgid <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    frameid <span class="token operator">=</span> <span class="token string">'frameimg'</span> <span class="token operator">+</span> imgid<span class="token punctuation">;</span>
+    window<span class="token punctuation">[</span><span class="token string">'img'</span><span class="token operator">+</span>imgid<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'&lt;img id="img" src=\''</span><span class="token operator">+</span>url<span class="token operator">+</span><span class="token string">'\' /> &lt;script> window.onload = function() &#123; parent.document.getElementById(\''</span><span class="token operator">+</span>frameid<span class="token operator">+</span><span class="token string">'\').height = document.getElementById(\'img\').height+\'px\'; &#125;&lt;'</span><span class="token operator">+</span><span class="token string">'/script>'</span><span class="token punctuation">;</span>
+    document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'&lt;iframe id="'</span><span class="token operator">+</span>frameid<span class="token operator">+</span><span class="token string">'" src="javascript:parent[\'img'</span><span class="token operator">+</span>imgid<span class="token operator">+</span><span class="token string">'\'];" frameBorder="0" scrolling="no" width="100%">&lt;/iframe>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre class="language-js" data-language="js"><code class="language-js"><span class="token function">showImg</span><span class="token punctuation">(</span><span class="token string">'图片地址'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<span id="more"></span>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Content-Type<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/html; charset=utf-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>  
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">  
+<span class="token keyword">function</span> <span class="token function">showImg</span><span class="token punctuation">(</span> <span class="token parameter">url</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> imgid <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    frameid <span class="token operator">=</span> <span class="token string">'frameimg'</span> <span class="token operator">+</span> imgid<span class="token punctuation">;</span>
+    window<span class="token punctuation">[</span><span class="token string">'img'</span><span class="token operator">+</span>imgid<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'&lt;img id="img" src=\''</span><span class="token operator">+</span>url<span class="token operator">+</span><span class="token string">'\' /> &lt;script> window.onload = function() &#123; parent.document.getElementById(\''</span><span class="token operator">+</span>frameid<span class="token operator">+</span><span class="token string">'\').height = document.getElementById(\'img\').height+\'px\'; &#125;&lt;'</span><span class="token operator">+</span><span class="token string">'/script>'</span><span class="token punctuation">;</span>
+    document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'&lt;iframe id="'</span><span class="token operator">+</span>frameid<span class="token operator">+</span><span class="token string">'" src="javascript:parent[\'img'</span><span class="token operator">+</span>imgid<span class="token operator">+</span><span class="token string">'\'];" frameBorder="0" scrolling="no" width="100%">&lt;/iframe>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>直接盗链：<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">></span></span>  
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">></span></span>  
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>js破解盗链：<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">></span></span>  
+
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hotlinking<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+ <span class="token function">showImg</span><span class="token punctuation">(</span><span class="token string">'http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+ <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+</code></pre>
+
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
+<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token attr-name">referrerPolicy</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>no-referrer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
+<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
+<pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>referrer<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>no-referrer<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre>
+
+<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
+<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
+<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
+<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
+<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
+<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
+</ul>
+<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
+<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
+<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
+<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
+<li>登录校验（如必须登录网站帐号后才能访问）；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在CentOS7下使用Tor 创建匿名服务和匿名网站</title>
     <url>/archives/f9abf4e9.html</url>
     <content><![CDATA[<h2 id="科普下什么是暗网"><a href="#科普下什么是暗网" class="headerlink" title="科普下什么是暗网"></a>科普下什么是暗网</h2><p>暗网（英语：Dark web）是存在于黑暗网络、覆盖网络上的万维网内容，只能用特殊软体、特殊授权、或对电脑做特殊设定才能访问。暗网构成了深网的一小部分，深网网络没有被网络搜索引擎索引，有时“深网”这一术语被错误地用于指代暗网。</p>
@@ -384,76 +454,6 @@ HiddenServicePort 80 127.0.0.1:8080</code></pre>
       </categories>
       <tags>
         <tag>tor</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>允许空白referer防盗链图片的破解</title>
-    <url>/archives/6e64e2a1.html</url>
-    <content><![CDATA[<p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
-<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">function showImg( url ) &#123;
-    var imgid &#x3D; Math.random(),
-    frameid &#x3D; &#39;frameimg&#39; + imgid;
-    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
-    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
-&#125;</code></pre>
-
-<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">showImg(&#39;图片地址&#39;);</code></pre>
-
-<span id="more"></span>
-
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;  
-&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;  
-function showImg( url ) &#123;
-    var imgid &#x3D; Math.random(),
-    frameid &#x3D; &#39;frameimg&#39; + imgid;
-    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
-    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
-&#125;
-&lt;&#x2F;script&gt;
-
-
- &lt;h1&gt;直接盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
- &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot; &#x2F;&gt;&lt;br&gt;  
- &lt;h1&gt;js破解盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
-
- &lt;div id&#x3D;&quot;hotlinking&quot;&gt;
-
- &lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;
- showImg(&#39;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#39;);
- &lt;&#x2F;script&gt;
-
- &lt;&#x2F;div&gt;
-</code></pre>
-
-<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
-<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;img src&#x3D;&quot;&quot; referrerPolicy&#x3D;&quot;no-referrer&quot;&gt;</code></pre>
-
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
-<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
-<pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta name&#x3D;&quot;referrer&quot; content&#x3D;&quot;no-referrer&quot; &#x2F;&gt;</code></pre>
-
-<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
-<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
-<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
-<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
-<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
-<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
-<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
-</ul>
-<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
-<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
-<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
-<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
-<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
-<li>登录校验（如必须登录网站帐号后才能访问）；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -858,33 +858,33 @@ function showImg( url ) &#123;
     <title>ubuntu 20.04 lts 编译gcc12</title>
     <url>/archives/586372ad.html</url>
     <content><![CDATA[<p>这里默认你系统已经安装了gcc,没安装的运行下面的指令</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y build-essential</code></pre>
+<pre class="language-none"><code class="language-none">$ sudo apt install -y build-essential</code></pre>
 
-<h2 id="先准备编译环境"><a href="#先准备编译环境" class="headerlink" title="先准备编译环境"></a>先准备编译环境</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y <span class="token function">git</span> libmpc-dev flex</code></pre>
+<h2 id="先准备编译环境"><a href="#先准备编译环境" class="headerlink" title="先准备编译环境"></a>先准备编译环境</h2><pre class="language-none"><code class="language-none">$ sudo apt install -y git libmpc-dev flex</code></pre>
 
 <p>git 可以从gcc官网代码仓库clone gcc源代码</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> clone git://gcc.gnu.org/git/gcc.git gcc <span class="token operator">&amp;&amp;</span> <span class="token function">pushd</span> gcc/</code></pre>
+<pre class="language-none"><code class="language-none">$ git clone git:&#x2F;&#x2F;gcc.gnu.org&#x2F;git&#x2F;gcc.git gcc &amp;&amp; pushd gcc&#x2F;</code></pre>
 
 <h2 id="配置编译环境"><a href="#配置编译环境" class="headerlink" title="配置编译环境"></a>配置编译环境</h2><p>我是64bit环境需要使用 <code>--disable-multilibx</code></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ ./configure --prefix<span class="token operator">=</span>/usr/local/gcc12 --with-system-zlib --disable-multilib
-$ <span class="token function">make</span> -j6 <span class="token comment"># 编译，很耗时</span>
-$ <span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span> <span class="token comment"># 安装到 /usr/local/gcc12 </span></code></pre>
+<pre class="language-none"><code class="language-none">$ .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;gcc12 --with-system-zlib --disable-multilib
+$ make -j6 # 编译，很耗时
+$ sudo make install # 安装到 &#x2F;usr&#x2F;local&#x2F;gcc12 </code></pre>
 <p>将 <code>/usr/local/gcc12/bin</code> 下的可执行程序全都软链接到 <code>/usr/bin/</code></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc /usr/bin/gcc-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/g++ /usr/bin/g++-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-ar /usr/bin/gcc-ar-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-nm /usr/bin/gcc-nm-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-ranlib /usr/bin/gcc-ranlib-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov /usr/bin/gcov-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov-dump /usr/bin/gcov-dump-12
-$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov-tool /usr/bin/gcov-tool-12</code></pre>
+<pre class="language-none"><code class="language-none">$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcc &#x2F;usr&#x2F;bin&#x2F;gcc-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;g++ &#x2F;usr&#x2F;bin&#x2F;g++-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcc-ar &#x2F;usr&#x2F;bin&#x2F;gcc-ar-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcc-nm &#x2F;usr&#x2F;bin&#x2F;gcc-nm-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcc-ranlib &#x2F;usr&#x2F;bin&#x2F;gcc-ranlib-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov &#x2F;usr&#x2F;bin&#x2F;gcov-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov-dump &#x2F;usr&#x2F;bin&#x2F;gcov-dump-12
+$ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov-tool &#x2F;usr&#x2F;bin&#x2F;gcov-tool-12</code></pre>
 <span id="more"></span>
 
 <h2 id="配置多版本GCC共存"><a href="#配置多版本GCC共存" class="headerlink" title="配置多版本GCC共存"></a>配置多版本GCC共存</h2><p>因为系统中原来就有个gcc9，咱来配个多版本共存环境<br>以下命令为每个版本配置替代版本，并将优先级与之关联。auto mode版本是优先级最高的版本，在本例中配成 gcc-12</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 <span class="token number">120</span> --slave /usr/bin/gcov gcov /usr/bin/gcov-12
-$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 <span class="token number">120</span>
-$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 <span class="token number">90</span> --slave /usr/bin/gcov gcov /usr/bin/gcov-9
-$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 <span class="token number">90</span></code></pre>
+<pre class="language-none"><code class="language-none">$ sudo update-alternatives --install &#x2F;usr&#x2F;bin&#x2F;gcc gcc &#x2F;usr&#x2F;bin&#x2F;gcc-12 120 --slave &#x2F;usr&#x2F;bin&#x2F;gcov gcov &#x2F;usr&#x2F;bin&#x2F;gcov-12
+$ sudo update-alternatives --install &#x2F;usr&#x2F;bin&#x2F;g++ g++ &#x2F;usr&#x2F;bin&#x2F;g++-12 120
+$ sudo update-alternatives --install &#x2F;usr&#x2F;bin&#x2F;gcc gcc &#x2F;usr&#x2F;bin&#x2F;gcc-9 90 --slave &#x2F;usr&#x2F;bin&#x2F;gcov gcov &#x2F;usr&#x2F;bin&#x2F;gcov-9
+$ sudo update-alternatives --install &#x2F;usr&#x2F;bin&#x2F;g++ g++ &#x2F;usr&#x2F;bin&#x2F;g++-9 90</code></pre>
 <p>以后，如果要更改默认版本，请使用以下update-alternatives命令：</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-alternatives --config gcc
 
@@ -908,6 +908,72 @@ Press <span class="token operator">&lt;</span>enter<span class="token operator">
       </tags>
   </entry>
   <entry>
+    <title>ubuntu 20.04 lts 编译 linux kernel 5.10.53</title>
+    <url>/archives/eec576ad.html</url>
+    <content><![CDATA[<h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre class="language-none"><code class="language-none">$ gcc --version
+gcc (GCC) 12.0.0 20210722 (experimental)
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</code></pre>
+<p>这里默认你已经装好9以上的gcc，并配置好环境了。没GCC环境的可以参考我上篇文章 <a href="https://blog.byhi.org/archives/586372ad.html">ubuntu 20.04 lts 编译gcc12</a></p>
+<h2 id="下载Linux内核"><a href="#下载Linux内核" class="headerlink" title="下载Linux内核"></a>下载Linux内核</h2><p><a href="https://www.kernel.org/">kernel.org</a> 下载 longterm: <a href="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz">5.10.53</a> 到 <code>/home/user/Download/kernel</code></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;home&#x2F;user&#x2F;Download&#x2F;kernel &amp;&amp; wget -c https:&#x2F;&#x2F;cdn.kernel.org&#x2F;pub&#x2F;linux&#x2F;kernel&#x2F;v5.x&#x2F;linux-5.10.53.tar.xz </code></pre>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre class="language-none"><code class="language-none">tar -Jxf linux-5.10.53.tar.xz &amp;&amp; cd linux-5.10.53</code></pre>
+<span id="more"></span>
+<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre class="language-none"><code class="language-none">$ sudo apt-get install fakeroot build-essential ncurses-dev xz-utils bc bison flex libssl-dev libncurses5-dev libelf-dev -y</code></pre>
+<p>flebx 是词法分析器，bison 是解析器<br>这里面可能会出现一些问题，按照提示做即可，涉及一些软件包版本相互依赖关系，每个机器可能问题不一样，具体可以Google.</p>
+<p>可以先用uname -r自行查看下当前内核版本</p>
+<pre class="language-none"><code class="language-none">$ uname -r
+5.4.0-80-generic</code></pre>
+<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre class="language-none"><code class="language-none">$ cp &#x2F;boot&#x2F;config-$(uname -r) .&#x2F;. config</code></pre>
+<p>将当前内核的配置文件拷贝成 .config 放到 linux-5.10.53 目录下，来提供对各种硬件的支持。<br>谨慎点可以多拷贝一份放到U盘，以防操作不慎，系统崩掉</p>
+<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre class="language-none"><code class="language-none">$ make localmodconfig</code></pre>
+<p>输入 make localmodconfig 它将询问您有关新驱动程序和内核支持的问题，如果您想定制您的内核，请按照提示一步步回答提示(有不明白的地方可以Google)。如果您不知道该如何配置，请按 Enter 键将问题的所有答案设置为默认值。</p>
+<p>Linux 内核构建系统提供了许多构建目标，了解它的最好方法可以运行 <code>make help</code></p>
+<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre class="language-none"><code class="language-none">$ make -j6</code></pre>
+
+<p>-j6 的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)<br>编译完成之后首先安装模块</p>
+<h3 id="编译完成之后首先安装模块"><a href="#编译完成之后首先安装模块" class="headerlink" title="编译完成之后首先安装模块"></a>编译完成之后首先安装模块</h3><pre class="language-none"><code class="language-none">$ sudo make modules_install -j6</code></pre>
+<h3 id="然后安装内核"><a href="#然后安装内核" class="headerlink" title="然后安装内核"></a>然后安装内核</h3><pre class="language-none"><code class="language-none">$ sudo make install</code></pre>
+<h3 id="完成后启用内核作为引导"><a href="#完成后启用内核作为引导" class="headerlink" title="完成后启用内核作为引导"></a>完成后启用内核作为引导</h3><pre class="language-none"><code class="language-none">$ sudo update-initramfs -c -k 5.10.53
+update-initramfs: Generating &#x2F;boot&#x2F;initrd.img-5.10.53</code></pre>
+<h3 id="更新一下grub"><a href="#更新一下grub" class="headerlink" title="更新一下grub"></a>更新一下grub</h3><pre class="language-none"><code class="language-none">$ sudo update-grub
+Sourcing file &#96;&#x2F;etc&#x2F;default&#x2F;grub&#39;
+Sourcing file &#96;&#x2F;etc&#x2F;default&#x2F;grub.d&#x2F;init-select.cfg&#39;
+Generating grub configuration file ...
+Found linux image: &#x2F;boot&#x2F;vmlinuz-5.10.53
+Found initrd image: &#x2F;boot&#x2F;initrd.img-5.10.53
+Found linux image: &#x2F;boot&#x2F;vmlinuz-5.8.0-63-generic
+Found initrd image: &#x2F;boot&#x2F;initrd.img-5.8.0-63-generic
+Found linux image: &#x2F;boot&#x2F;vmlinuz-5.8.0-43-generic
+Found initrd image: &#x2F;boot&#x2F;initrd.img-5.8.0-43-generic
+Found memtest86+ image: &#x2F;boot&#x2F;memtest86+.elf
+Found memtest86+ image: &#x2F;boot&#x2F;memtest86+.bin
+done</code></pre>
+
+<h3 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h3><pre class="language-none"><code class="language-none">$ sudo shutdown -r now</code></pre>
+
+<h2 id="检查内核是否安装成功"><a href="#检查内核是否安装成功" class="headerlink" title="检查内核是否安装成功"></a>检查内核是否安装成功</h2><p>如果重启顺利能进系统，运行如下命令看下内核是否安装成功</p>
+<pre class="language-none"><code class="language-none">$ uname -r
+5.10.53</code></pre>
+
+<p>到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下</p>
+<h2 id="另一种安装方式"><a href="#另一种安装方式" class="headerlink" title="另一种安装方式"></a>另一种安装方式</h2><pre class="language-none"><code class="language-none">$ make -j6 deb-pkg</code></pre>
+<p>该命令将为您编译的内核创建一个 .deb 文件。</p>
+<p>编译完成后，输入将内核安装到系统</p>
+<pre class="language-none"><code class="language-none">$ sudo dpkg -i linux-*.deb</code></pre>
+<p>现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</p>
+<pre class="language-none"><code class="language-none">$ sudo shutdown -r now</code></pre>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>ubuntu</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/archives/4a17b156.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -924,72 +990,6 @@ Press <span class="token operator">&lt;</span>enter<span class="token operator">
 
 <p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>ubuntu 20.04 lts 编译 linux kernel 5.10.53</title>
-    <url>/archives/eec576ad.html</url>
-    <content><![CDATA[<h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc --version
-gcc <span class="token punctuation">(</span>GCC<span class="token punctuation">)</span> <span class="token number">12.0</span>.0 <span class="token number">20210722</span> <span class="token punctuation">(</span>experimental<span class="token punctuation">)</span>
-Copyright <span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token number">2021</span> Free Software Foundation, Inc.
-This is <span class="token function">free</span> software<span class="token punctuation">;</span> see the <span class="token builtin class-name">source</span> <span class="token keyword">for</span> copying conditions.  There is NO
-warranty<span class="token punctuation">;</span> not even <span class="token keyword">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</code></pre>
-<p>这里默认你已经装好9以上的gcc，并配置好环境了。没GCC环境的可以参考我上篇文章 <a href="https://blog.byhi.org/archives/586372ad.html">ubuntu 20.04 lts 编译gcc12</a></p>
-<h2 id="下载Linux内核"><a href="#下载Linux内核" class="headerlink" title="下载Linux内核"></a>下载Linux内核</h2><p><a href="https://www.kernel.org/">kernel.org</a> 下载 longterm: <a href="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz">5.10.53</a> 到 <code>/home/user/Download/kernel</code></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/user/Download/kernel <span class="token operator">&amp;&amp;</span> <span class="token function">wget</span> -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz </code></pre>
-<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> -Jxf linux-5.10.53.tar.xz <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> linux-5.10.53</code></pre>
-<span id="more"></span>
-<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> fakeroot build-essential ncurses-dev xz-utils <span class="token function">bc</span> bison flex libssl-dev libncurses5-dev libelf-dev -y</code></pre>
-<p>flebx 是词法分析器，bison 是解析器<br>这里面可能会出现一些问题，按照提示做即可，涉及一些软件包版本相互依赖关系，每个机器可能问题不一样，具体可以Google.</p>
-<p>可以先用uname -r自行查看下当前内核版本</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
-<span class="token number">5.4</span>.0-80-generic</code></pre>
-<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> /boot/config-<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -r<span class="token variable">)</span></span> ./. config</code></pre>
-<p>将当前内核的配置文件拷贝成 .config 放到 linux-5.10.53 目录下，来提供对各种硬件的支持。<br>谨慎点可以多拷贝一份放到U盘，以防操作不慎，系统崩掉</p>
-<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> localmodconfig</code></pre>
-<p>输入 make localmodconfig 它将询问您有关新驱动程序和内核支持的问题，如果您想定制您的内核，请按照提示一步步回答提示(有不明白的地方可以Google)。如果您不知道该如何配置，请按 Enter 键将问题的所有答案设置为默认值。</p>
-<p>Linux 内核构建系统提供了许多构建目标，了解它的最好方法可以运行 <code>make help</code></p>
-<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6</code></pre>
-
-<p>-j6 的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)<br>编译完成之后首先安装模块</p>
-<h3 id="编译完成之后首先安装模块"><a href="#编译完成之后首先安装模块" class="headerlink" title="编译完成之后首先安装模块"></a>编译完成之后首先安装模块</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> modules_install -j6</code></pre>
-<h3 id="然后安装内核"><a href="#然后安装内核" class="headerlink" title="然后安装内核"></a>然后安装内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span></code></pre>
-<h3 id="完成后启用内核作为引导"><a href="#完成后启用内核作为引导" class="headerlink" title="完成后启用内核作为引导"></a>完成后启用内核作为引导</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-initramfs -c -k <span class="token number">5.10</span>.53
-update-initramfs: Generating /boot/initrd.img-5.10.53</code></pre>
-<h3 id="更新一下grub"><a href="#更新一下grub" class="headerlink" title="更新一下grub"></a>更新一下grub</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">update-grub</span>
-Sourcing <span class="token function">file</span> <span class="token variable"><span class="token variable">`</span>/etc/default/grub'
-Sourcing <span class="token function">file</span> <span class="token variable">`</span></span>/etc/default/grub.d/init-select.cfg'
-Generating grub configuration <span class="token function">file</span> <span class="token punctuation">..</span>.
-Found linux image: /boot/vmlinuz-5.10.53
-Found initrd image: /boot/initrd.img-5.10.53
-Found linux image: /boot/vmlinuz-5.8.0-63-generic
-Found initrd image: /boot/initrd.img-5.8.0-63-generic
-Found linux image: /boot/vmlinuz-5.8.0-43-generic
-Found initrd image: /boot/initrd.img-5.8.0-43-generic
-Found memtest86+ image: /boot/memtest86+.elf
-Found memtest86+ image: /boot/memtest86+.bin
-<span class="token keyword">done</span></code></pre>
-
-<h3 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
-
-<h2 id="检查内核是否安装成功"><a href="#检查内核是否安装成功" class="headerlink" title="检查内核是否安装成功"></a>检查内核是否安装成功</h2><p>如果重启顺利能进系统，运行如下命令看下内核是否安装成功</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
-<span class="token number">5.10</span>.53</code></pre>
-
-<p>到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下</p>
-<h2 id="另一种安装方式"><a href="#另一种安装方式" class="headerlink" title="另一种安装方式"></a>另一种安装方式</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6 deb-pkg</code></pre>
-<p>该命令将为您编译的内核创建一个 .deb 文件。</p>
-<p>编译完成后，输入将内核安装到系统</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> dpkg -i linux-*.deb</code></pre>
-<p>现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>ubuntu</tag>
-        <tag>linux</tag>
-      </tags>
   </entry>
   <entry>
     <title>GitHub+Hexo 搭建个人网站详细教程</title>
@@ -1029,7 +1029,7 @@ git config --global user.email &quot;你的GitHub注册邮箱&quot;</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#109;">&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#109;</a> ：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
@@ -2006,21 +2006,6 @@ hexo g -d</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>关于</title>
-    <url>/about/index.html</url>
-    <content><![CDATA[<p><img data-src="index/about_header.jpg" alt="图片"></p>
-<h2 id="Music"><a href="#Music" class="headerlink" title="Music"></a>Music</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=34586886&auto=0&height=66"></iframe>
-
-<h2 id="关于Blog"><a href="#关于Blog" class="headerlink" title="关于Blog"></a>关于Blog</h2><p align="center"> 博客从 <a href="/archives/4a17b156.html"  target="_blank"> 2018.02.01 </a> 至今已经运行 <span id="DaemonDay"></span> </p>
-
-<p align="center"> 本博客主要用来记录一些 杂谈/转载/笔记 之类的 </p>
-
-<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p align="center"> 联系我: aUBieWhpLm9yZw== </p>
-
-<p align="center"> 欢迎来换友链！ </p>
-]]></content>
-  </entry>
-  <entry>
     <title>404 Not Found: 该页无法显示</title>
     <url>//404.html</url>
     <content><![CDATA[<p align="center" style="margin-top:50px;"> 你可能需要：
@@ -2033,6 +2018,21 @@ hexo g -d</code></pre>
   </ul>
 
 </p>
+]]></content>
+  </entry>
+  <entry>
+    <title>关于</title>
+    <url>/about/index.html</url>
+    <content><![CDATA[<p><img data-src="index/about_header.jpg" alt="图片"></p>
+<h2 id="Music"><a href="#Music" class="headerlink" title="Music"></a>Music</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=34586886&auto=0&height=66"></iframe>
+
+<h2 id="关于Blog"><a href="#关于Blog" class="headerlink" title="关于Blog"></a>关于Blog</h2><p align="center"> 博客从 <a href="/archives/4a17b156.html"  target="_blank"> 2018.02.01 </a> 至今已经运行 <span id="DaemonDay"></span> </p>
+
+<p align="center"> 本博客主要用来记录一些 杂谈/转载/笔记 之类的 </p>
+
+<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p align="center"> 联系我: aUBieWhpLm9yZw== </p>
+
+<p align="center"> 欢迎来换友链！ </p>
 ]]></content>
   </entry>
   <entry>
