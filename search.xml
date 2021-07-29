@@ -73,99 +73,99 @@
 <p>而 Feign 是一个更加声明式的 HTTP 客户端，开发者可以像调用本地方法一样调用它，完全感觉不到是远程调用，结合 Ribbon 也可以做负载均衡。</p>
 <p>既然两个问题都得到了解决，我们就用一个例子来进一步说明一下，例子包含了微服务中最基本的三个角色（注册中心、服务提供者、服务消费者)：</p>
 <h4 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h4><p>注解 <code>@EnableEurekaServer</code> 表示该 Spring Boot 应用是一个注册中心。</p>
-<pre><code class="highlight java"><span class="meta">@EnableEurekaServer</span>
-<span class="meta">@SpringBootApplication</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaserverApplication</span> </span>&#123;
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(EurekaserverApplication.class, args);
-    &#125;
-&#125;</code></pre>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@EnableEurekaServer</span>
+<span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EurekaserverApplication</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">EurekaserverApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p><code> eureka.client.registerWithEureka: false</code> 和<code>fetchRegistry: false</code>来表明自己是一个 eureka server。</p>
-<pre><code class="highlight yaml"><span class="attr">server:</span>
-  <span class="attr">port:</span> <span class="number">8080</span>
+<pre class="language-none"><code class="language-none">server:
+  port: 8080
 
-<span class="attr">eureka:</span>
-  <span class="attr">instance:</span>
-    <span class="attr">hostname:</span> <span class="string">localhost</span>
-  <span class="attr">client:</span>
-    <span class="attr">registerWithEureka:</span> <span class="literal">false</span>
-    <span class="attr">fetchRegistry:</span> <span class="literal">false</span>
-    <span class="attr">serviceUrl:</span>
-      <span class="attr">defaultZone:</span> <span class="string">http://$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span></code></pre>
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http:&#x2F;&#x2F;$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;&#x2F;eureka&#x2F;</code></pre>
 
 <h4 id="service-hello-服务"><a href="#service-hello-服务" class="headerlink" title="service-hello 服务"></a>service-hello 服务</h4><p>注解<code>@EnableEurekaClient</code>表示他是一个 Eureka 客户端，它会在注册中心注册自己。</p>
 <p>注解<code>@RestController</code>表示这是一个控制器，<code>@RequestMapping(&quot;/hello&quot;)</code>表示匹配到请求<code>&#39;/hello&#39;</code>时会调用该方法进行响应。</p>
-<pre><code class="highlight java"><span class="meta">@SpringBootApplication</span>
-<span class="meta">@EnableEurekaClient</span>
-<span class="meta">@RestController</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceHelloApplication</span> </span>&#123;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableEurekaClient</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServiceHelloApplication</span> <span class="token punctuation">&#123;</span>
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(ServiceHelloApplication.class, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">ServiceHelloApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="meta">@Value(&quot;$&#123;server.port&#125;&quot;)</span>
-    String port;
-    <span class="meta">@RequestMapping(&quot;/hello&quot;)</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">home</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span> </span>&#123;
-        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>+name+<span class="string">&quot;,i am from port:&quot;</span> +port;
-    &#125;
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"$&#123;server.port&#125;"</span><span class="token punctuation">)</span>
+    <span class="token class-name">String</span> port<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">home</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"hello "</span><span class="token operator">+</span>name<span class="token operator">+</span><span class="token string">",i am from port:"</span> <span class="token operator">+</span>port<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>注册中心的地址为<code>http://localhost:8080/eureka/</code>，也就是上面我们定义的。服务名为<code>service-hello</code>，将会被调用者使用。</p>
-<pre><code class="highlight dts"><span class="symbol">eureka:</span>
-<span class="symbol">  client:</span>
-<span class="symbol">    serviceUrl:</span>
-<span class="symbol">      defaultZone:</span> http:<span class="comment">//localhost:8080/eureka/</span>
-<span class="symbol">server:</span>
-<span class="symbol">  port:</span> <span class="number">8081</span>
-<span class="symbol">spring:</span>
-<span class="symbol">  application:</span>
-<span class="symbol">    name:</span> service-hello</code></pre>
+<pre class="language-none"><code class="language-none">eureka:
+  client:
+    serviceUrl:
+      defaultZone: http:&#x2F;&#x2F;localhost:8080&#x2F;eureka&#x2F;
+server:
+  port: 8081
+spring:
+  application:
+    name: service-hello</code></pre>
 
 <h4 id="服务消费者-service-ribbon"><a href="#服务消费者-service-ribbon" class="headerlink" title="服务消费者 service-ribbon"></a>服务消费者 service-ribbon</h4><p>假设 service-ribbon 端口为 8082，当我们访问 <a href="http://localhost:8080/hello">http://localhost:8080/hello</a> 时，<code>HelloControler</code> 接收到请求，并调用 <code>HelloService</code> 中的<code>helloService</code>方法，<code>HelloService</code>中通过定义的<code>restTemplate</code>去调用<code>http://service-hello/hello</code>。此处要注意的是<code>@LoadBalanced</code>注解，它表示启用负载均衡。</p>
-<pre><code class="highlight java"><span class="meta">@SpringBootApplication</span>
-<span class="meta">@EnableDiscoveryClient</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceRibbonApplication</span> </span>&#123;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableDiscoveryClient</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServiceRibbonApplication</span> <span class="token punctuation">&#123;</span>
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(ServiceRibbonApplication.class, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">ServiceRibbonApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="meta">@Bean</span>
-    <span class="meta">@LoadBalanced</span>
-    <span class="function">RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;
-        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();
-    &#125;
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@LoadBalanced</span>
+    <span class="token class-name">RestTemplate</span> <span class="token function">restTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RestTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
+<span class="token punctuation">&#125;</span>
 
-<span class="meta">@Service</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloService</span> </span>&#123;
+<span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloService</span> <span class="token punctuation">&#123;</span>
 
-    <span class="meta">@Autowired</span>
-    RestTemplate restTemplate;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RestTemplate</span> restTemplate<span class="token punctuation">;</span>
 
-    <span class="function"><span class="keyword">public</span> String <span class="title">helloService</span><span class="params">(String name)</span> </span>&#123;
-        <span class="keyword">return</span> restTemplate.getForObject(<span class="string">&quot;http://service-hello/hello?name=&quot;</span>+name,String.class);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">helloService</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> restTemplate<span class="token punctuation">.</span><span class="token function">getForObject</span><span class="token punctuation">(</span><span class="token string">"http://service-hello/hello?name="</span><span class="token operator">+</span>name<span class="token punctuation">,</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
+<span class="token punctuation">&#125;</span>
 
-<span class="meta">@RestController</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloControler</span> </span>&#123;
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloControler</span> <span class="token punctuation">&#123;</span>
 
-    <span class="meta">@Autowired</span>
-    HelloService helloService;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">HelloService</span> helloService<span class="token punctuation">;</span>
 
-    <span class="meta">@RequestMapping(value = &quot;/hello&quot;)</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span></span>&#123;
-        <span class="keyword">return</span> helloService.helloService(name);
-    &#125;
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> helloService<span class="token punctuation">.</span><span class="token function">helloService</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>至此其实一个微服务应用的雏形已经搭建出来了，服务治理、服务调用可以说是「五脏六腑」中的「心脏」。</p>
 <h3 id="「心脏」的依托"><a href="#「心脏」的依托" class="headerlink" title="「心脏」的依托"></a>「心脏」的依托</h3><p>接下来我们要进一步思考的是「五脏六腑」中其余的部分，因为少了它们人也是活不久的。下面通过一个问题或需求对应一个组件的方式进行介绍。</p>
@@ -206,13 +206,13 @@
 <ul>
 <li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
 </ul>
-<pre><code class="highlight apache"><span class="attribute">net</span>.ipv<span class="number">4</span>.tcp_fastopen = <span class="number">3</span></code></pre>
+<pre class="language-none"><code class="language-none">net.ipv4.tcp_fastopen &#x3D; 3</code></pre>
 <ul>
 <li>保存，退出。</li>
 <li>执行<code>sysctl -p</code>使其生效。</li>
 <li>在<code>/etc/rc.local</code>中添加以下行，即使在重启系统后也可以使其持久化</li>
 </ul>
-<pre><code class="highlight awk">echo <span class="number">3</span> &gt; <span class="regexp">/proc/</span>sys<span class="regexp">/net/i</span>pv4/tcp_fastopen</code></pre>
+<pre class="language-none"><code class="language-none">echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_fastopen</code></pre>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -229,12 +229,12 @@
 <h2 id="开启终端"><a href="#开启终端" class="headerlink" title="开启终端"></a>开启终端</h2><p>登录Ubuntu Desktop。按<code>Ctrl + Atl + T</code>打开GNOME终端。如果由于某种原因快捷方式不起作用，请从Ubuntu Dash运行终端。</p>
 <span id="more"></span>
 
-<h2 id="检查可用更新"><a href="#检查可用更新" class="headerlink" title="检查可用更新"></a>检查可用更新</h2><pre><code class="highlight pgsql">$ sudo apt-<span class="keyword">get</span> <span class="keyword">update</span></code></pre>
+<h2 id="检查可用更新"><a href="#检查可用更新" class="headerlink" title="检查可用更新"></a>检查可用更新</h2><pre class="language-none"><code class="language-none">$ sudo apt-get update</code></pre>
 <p>该命令表示使用最新版本更新Ubuntu软件包列表。如果跳过此命令，Ubuntu很可能会安装较旧版本的软件而不是最新版本。因此，无论何时安装新软件或打算升级软件版本，最好先运行此命令。命令开头的sudo前缀指示终端以root身份运行命令，因为安装和升级软件是一种权限操作，不应由没有足够访问权限的用户执行。在sudo提示时提供用户密码，然后按Enter键。</p>
-<h2 id="通过命令行安装PuTTY"><a href="#通过命令行安装PuTTY" class="headerlink" title="通过命令行安装PuTTY"></a>通过命令行安装PuTTY</h2><pre><code class="highlight routeros">$ sudo apt-<span class="builtin-name">get</span> install -y putty</code></pre>
+<h2 id="通过命令行安装PuTTY"><a href="#通过命令行安装PuTTY" class="headerlink" title="通过命令行安装PuTTY"></a>通过命令行安装PuTTY</h2><pre class="language-none"><code class="language-none">$ sudo apt-get install -y putty</code></pre>
 
 <h2 id="启动PuTTY"><a href="#启动PuTTY" class="headerlink" title="启动PuTTY"></a>启动PuTTY</h2><p>你可以以命令行的方式，或者从Dash来启动</p>
-<pre><code class="highlight elixir"><span class="variable">$ </span>putty</code></pre>
+<pre class="language-none"><code class="language-none">$ putty</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1539280502/blog/putty.png" alt="puttyGUI"></p>
 <p>如上图所示，PuTTY提供了一系列连接类型可供选择：Raw，Telnet，Rlogin，SSH和Serial。它还附带了SCP（pscp），SFTP（psftp），RSA和DSA密钥生成器（puttygen）等命令行工具，可以从终端运行。</p>
 <h2 id="关于源码编译"><a href="#关于源码编译" class="headerlink" title="关于源码编译"></a>关于源码编译</h2><p>在此处下载<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY源文件</a>。解压源码文件压缩包，并按照压缩包中的README文件从源代码编译PuTTY。</p>
@@ -249,61 +249,61 @@
   <entry>
     <title>【防浏览器调试模式】And 防【防浏览器调试模式】</title>
     <url>/archives/8b542dc4.html</url>
-    <content><![CDATA[<h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="highlight js"><span class="comment">/*!</span>
-<span class="comment"> * source: https://github.com/sindresorhus/devtools-detect</span>
-<span class="comment"> * Abbey改写</span>
-<span class="comment"> * MIT License</span>
-<span class="comment"> * */</span>
-(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;
-<span class="meta">    &#x27;use strict&#x27;</span>;
-    <span class="keyword">var</span> devtools = &#123;
-        <span class="attr">open</span>: <span class="literal">false</span>,
-        <span class="attr">orientation</span>: <span class="literal">null</span>
-    &#125;;
-    <span class="keyword">var</span> threshold = <span class="number">160</span>;
-    <span class="keyword">var</span> emitEvent = <span class="function"><span class="keyword">function</span> (<span class="params">state, orientation</span>) </span>&#123;
-        <span class="built_in">window</span>.dispatchEvent(<span class="keyword">new</span> CustomEvent(<span class="string">&#x27;devtoolschange&#x27;</span>, &#123;
-            <span class="attr">detail</span>: &#123;
-                <span class="attr">open</span>: state,
-                <span class="attr">orientation</span>: orientation
-            &#125;
-        &#125;));
-    &#125;;
-    <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;
-        <span class="keyword">var</span> widthThreshold = <span class="built_in">window</span>.outerWidth - <span class="built_in">window</span>.innerWidth &gt; threshold;
-        <span class="keyword">var</span> heightThreshold = <span class="built_in">window</span>.outerHeight - <span class="built_in">window</span>.innerHeight &gt; threshold;
-        <span class="keyword">var</span> orientation = widthThreshold ? <span class="string">&#x27;vertical&#x27;</span> : <span class="string">&#x27;horizontal&#x27;</span>;
-        <span class="keyword">if</span> (!(heightThreshold &amp;&amp; widthThreshold) &amp;&amp; ((<span class="built_in">window</span>.Firebug &amp;&amp; <span class="built_in">window</span>.Firebug.chrome &amp;&amp; <span class="built_in">window</span>.Firebug.chrome.isInitialized) ||
-            widthThreshold || heightThreshold)) &#123;
-            <span class="keyword">if</span> (!devtools.open || devtools.orientation !== orientation) &#123;
-                emitEvent(<span class="literal">true</span>, orientation);
-            &#125;
-            devtools.open = <span class="literal">true</span>;
-            devtools.orientation = orientation;
-        &#125; <span class="keyword">else</span> &#123;
-            <span class="keyword">if</span> (devtools.open) &#123;
-                emitEvent(<span class="literal">false</span>, <span class="literal">null</span>);
-            &#125;
-            devtools.open = <span class="literal">false</span>;
-            devtools.orientation = <span class="literal">null</span>;
-        &#125;
-    &#125;, <span class="number">500</span>);
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="built_in">module</span>.exports) &#123;
-        <span class="built_in">module</span>.exports = devtools;
-    &#125; <span class="keyword">else</span> &#123;
-        <span class="built_in">window</span>.devtools = devtools;
-    &#125;
-&#125;)();
+    <content><![CDATA[<h2 id="防浏览器调试模式"><a href="#防浏览器调试模式" class="headerlink" title="防浏览器调试模式"></a>防浏览器调试模式</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="language-js" data-language="js"><code class="language-js"><span class="token comment">/*!
+ * source: https://github.com/sindresorhus/devtools-detect
+ * Abbey改写
+ * MIT License
+ * */</span>
+<span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'use strict'</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> devtools <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        open<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        orientation<span class="token operator">:</span> <span class="token keyword">null</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> threshold <span class="token operator">=</span> <span class="token number">160</span><span class="token punctuation">;</span>
+    <span class="token keyword">var</span> <span class="token function-variable function">emitEvent</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">state<span class="token punctuation">,</span> orientation</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        window<span class="token punctuation">.</span><span class="token function">dispatchEvent</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CustomEvent</span><span class="token punctuation">(</span><span class="token string">'devtoolschange'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+            detail<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+                open<span class="token operator">:</span> state<span class="token punctuation">,</span>
+                orientation<span class="token operator">:</span> orientation
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">var</span> widthThreshold <span class="token operator">=</span> window<span class="token punctuation">.</span>outerWidth <span class="token operator">-</span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">></span> threshold<span class="token punctuation">;</span>
+        <span class="token keyword">var</span> heightThreshold <span class="token operator">=</span> window<span class="token punctuation">.</span>outerHeight <span class="token operator">-</span> window<span class="token punctuation">.</span>innerHeight <span class="token operator">></span> threshold<span class="token punctuation">;</span>
+        <span class="token keyword">var</span> orientation <span class="token operator">=</span> widthThreshold <span class="token operator">?</span> <span class="token string">'vertical'</span> <span class="token operator">:</span> <span class="token string">'horizontal'</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>heightThreshold <span class="token operator">&amp;&amp;</span> widthThreshold<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>Firebug <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span>Firebug<span class="token punctuation">.</span>chrome <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span>Firebug<span class="token punctuation">.</span>chrome<span class="token punctuation">.</span>isInitialized<span class="token punctuation">)</span> <span class="token operator">||</span>
+            widthThreshold <span class="token operator">||</span> heightThreshold<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>devtools<span class="token punctuation">.</span>open <span class="token operator">||</span> devtools<span class="token punctuation">.</span>orientation <span class="token operator">!==</span> orientation<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">emitEvent</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> orientation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            devtools<span class="token punctuation">.</span>open <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            devtools<span class="token punctuation">.</span>orientation <span class="token operator">=</span> orientation<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>devtools<span class="token punctuation">.</span>open<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">emitEvent</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            devtools<span class="token punctuation">.</span>open <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            devtools<span class="token punctuation">.</span>orientation <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> module <span class="token operator">!==</span> <span class="token string">'undefined'</span> <span class="token operator">&amp;&amp;</span> module<span class="token punctuation">.</span>exports<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        module<span class="token punctuation">.</span>exports <span class="token operator">=</span> devtools<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        window<span class="token punctuation">.</span>devtools <span class="token operator">=</span> devtools<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="built_in">window</span>.addEventListener(<span class="string">&#x27;devtoolschange&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;
-     <span class="keyword">if</span> (e.detail.open)&#123;
-        <span class="keyword">debugger</span>;
-        <span class="built_in">window</span>.stop();
-     &#125;
-     <span class="keyword">else</span>&#123;
-     <span class="built_in">window</span>.location.reload();
-     &#125;
-&#125;);</code></pre>
+window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'devtoolschange'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>detail<span class="token punctuation">.</span>open<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">debugger</span><span class="token punctuation">;</span>
+        window<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">&#125;</span>
+     <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+     window<span class="token punctuation">.</span>location<span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <span id="more"></span>
 
 <p>代码地址：<a href="https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f">https://gist.github.com/abbeyokgo/afd489368aaf8bee4a694c94b3985a5f</a></p>
@@ -343,38 +343,38 @@
 <p>“黑暗网络”(Darknet) 是在网络层访问受限的框架，例如 Tor 或 I2P。私有 VPN 和网状网络 (Mesh Network) 也属于这个类别。通过这些框架的网络流量会被屏蔽。当进行数据传输时，系统只会显示您连接的黑暗网络以及您传输了多少数据，而不一定会显示您访问的网站或所涉及数据的内容。与之相反的是，直接与明网（Clean Net）或与未加密的表网服务和深网服务交互。在这种情况下，您与所请求资源之间的互联网服务提供商 (ISP) 和网络运营商可以看到您传输的流量内容。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里使用centos7作为服务器</p>
 <h3 id="首先扩展yum源"><a href="#首先扩展yum源" class="headerlink" title="首先扩展yum源"></a>首先扩展yum源</h3><p>这里推荐下面两个yum源，建议服务器初始化的时候就是用这两个yum源作为软件的扩展</p>
-<pre><code class="highlight awk">rpm -Uvh https:<span class="regexp">//</span>dl.fedoraproject.org<span class="regexp">/pub/</span>epel/epel-release-latest-<span class="number">7</span>.noarch.rpm
-rpm -Uvh https:<span class="regexp">//mi</span>rror.webtatic.com<span class="regexp">/yum/</span>el7/webtatic-release.rpm</code></pre>
+<pre class="language-none"><code class="language-none">rpm -Uvh https:&#x2F;&#x2F;dl.fedoraproject.org&#x2F;pub&#x2F;epel&#x2F;epel-release-latest-7.noarch.rpm
+rpm -Uvh https:&#x2F;&#x2F;mirror.webtatic.com&#x2F;yum&#x2F;el7&#x2F;webtatic-release.rpm</code></pre>
 
-<h3 id="然后安装nginx"><a href="#然后安装nginx" class="headerlink" title="然后安装nginx"></a>然后安装nginx</h3><pre><code class="highlight cmake">yum -y <span class="keyword">install</span> nginx</code></pre>
+<h3 id="然后安装nginx"><a href="#然后安装nginx" class="headerlink" title="然后安装nginx"></a>然后安装nginx</h3><pre class="language-none"><code class="language-none">yum -y install nginx</code></pre>
 
-<h3 id="安装tor"><a href="#安装tor" class="headerlink" title="安装tor"></a>安装tor</h3><pre><code class="highlight cmake">yum -y <span class="keyword">install</span> tor</code></pre>
+<h3 id="安装tor"><a href="#安装tor" class="headerlink" title="安装tor"></a>安装tor</h3><pre class="language-none"><code class="language-none">yum -y install tor</code></pre>
 
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="先配置nginx"><a href="#先配置nginx" class="headerlink" title="先配置nginx"></a>先配置nginx</h3><p>打开nginx的配置文件,让nginx监听8080端口</p>
-<pre><code class="highlight pgsql"><span class="keyword">server</span> &#123;
-    <span class="keyword">listen</span> <span class="number">8080</span>;
+<pre class="language-none"><code class="language-none">server &#123;
+    listen 8080;
 
-    <span class="keyword">location</span> / &#123;
-        root   /www/tor;
-        <span class="keyword">index</span>  <span class="keyword">index</span>.html <span class="keyword">index</span>.htm;
+    location &#x2F; &#123;
+        root   &#x2F;www&#x2F;tor;
+        index  index.html index.htm;
     &#125;
 &#125;</code></pre>
 
 <p>重启nginx让配置生效</p>
-<pre><code class="highlight maxima">systemctl <span class="built_in">restart</span> nginx.service</code></pre>
+<pre class="language-none"><code class="language-none">systemctl restart nginx.service</code></pre>
 
 <p>然后到 /www/tor 里写点东西测试下:</p>
-<pre><code class="highlight arcade">echo <span class="string">&quot;&lt;h2&gt;Tor site build success!&lt;/h2&gt;&quot;</span> &gt; <span class="regexp">/www/</span>tor/index.html</code></pre>
+<pre class="language-none"><code class="language-none">echo &quot;&lt;h2&gt;Tor site build success!&lt;&#x2F;h2&gt;&quot; &gt; &#x2F;www&#x2F;tor&#x2F;index.html</code></pre>
 
 <p>然后用curl访问下 <a href="http://localhost:8080/">http://localhost:8080</a>  如果可以访问，则成功生效！</p>
-<h3 id="再来配置-Tor"><a href="#再来配置-Tor" class="headerlink" title="再来配置 Tor"></a>再来配置 Tor</h3><pre><code class="highlight awk">vi <span class="regexp">/etc/</span>tor/torrc</code></pre>
+<h3 id="再来配置-Tor"><a href="#再来配置-Tor" class="headerlink" title="再来配置 Tor"></a>再来配置 Tor</h3><pre class="language-none"><code class="language-none">vi &#x2F;etc&#x2F;tor&#x2F;torrc</code></pre>
 
 <p>添加以下两行</p>
-<pre><code class="highlight awk">HiddenServiceDir <span class="regexp">/var/</span>lib<span class="regexp">/tor/</span>hidden_service/
-HiddenServicePort <span class="number">80</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></code></pre>
+<pre class="language-none"><code class="language-none">HiddenServiceDir &#x2F;var&#x2F;lib&#x2F;tor&#x2F;hidden_service&#x2F;
+HiddenServicePort 80 127.0.0.1:8080</code></pre>
 
 <p>保存配置，然后启动Tor</p>
-<pre><code class="highlight crmsh">systemctl <span class="literal">start</span> tor.service</code></pre>
+<pre class="language-none"><code class="language-none">systemctl start tor.service</code></pre>
 
 <p>当tor启动后，会创建一个私钥(/var/lib/tor/hidden_service/private_key)在你的hidden_service目录，同时创建你的 /var/lib/tor/hidden_service/hostname 里创建独一无二的.onion 主机名。</p>
 <p>然后，用<a href="https://www.torproject.org/">tor浏览器</a>访问你的.onion的域名，看是否成功。</p>
@@ -384,6 +384,76 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
       </categories>
       <tags>
         <tag>tor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>允许空白referer防盗链图片的破解</title>
+    <url>/archives/6e64e2a1.html</url>
+    <content><![CDATA[<p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
+<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">function showImg( url ) &#123;
+    var imgid &#x3D; Math.random(),
+    frameid &#x3D; &#39;frameimg&#39; + imgid;
+    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
+    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
+&#125;</code></pre>
+
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">showImg(&#39;图片地址&#39;);</code></pre>
+
+<span id="more"></span>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;  
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;  
+function showImg( url ) &#123;
+    var imgid &#x3D; Math.random(),
+    frameid &#x3D; &#39;frameimg&#39; + imgid;
+    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
+    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
+&#125;
+&lt;&#x2F;script&gt;
+
+
+ &lt;h1&gt;直接盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
+ &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot; &#x2F;&gt;&lt;br&gt;  
+ &lt;h1&gt;js破解盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
+
+ &lt;div id&#x3D;&quot;hotlinking&quot;&gt;
+
+ &lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;
+ showImg(&#39;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#39;);
+ &lt;&#x2F;script&gt;
+
+ &lt;&#x2F;div&gt;
+</code></pre>
+
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
+<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;img src&#x3D;&quot;&quot; referrerPolicy&#x3D;&quot;no-referrer&quot;&gt;</code></pre>
+
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
+<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
+<pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta name&#x3D;&quot;referrer&quot; content&#x3D;&quot;no-referrer&quot; &#x2F;&gt;</code></pre>
+
+<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
+<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
+<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
+<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
+<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
+<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
+</ul>
+<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
+<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
+<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
+<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
+<li>登录校验（如必须登录网站帐号后才能访问）；</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -443,25 +513,25 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
 <p>架构: x64</p>
 <p>文件大小：3.64 GB</p>
 <p>SHA1：179A95E6A498EFE079FB1817D1ADF5A3B7793B4D</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_<span class="number">2015</span>_ltsb_x<span class="number">64</span>_dvd_<span class="number">6848425</span>.iso|<span class="number">3907538944</span>|<span class="number">38</span>E<span class="number">47</span>AB<span class="number">92</span>B<span class="number">6</span>D<span class="number">97</span>DF<span class="number">2</span>BE<span class="number">602</span>BBC<span class="number">9969</span>D<span class="number">34</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_2015_ltsb_x64_dvd_6848425.iso|3907538944|38E47AB92B6D97DF2BE602BBC9969D34|&#x2F;</code></pre>
 
 <p>文件名：cn_windows_10_enterprise_2015_ltsb_x86_dvd_6848426.iso</p>
 <p>架构: x86</p>
 <p>文件大小：2.69 GB</p>
 <p>SHA1：B0181D56B7C699890B69A21E77EDA40884F3CF24</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_<span class="number">2015</span>_ltsb_x<span class="number">86</span>_dvd_<span class="number">6848426</span>.iso|<span class="number">2887350272</span>|<span class="number">681</span>C<span class="number">2</span>F<span class="number">80</span>A<span class="number">511</span>FCEC<span class="number">73</span>B<span class="number">7</span>A<span class="number">5</span>D<span class="number">878</span>D<span class="number">4</span>D<span class="number">9</span>EC|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_2015_ltsb_x86_dvd_6848426.iso|2887350272|681C2F80A511FCEC73B7A5D878D4D9EC|&#x2F;</code></pre>
 
 <h3 id="LTSB-2016"><a href="#LTSB-2016" class="headerlink" title="LTSB 2016"></a>LTSB 2016</h3><p>文件名：cn_windows_10_enterprise_2016_ltsb_x64_dvd_9060409.iso</p>
 <p>架构: x64</p>
 <p>文件大小：3.55 GB</p>
 <p>SHA1：9E405E950890D2A196565BCA35E152F9CFAD296D</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_<span class="number">2016</span>_ltsb_x<span class="number">64</span>_dvd_<span class="number">9060409</span>.iso|<span class="number">3821895680</span>|FF<span class="number">17</span>FF<span class="number">2</span>D<span class="number">5919</span>E<span class="number">3</span>A<span class="number">560151</span>BBC<span class="number">11</span>C<span class="number">399</span>D<span class="number">1</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_2016_ltsb_x64_dvd_9060409.iso|3821895680|FF17FF2D5919E3A560151BBC11C399D1|&#x2F;</code></pre>
 
 <p>文件名：cn_windows_10_enterprise_2016_ltsb_x86_dvd_9057089.iso</p>
 <p>架构: x86</p>
 <p>文件大小：2.62 GB</p>
 <p>SHA1：0422052F25C9C8DF983F3B287F725860AAB907CF</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_<span class="number">2016</span>_ltsb_x<span class="number">86</span>_dvd_<span class="number">9057089</span>.iso|<span class="number">2817034240</span>|<span class="number">67</span>C<span class="number">3865</span>D<span class="number">03</span>E<span class="number">765</span>BDD<span class="number">4845</span>BA<span class="number">2</span>CB<span class="number">7649</span>F<span class="number">8</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_2016_ltsb_x86_dvd_9057089.iso|2817034240|67C3865D03E765BDD4845BA2CB7649F8|&#x2F;</code></pre>
 
 <h3 id="LTSC-2019-1"><a href="#LTSC-2019-1" class="headerlink" title="LTSC 2019(1)"></a>LTSC 2019(1)</h3><p>文件名：</p>
 <ol>
@@ -471,8 +541,8 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
 <p>架构: x64</p>
 <p>文件大小：4 GB</p>
 <p>SHA1：C0B4704E1336281C98A91438C7DF0F14B8F41E46</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_ltsc_<span class="number">2019</span>_x<span class="number">64</span>_dvd_d<span class="number">17070</span>a<span class="number">8</span>.iso|<span class="number">4290967552</span>|<span class="number">9</span>E<span class="number">80</span>DED<span class="number">85693</span>E<span class="number">8</span>E<span class="number">4</span>E<span class="number">0</span>D<span class="number">76</span>E<span class="number">55</span>B<span class="number">1207221</span>|/</code></pre>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|SW_DVD<span class="number">5</span>_WIN_ENT_LTSC_<span class="number">2019</span>_<span class="number">64</span>-bit_Chinese_Simplified_MLF_X<span class="number">21</span>-<span class="number">96413</span>.ISO|<span class="number">4290967552</span>|<span class="number">9</span>E<span class="number">80</span>DED<span class="number">85693</span>E<span class="number">8</span>E<span class="number">4</span>E<span class="number">0</span>D<span class="number">76</span>E<span class="number">55</span>B<span class="number">1207221</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_ltsc_2019_x64_dvd_d17070a8.iso|4290967552|9E80DED85693E8E4E0D76E55B1207221|&#x2F;</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|SW_DVD5_WIN_ENT_LTSC_2019_64-bit_Chinese_Simplified_MLF_X21-96413.ISO|4290967552|9E80DED85693E8E4E0D76E55B1207221|&#x2F;</code></pre>
 
 <p>文件名：</p>
 <ol>
@@ -482,8 +552,8 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
 <p>架构: x86</p>
 <p>文件大小：2.88 GB</p>
 <p>SHA1：FBFEABDE20B6F49AA0C7F8FD62A5BA029505F36F</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|cn_windows_<span class="number">10</span>_enterprise_ltsc_<span class="number">2019</span>_x<span class="number">86</span>_dvd_<span class="number">62156</span>a<span class="number">9</span>a.iso|<span class="number">3095267328</span>|<span class="number">8</span>C<span class="number">81</span>DB<span class="number">85</span>E<span class="number">8</span>D<span class="number">1</span>B<span class="number">0</span>E<span class="number">431</span>CFEB<span class="number">12</span>CDBBF<span class="number">745</span>|/</code></pre>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|SW_DVD<span class="number">5</span>_WIN_ENT_LTSC_<span class="number">2019</span>_<span class="number">32</span>-bit_Chinese_Simplified_MLF_X<span class="number">21</span>-<span class="number">96412</span>.ISO|<span class="number">3095267328</span>|<span class="number">8</span>C<span class="number">81</span>DB<span class="number">85</span>E<span class="number">8</span>D<span class="number">1</span>B<span class="number">0</span>E<span class="number">431</span>CFEB<span class="number">12</span>CDBBF<span class="number">745</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|cn_windows_10_enterprise_ltsc_2019_x86_dvd_62156a9a.iso|3095267328|8C81DB85E8D1B0E431CFEB12CDBBF745|&#x2F;</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|SW_DVD5_WIN_ENT_LTSC_2019_32-bit_Chinese_Simplified_MLF_X21-96412.ISO|3095267328|8C81DB85E8D1B0E431CFEB12CDBBF745|&#x2F;</code></pre>
 
 
 <h3 id="LTSC-2019-2"><a href="#LTSC-2019-2" class="headerlink" title="LTSC 2019(2)"></a>LTSC 2019(2)</h3><p>文件名：</p>
@@ -494,8 +564,8 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
 <p>架构: x64</p>
 <p>文件大小：3.78 GB</p>
 <p>SHA1：D5B2F95E3DD658517FE7C14DF4F36DE633CA4845</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|en_windows_<span class="number">10</span>_enterprise_ltsc_<span class="number">2019</span>_x<span class="number">64</span>_dvd_be<span class="number">3</span>c<span class="number">8</span>ffb.iso|<span class="number">4056717312</span>|<span class="number">17</span>B<span class="number">62</span>BAE<span class="number">00</span>F<span class="number">77</span>F<span class="number">162247008710</span>F<span class="number">55</span>AF<span class="number">0</span>|/</code></pre>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|SW_DVD<span class="number">5</span>_WIN_ENT_LTSC_<span class="number">2019</span>_<span class="number">64</span>-bit_English_MLF_X<span class="number">21</span>-<span class="number">96425</span>.ISO|<span class="number">4056717312</span>|<span class="number">17</span>B<span class="number">62</span>BAE<span class="number">00</span>F<span class="number">77</span>F<span class="number">162247008710</span>F<span class="number">55</span>AF<span class="number">0</span>|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|en_windows_10_enterprise_ltsc_2019_x64_dvd_be3c8ffb.iso|4056717312|17B62BAE00F77F162247008710F55AF0|&#x2F;</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|SW_DVD5_WIN_ENT_LTSC_2019_64-bit_English_MLF_X21-96425.ISO|4056717312|17B62BAE00F77F162247008710F55AF0|&#x2F;</code></pre>
 
 <p>文件名：</p>
 <ol>
@@ -505,8 +575,8 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
 <p>架构: x86</p>
 <p>文件大小：2.68 GB</p>
 <p>SHA1：220EB673D4AED9F1652C1CE3D2731CD96A8138F2</p>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|en_windows_<span class="number">10</span>_enterprise_ltsc_<span class="number">2019</span>_x<span class="number">86</span>_dvd_b<span class="number">8</span>ef<span class="number">2</span>c<span class="number">2</span>b.iso|<span class="number">2881441792</span>|ED<span class="number">789</span>E<span class="number">7</span>D<span class="number">329</span>B<span class="number">4</span>F<span class="number">9</span>E<span class="number">72361</span>A<span class="number">26</span>CCE<span class="number">36</span>B<span class="number">0</span>E|/</code></pre>
-<pre><code class="highlight apache"><span class="attribute">ed2k</span>://|file|SW_DVD<span class="number">5</span>_WIN_ENT_LTSC_<span class="number">2019</span>_<span class="number">32</span>-bit_English_MLF_X<span class="number">21</span>-<span class="number">96424</span>.ISO|<span class="number">2881441792</span>|ED<span class="number">789</span>E<span class="number">7</span>D<span class="number">329</span>B<span class="number">4</span>F<span class="number">9</span>E<span class="number">72361</span>A<span class="number">26</span>CCE<span class="number">36</span>B<span class="number">0</span>E|/</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|en_windows_10_enterprise_ltsc_2019_x86_dvd_b8ef2c2b.iso|2881441792|ED789E7D329B4F9E72361A26CCE36B0E|&#x2F;</code></pre>
+<pre class="language-none"><code class="language-none">ed2k:&#x2F;&#x2F;|file|SW_DVD5_WIN_ENT_LTSC_2019_32-bit_English_MLF_X21-96424.ISO|2881441792|ED789E7D329B4F9E72361A26CCE36B0E|&#x2F;</code></pre>
 
 
 <h2 id="windows-10-各版本区别"><a href="#windows-10-各版本区别" class="headerlink" title="windows 10 各版本区别"></a>windows 10 各版本区别</h2><p>Win10家庭版、专业版、企业版、教育版功能区别一览表:</p>
@@ -546,76 +616,6 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
       </categories>
       <tags>
         <tag>windows</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>允许空白referer防盗链图片的破解</title>
-    <url>/archives/6e64e2a1.html</url>
-    <content><![CDATA[<p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
-<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre><code class="highlight JavaScript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;
-    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),
-    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;
-    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;
-    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);
-&#125;</code></pre>
-
-<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre><code class="highlight JavaScript">showImg(<span class="string">&#x27;图片地址&#x27;</span>);</code></pre>
-
-<span id="more"></span>
-
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span>  
-<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript">  </span>
-<span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span>
-<span class="javascript">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span>
-<span class="javascript">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span>
-<span class="javascript">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span>
-<span class="javascript">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span>
-<span class="javascript">&#125;</span>
-<span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
-
-
- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>直接盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
- <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>js破解盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
-
- <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hotlinking&quot;</span>&gt;</span>
-
- <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span>
-<span class="javascript"> showImg(<span class="string">&#x27;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#x27;</span>);</span>
-<span class="javascript"> </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
-
- <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
-</code></pre>
-
-<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
-<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">referrerPolicy</span>=<span class="string">&quot;no-referrer&quot;</span>&gt;</span></code></pre>
-
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
-<h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
-<pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></code></pre>
-
-<p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
-<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>
-<h2 id="使用非安全协议的http图片地址"><a href="#使用非安全协议的http图片地址" class="headerlink" title="使用非安全协议的http图片地址"></a>使用非安全协议的http图片地址</h2><h3 id="在以下几种情况下，Referer-不会被发送"><a href="#在以下几种情况下，Referer-不会被发送" class="headerlink" title="在以下几种情况下，Referer 不会被发送"></a>在以下几种情况下，Referer 不会被发送</h3><ul>
-<li>来源页面采用的协议为表示本地文件的 file 或者 data URI</li>
-<li>当前请求页面采用的是非安全协议，而来源页面采用的是安全协议【HTTPS】</li>
-<li>为整个页面设置 <meta name=”referrer” content=”no-referrer” /></li>
-<li>为单个链接设置 <a rel=”noreferrer” href=”your-website-url” /></li>
-</ul>
-<p>其中第二种情况，如果你的网站开启了 SSL，可以使用 HTTP 的图片链接，就可以正常访问了。</p>
-<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><p>要牺牲你的网站的安全性，因为浏览器会检测到你的网站内容里面有普通的 HTTP 链接，就会导致不可信【尽管存在有效的证书，也没有用】，小绿锁会消失，并给出警告。</p>
-<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><ol>
-<li>不允许referer为空（不建议，因在某些开启隐私模式的浏览器中，或https页面引用下，referer是空的）;</li>
-<li>地址变更（lighttpd的是根据有效时间，nginx的根据是md5);</li>
-<li>登录校验（如必须登录网站帐号后才能访问）；</li>
-</ol>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -858,45 +858,45 @@ HiddenServicePort <span class="number">80</span> <span class="number">127.0</spa
     <title>ubuntu 20.04 lts 编译gcc12</title>
     <url>/archives/586372ad.html</url>
     <content><![CDATA[<p>这里默认你系统已经安装了gcc,没安装的运行下面的指令</p>
-<pre><code class="highlight powershell"><span class="variable">$</span> sudo apt install <span class="literal">-y</span> <span class="built_in">build-essential</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y build-essential</code></pre>
 
-<h2 id="先准备编译环境"><a href="#先准备编译环境" class="headerlink" title="先准备编译环境"></a>先准备编译环境</h2><pre><code class="highlight cmake">$ sudo apt <span class="keyword">install</span> -y git libmpc-dev flex</code></pre>
+<h2 id="先准备编译环境"><a href="#先准备编译环境" class="headerlink" title="先准备编译环境"></a>先准备编译环境</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y <span class="token function">git</span> libmpc-dev flex</code></pre>
 
 <p>git 可以从gcc官网代码仓库clone gcc源代码</p>
-<pre><code class="highlight awk">$ git clone git:<span class="regexp">//g</span>cc.gnu.org<span class="regexp">/git/g</span>cc.git gcc &amp;&amp; pushd gcc/</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">git</span> clone git://gcc.gnu.org/git/gcc.git gcc <span class="token operator">&amp;&amp;</span> <span class="token function">pushd</span> gcc/</code></pre>
 
 <h2 id="配置编译环境"><a href="#配置编译环境" class="headerlink" title="配置编译环境"></a>配置编译环境</h2><p>我是64bit环境需要使用 <code>--disable-multilibx</code></p>
-<pre><code class="highlight gauss">$ ./configure --prefix=/usr/<span class="keyword">local</span>/gcc12 --with-<span class="keyword">system</span>-zlib --<span class="keyword">disable</span>-multilib
-$ <span class="built_in">make</span> -j6 <span class="meta"># 编译，很耗时</span>
-$ sudo <span class="built_in">make</span> install <span class="meta"># 安装到 /usr/local/gcc12 </span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ ./configure --prefix<span class="token operator">=</span>/usr/local/gcc12 --with-system-zlib --disable-multilib
+$ <span class="token function">make</span> -j6 <span class="token comment"># 编译，很耗时</span>
+$ <span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span> <span class="token comment"># 安装到 /usr/local/gcc12 </span></code></pre>
 <p>将 <code>/usr/local/gcc12/bin</code> 下的可执行程序全都软链接到 <code>/usr/bin/</code></p>
-<pre><code class="highlight gradle">$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcc /u</span>sr<span class="regexp">/bin/g</span>cc-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/g++ /u</span>sr<span class="regexp">/bin/g</span>++-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcc-ar /u</span>sr<span class="regexp">/bin/g</span>cc-ar-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcc-nm /u</span>sr<span class="regexp">/bin/g</span>cc-nm-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcc-ranlib /u</span>sr<span class="regexp">/bin/g</span>cc-ranlib-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcov /u</span>sr<span class="regexp">/bin/g</span>cov-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcov-dump /u</span>sr<span class="regexp">/bin/g</span>cov-<span class="keyword">dump</span>-<span class="number">12</span>
-$ sudo ln -sf <span class="regexp">/usr/</span>local<span class="regexp">/gcc12/</span>bin<span class="regexp">/gcov-tool /u</span>sr<span class="regexp">/bin/g</span>cov-tool-<span class="number">12</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc /usr/bin/gcc-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/g++ /usr/bin/g++-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-ar /usr/bin/gcc-ar-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-nm /usr/bin/gcc-nm-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcc-ranlib /usr/bin/gcc-ranlib-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov /usr/bin/gcov-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov-dump /usr/bin/gcov-dump-12
+$ <span class="token function">sudo</span> <span class="token function">ln</span> -sf /usr/local/gcc12/bin/gcov-tool /usr/bin/gcov-tool-12</code></pre>
 <span id="more"></span>
 
 <h2 id="配置多版本GCC共存"><a href="#配置多版本GCC共存" class="headerlink" title="配置多版本GCC共存"></a>配置多版本GCC共存</h2><p>因为系统中原来就有个gcc9，咱来配个多版本共存环境<br>以下命令为每个版本配置替代版本，并将优先级与之关联。auto mode版本是优先级最高的版本，在本例中配成 gcc-12</p>
-<pre><code class="highlight awk">$ sudo update-alternatives --install <span class="regexp">/usr/</span>bin<span class="regexp">/gcc gcc /u</span>sr<span class="regexp">/bin/g</span>cc-<span class="number">12</span> <span class="number">120</span> --slave <span class="regexp">/usr/</span>bin<span class="regexp">/gcov gcov /u</span>sr<span class="regexp">/bin/g</span>cov-<span class="number">12</span>
-$ sudo update-alternatives --install <span class="regexp">/usr/</span>bin<span class="regexp">/g++ g++ /u</span>sr<span class="regexp">/bin/g</span>++-<span class="number">12</span> <span class="number">120</span>
-$ sudo update-alternatives --install <span class="regexp">/usr/</span>bin<span class="regexp">/gcc gcc /u</span>sr<span class="regexp">/bin/g</span>cc-<span class="number">9</span> <span class="number">90</span> --slave <span class="regexp">/usr/</span>bin<span class="regexp">/gcov gcov /u</span>sr<span class="regexp">/bin/g</span>cov-<span class="number">9</span>
-$ sudo update-alternatives --install <span class="regexp">/usr/</span>bin<span class="regexp">/g++ g++ /u</span>sr<span class="regexp">/bin/g</span>++-<span class="number">9</span> <span class="number">90</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 <span class="token number">120</span> --slave /usr/bin/gcov gcov /usr/bin/gcov-12
+$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 <span class="token number">120</span>
+$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 <span class="token number">90</span> --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+$ <span class="token function">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 <span class="token number">90</span></code></pre>
 <p>以后，如果要更改默认版本，请使用以下update-alternatives命令：</p>
-<pre><code class="highlight asciidoc">$ sudo update-alternatives --config gcc
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-alternatives --config gcc
 
-There are 2 choices for the alternative gcc (providing /usr/bin/gcc).
+There are <span class="token number">2</span> choices <span class="token keyword">for</span> the alternative gcc <span class="token punctuation">(</span>providing /usr/bin/gcc<span class="token punctuation">)</span>.
 
-<span class="section">  Selection    Path             Priority   Status</span>
-<span class="section">------------------------------------------------------------</span>
-<span class="bullet">* </span>0            /usr/bin/gcc-12   120       auto mode
-<span class="code">  1            /usr/bin/gcc-12   120       manual mode</span>
-<span class="code">  2            /usr/bin/gcc-9    90        manual mode</span>
+  Selection    Path             Priority   Status
+------------------------------------------------------------
+* <span class="token number">0</span>            /usr/bin/gcc-12   <span class="token number">120</span>       auto mode
+  <span class="token number">1</span>            /usr/bin/gcc-12   <span class="token number">120</span>       manual mode
+  <span class="token number">2</span>            /usr/bin/gcc-9    <span class="token number">90</span>        manual mode
 
-Press &lt;enter&gt; to keep the current choice[*], or type selection number:</code></pre>
+Press <span class="token operator">&lt;</span>enter<span class="token operator">></span> to keep the current choice<span class="token punctuation">[</span>*<span class="token punctuation">]</span>, or <span class="token builtin class-name">type</span> selection number: </code></pre>
 <p>系统将为您提供Ubuntu系统上所有已安装的GCC版本的列表。输入您要用作默认版本的版本号，然后按Enter。<br>该命令将创建指向GCC和G ++特定版本的符号链接。</p>
 ]]></content>
       <categories>
@@ -908,58 +908,80 @@ Press &lt;enter&gt; to keep the current choice[*], or type selection number:</co
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/archives/4a17b156.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo server</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo generate</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo deploy</code></pre>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>ubuntu 20.04 lts 编译 linux kernel 5.10.53</title>
     <url>/archives/eec576ad.html</url>
-    <content><![CDATA[<h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre><code class="highlight gams"><span class="symbol">$</span> gcc --version
-gcc (GCC) <span class="number">12.0</span><span class="number">.0</span> <span class="number">20210722</span> (experimental)
-Copyright (C) <span class="number">2021</span> <span class="keyword">Free</span> Software Foundation, Inc.
-This is <span class="keyword">free</span> software; see the source <span class="keyword">for</span> copying conditions.  There is <span class="keyword">NO</span>
-warranty; <span class="keyword">not</span> even <span class="keyword">for</span> MERCHANTABILITY <span class="keyword">or</span> FITNESS <span class="keyword">FOR</span> A PARTICULAR PURPOSE.</code></pre>
+    <content><![CDATA[<h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc --version
+gcc <span class="token punctuation">(</span>GCC<span class="token punctuation">)</span> <span class="token number">12.0</span>.0 <span class="token number">20210722</span> <span class="token punctuation">(</span>experimental<span class="token punctuation">)</span>
+Copyright <span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token number">2021</span> Free Software Foundation, Inc.
+This is <span class="token function">free</span> software<span class="token punctuation">;</span> see the <span class="token builtin class-name">source</span> <span class="token keyword">for</span> copying conditions.  There is NO
+warranty<span class="token punctuation">;</span> not even <span class="token keyword">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</code></pre>
 <p>这里默认你已经装好9以上的gcc，并配置好环境了。没GCC环境的可以参考我上篇文章 <a href="https://blog.byhi.org/archives/586372ad.html">ubuntu 20.04 lts 编译gcc12</a></p>
 <h2 id="下载Linux内核"><a href="#下载Linux内核" class="headerlink" title="下载Linux内核"></a>下载Linux内核</h2><p><a href="https://www.kernel.org/">kernel.org</a> 下载 longterm: <a href="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz">5.10.53</a> 到 <code>/home/user/Download/kernel</code></p>
-<pre><code class="highlight awk">cd <span class="regexp">/home/u</span>ser<span class="regexp">/Download/</span>kernel &amp;&amp; wget -c https:<span class="regexp">//</span>cdn.kernel.org<span class="regexp">/pub/</span>linux<span class="regexp">/kernel/</span>v5.x/linux-<span class="number">5.10</span>.<span class="number">53</span>.tar.xz</code></pre>
-<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre><code class="highlight apache"><span class="attribute">tar</span> -Jxf linux-<span class="number">5</span>.<span class="number">10</span>.<span class="number">53</span>.tar.xz &amp;&amp; cd linux-<span class="number">5</span>.<span class="number">10</span>.<span class="number">53</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/user/Download/kernel <span class="token operator">&amp;&amp;</span> <span class="token function">wget</span> -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz </code></pre>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> -Jxf linux-5.10.53.tar.xz <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> linux-5.10.53</code></pre>
 <span id="more"></span>
-<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre><code class="highlight q">$ sudo apt-<span class="built_in">get</span> install fakeroot build-essential ncurses-<span class="built_in">dev</span> xz-utils bc bison flex libssl-<span class="built_in">dev</span> libncurses5-<span class="built_in">dev</span> libelf-<span class="built_in">dev</span> -y</code></pre>
+<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> fakeroot build-essential ncurses-dev xz-utils <span class="token function">bc</span> bison flex libssl-dev libncurses5-dev libelf-dev -y</code></pre>
 <p>flebx 是词法分析器，bison 是解析器<br>这里面可能会出现一些问题，按照提示做即可，涉及一些软件包版本相互依赖关系，每个机器可能问题不一样，具体可以Google.</p>
 <p>可以先用uname -r自行查看下当前内核版本</p>
-<pre><code class="highlight ada">$ uname -r
-<span class="number">5.4</span>.<span class="number">0</span>-<span class="number">80</span>-<span class="keyword">generic</span></code></pre>
-<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre><code class="highlight powershell"><span class="variable">$</span> <span class="built_in">cp</span> /boot/config-<span class="variable">$</span>(uname <span class="literal">-r</span>) ./. config</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
+<span class="token number">5.4</span>.0-80-generic</code></pre>
+<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> /boot/config-<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -r<span class="token variable">)</span></span> ./. config</code></pre>
 <p>将当前内核的配置文件拷贝成 .config 放到 linux-5.10.53 目录下，来提供对各种硬件的支持。<br>谨慎点可以多拷贝一份放到U盘，以防操作不慎，系统崩掉</p>
-<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre><code class="highlight elixir"><span class="variable">$ </span>make localmodconfig</code></pre>
+<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> localmodconfig</code></pre>
 <p>输入 make localmodconfig 它将询问您有关新驱动程序和内核支持的问题，如果您想定制您的内核，请按照提示一步步回答提示(有不明白的地方可以Google)。如果您不知道该如何配置，请按 Enter 键将问题的所有答案设置为默认值。</p>
 <p>Linux 内核构建系统提供了许多构建目标，了解它的最好方法可以运行 <code>make help</code></p>
-<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre><code class="highlight elixir"><span class="variable">$ </span>make -j6</code></pre>
-<pre><div class="caption"><span>的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)</span></div><code class="highlight -j6```">编译完成之后首先安装模块
+<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6</code></pre>
 
-### 编译完成之后首先安装模块</code></pre>
-<p>$ sudo make modules_install -j6</p>
-<pre><code class="highlight clean">### 然后安装内核</code></pre>
-<p>$ sudo make install</p>
-<pre><code class="highlight clean">### 完成后启用内核作为引导</code></pre>
-<p>$ sudo update-initramfs -c -k 5.10.53<br>update-initramfs: Generating /boot/initrd.img-5.10.53</p>
-<pre><code class="highlight clean">### 更新一下grub</code></pre>
-<p>$ sudo update-grub<br>Sourcing file <code>/etc/default/grub&#39; Sourcing file </code>/etc/default/grub.d/init-select.cfg’<br>Generating grub configuration file …<br>Found linux image: /boot/vmlinuz-5.10.53<br>Found initrd image: /boot/initrd.img-5.10.53<br>Found linux image: /boot/vmlinuz-5.8.0-63-generic<br>Found initrd image: /boot/initrd.img-5.8.0-63-generic<br>Found linux image: /boot/vmlinuz-5.8.0-43-generic<br>Found initrd image: /boot/initrd.img-5.8.0-43-generic<br>Found memtest86+ image: /boot/memtest86+.elf<br>Found memtest86+ image: /boot/memtest86+.bin<br>done</p>
-<pre><code class="highlight clean">### 重启</code></pre>
-<p>$ sudo shutdown -r now</p>
-<pre><code class="highlight clean">
-## 检查内核是否安装成功
+<p>-j6 的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)<br>编译完成之后首先安装模块</p>
+<h3 id="编译完成之后首先安装模块"><a href="#编译完成之后首先安装模块" class="headerlink" title="编译完成之后首先安装模块"></a>编译完成之后首先安装模块</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> modules_install -j6</code></pre>
+<h3 id="然后安装内核"><a href="#然后安装内核" class="headerlink" title="然后安装内核"></a>然后安装内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span></code></pre>
+<h3 id="完成后启用内核作为引导"><a href="#完成后启用内核作为引导" class="headerlink" title="完成后启用内核作为引导"></a>完成后启用内核作为引导</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-initramfs -c -k <span class="token number">5.10</span>.53
+update-initramfs: Generating /boot/initrd.img-5.10.53</code></pre>
+<h3 id="更新一下grub"><a href="#更新一下grub" class="headerlink" title="更新一下grub"></a>更新一下grub</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">update-grub</span>
+Sourcing <span class="token function">file</span> <span class="token variable"><span class="token variable">`</span>/etc/default/grub'
+Sourcing <span class="token function">file</span> <span class="token variable">`</span></span>/etc/default/grub.d/init-select.cfg'
+Generating grub configuration <span class="token function">file</span> <span class="token punctuation">..</span>.
+Found linux image: /boot/vmlinuz-5.10.53
+Found initrd image: /boot/initrd.img-5.10.53
+Found linux image: /boot/vmlinuz-5.8.0-63-generic
+Found initrd image: /boot/initrd.img-5.8.0-63-generic
+Found linux image: /boot/vmlinuz-5.8.0-43-generic
+Found initrd image: /boot/initrd.img-5.8.0-43-generic
+Found memtest86+ image: /boot/memtest86+.elf
+Found memtest86+ image: /boot/memtest86+.bin
+<span class="token keyword">done</span></code></pre>
 
-如果重启顺利能进系统，运行如下命令看下内核是否安装成功
-</code></pre>
-<p>$ uname -r<br>5.10.53</p>
-<pre><code class="highlight clean">
-到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下
+<h3 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
 
-## 另一种安装方式</code></pre>
-<p>$ make -j6 deb-pkg<br>该命令将为您编译的内核创建一个 .deb 文件。</p>
-<pre><code class="highlight">编译完成后，输入将内核安装到系统</code></pre>
-<p>$ sudo dpkg -i linux-*.deb</p>
-<pre><code class="highlight">现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</code></pre>
-<p>$ sudo shutdown -r now</p>
-<pre><code>
-</code></pre>
+<h2 id="检查内核是否安装成功"><a href="#检查内核是否安装成功" class="headerlink" title="检查内核是否安装成功"></a>检查内核是否安装成功</h2><p>如果重启顺利能进系统，运行如下命令看下内核是否安装成功</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
+<span class="token number">5.10</span>.53</code></pre>
+
+<p>到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下</p>
+<h2 id="另一种安装方式"><a href="#另一种安装方式" class="headerlink" title="另一种安装方式"></a>另一种安装方式</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6 deb-pkg</code></pre>
+<p>该命令将为您编译的内核创建一个 .deb 文件。</p>
+<p>编译完成后，输入将内核安装到系统</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> dpkg -i linux-*.deb</code></pre>
+<p>现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -968,24 +990,6 @@ warranty; <span class="keyword">not</span> even <span class="keyword">for</span>
         <tag>ubuntu</tag>
         <tag>linux</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/archives/4a17b156.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="highlight bash">$ hexo new <span class="string">&quot;My New Post&quot;</span></code></pre>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="highlight bash">$ hexo server</code></pre>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="highlight bash">$ hexo generate</code></pre>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="highlight bash">$ hexo deploy</code></pre>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>GitHub+Hexo 搭建个人网站详细教程</title>
@@ -1017,15 +1021,15 @@ warranty; <span class="keyword">not</span> even <span class="keyword">for</span>
 <h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>什么是Git ?简单来说Git是开源的分布式版本控制系统，用于敏捷高效地处理项目。我们网站在本地搭建好了，需要使用Git同步到GitHub上。如果想要了解Git的细节，参看廖雪峰老师的<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git教程</a>：Git教程  从Git官网下载：<a href="https://git-scm.com/downloads">Git - Downloading Package</a> 现在的机子基本都是64位的，选择64位的安装包，下载后安装，在命令行里输入git测试是否安装成功，若安装失败，参看其他详细的Git安装教程。安装成功后，将你的Git与GitHub帐号绑定，鼠标右击打开Git Bash</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523740302/blog/v2-8b1cbe253d6e0301bd9a68c6f98a9f52_hd.jpg" alt="鼠标右击打开Git Bash" title="鼠标右击打开Git Bash"></p>
 <p>或者在菜单里搜索Git Bash，设置user.name和user.email配置信息：</p>
-<pre><code class="highlight verilog">git <span class="keyword">config</span> --<span class="keyword">global</span> user<span class="variable">.name</span> <span class="string">&quot;你的GitHub用户名&quot;</span>
-git <span class="keyword">config</span> --<span class="keyword">global</span> user<span class="variable">.email</span> <span class="string">&quot;你的GitHub注册邮箱&quot;</span></code></pre>
+<pre class="language-none"><code class="language-none">git config --global user.name &quot;你的GitHub用户名&quot;
+git config --global user.email &quot;你的GitHub注册邮箱&quot;</code></pre>
 <p>生成ssh密钥文件：</p>
-<pre><code class="highlight excel">ssh-keygen -<span class="built_in">t</span> rsa -C <span class="string">&quot;你的GitHub注册邮箱&quot;</span></code></pre>
+<pre class="language-none"><code class="language-none">ssh-keygen -t rsa -C &quot;你的GitHub注册邮箱&quot;</code></pre>
 <p>然后直接三个回车即可，默认不需要设置密码<br>然后找到生成的.ssh的文件夹中的id_rsa.pub密钥，将内容全部复制</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> ：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
@@ -1036,14 +1040,14 @@ git <span class="keyword">config</span> --<span class="keyword">global</span> us
 <h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Hexo就是我们的个人博客网站的框架， 这里需要自己在电脑常里创建一个文件夹，可以命名为Blog，Hexo框架与以后你自己发布的网页都在这个文件夹中。创建好后，进入文件夹中，按住shift键，右击鼠标点击命令行</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-a5450a466c0927c25dff8ad6f1d2046c_hd.jpg"></p>
 <p>使用npm命令安装Hexo，输入：</p>
-<pre><code class="highlight avrasm">npm install -g hexo-<span class="keyword">cli</span></code></pre>
+<pre class="language-none"><code class="language-none">npm install -g hexo-cli</code></pre>
 
 <p>这个安装时间较长耐心等待，安装完成后，初始化我们的博客，输入：</p>
-<pre><code class="highlight csharp">hexo <span class="keyword">init</span> blog</code></pre>
+<pre class="language-none"><code class="language-none">hexo init blog</code></pre>
 
 <p>注意，这里的命令都是作用在刚刚创建的Blog文件夹中。</p>
 <p>为了检测我们的网站雏形，分别按顺序输入以下三条命令：</p>
-<pre><code class="highlight haxe">hexo <span class="keyword">new</span> <span class="type">test_my_site</span>
+<pre class="language-none"><code class="language-none">hexo new test_my_site
 
 hexo g
 
@@ -1067,16 +1071,16 @@ hexo s</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523745633/blog/2018-04-15_063959.png"></p>
 <p>保存站点配置文件。</p>
 <p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：</p>
-<pre><code class="highlight ada">npm install hexo-deployer-git <span class="comment">--save</span></code></pre>
+<pre class="language-none"><code class="language-none">npm install hexo-deployer-git --save</code></pre>
 
 <p>这时，我们分别输入三条命令：</p>
-<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
-<span class="attribute">hexo g</span>
-<span class="attribute">hexo d</span></code></pre>
+<pre class="language-none"><code class="language-none">hexo clean
+hexo g
+hexo d</code></pre>
 
 <p>或者</p>
-<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
-<span class="attribute">hexo g -d</span></code></pre>
+<pre class="language-none"><code class="language-none">hexo clean
+hexo g -d</code></pre>
 
 <p>其实第三条的 hexo d 就是部署网站命令，d是deploy的缩写。完成后，打开浏览器，在地址栏输入你的放置个人网站的仓库路径，即 <a href="http://xxxx.github.io/">http://xxxx.github.io</a> 。你就会发现你的博客已经上线了，可以在网络上被访问了。</p>
 <h3 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h3><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的，比如: xxxx.github.io 而我们想使用我们自己的个性化域名，这就需要绑定我们自己的域名。这里演示的是在阿里云万网的域名绑定，在国内主流的域名代理厂商也就阿里云和腾讯云。登录到阿里云，进入管理控制台的域名列表，找到你的个性化域名，进入解析</p>
@@ -1089,12 +1093,12 @@ hexo s</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-79abfff91af3f520e24cb91acf6aa994_hd.jpg"></p>
 <p>保存，命名为CNAME ，注意保存成 <em>所有文件</em> 而不是 <em>txt文件</em>。</p>
 <p>完成这三步，进入blog目录中，按住shift键右击打开命令行，依次输入：</p>
-<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
-<span class="attribute">hexo g -d</span></code></pre>
+<pre class="language-none"><code class="language-none">hexo clean
+hexo g -d</code></pre>
 
 <p>这时候打开浏览器在地址栏输入你的个性化域名将会直接进入你自己搭建的网站。</p>
 <h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>如果你不喜欢Hexo默认的主题，可以更换不同的主题，主题传送门：<a href="https://hexo.io/themes/">Themes</a> 我自己使用的是Next主题，可以在blog目录中的themes文件夹中查看你自己主题是什么。现在把默认主题更改成Next主题，在blog目录中（就是命令行的位置处于blog目录）打开命令行输入：</p>
-<pre><code class="highlight awk">git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/iissnan/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></code></pre>
+<pre class="language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;iissnan&#x2F;hexo-theme-next themes&#x2F;next</code></pre>
 <p>这是将Next主题下载到blog目录的themes主题下的next文件夹中。打开 <em>站点</em> 的_config.yml配置文件，修改主题为next</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-b1997377e82408cb15b485c65ae00f70_hd.jpg"></p>
 <p>打开 <em>主题</em> 的_config.yml配置文件，不是站点主题文件，找到Scheme Settings</p>
@@ -1102,7 +1106,7 @@ hexo s</code></pre>
 <p>next主题有三个样式，我用的是Pisces，你们可以自己试试看，选择你自己喜欢的样式（只需要把行首的#去除，#是注释），选择好后，再次部署网站，hexo g、hexo d，查看效果。选择其他主题，按照上述过程即可实现。</p>
 <h3 id="初识Markdown语法"><a href="#初识Markdown语法" class="headerlink" title="初识Markdown语法"></a>初识Markdown语法</h3><p>Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。Markdown语法简洁明了、容易掌握，而且功能比纯文本更强，因此写博客使用它，可以让用户更加专注的写文章，而不需要费尽心力的考虑样式，相对于html已经算是轻量级语言，像有道云笔记也支持Markdown写作。并且Markdown完全兼容html，也就是可以在文章里直接插入html代码。比如给博文添加音乐，就可以直接把音乐的外链html代码插入文章中。具体语法参看：<a href="https://www.appinn.com/markdown/">Markdown 语法说明(简体中文版)</a> 可以说十分钟就可以入门。当然，工欲善其事必先利其器，选择一个好的Markdown编辑器也是非常重要的，这里推荐 <a href="http://code52.org/DownmarkerWPF/">MarkPad</a> 和 <a href="http://www.markdownpad.com/">The Markdown Editor for Windows</a> 以及前端神器 <a href="https://atom.io/">Atom</a> 和 <a href="https://code.visualstudio.com/">VScode</a> ，这是带有预览效果的编辑器，也可以使用本地的文本编辑器，更多的Markdown的语法与编辑器自己可以搜索了解。</p>
 <h3 id="发布文章"><a href="#发布文章" class="headerlink" title="发布文章"></a>发布文章</h3><p>我们开始正式发布上线博客文章，在命令行中输入：</p>
-<pre><code class="highlight excel">hexo <span class="built_in">n</span> <span class="string">&quot;博客名字&quot;</span></code></pre>
+<pre class="language-none"><code class="language-none">hexo n &quot;博客名字&quot;</code></pre>
 
 <p>我们会发现在blog根目录下的source文件夹中的_post文件夹中多了一个 <em>博客名字.md</em> 文件，使用Markdown编辑器打开，就可以开始你的个人博客之旅了，Markdown常用的样式也就十来种，完全能够满足一般博文的样式要求，这是我的一篇博文内容示例：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-4f96cd03a88e68b8ae86c38bfb0808ac_hd.jpg"></p>
@@ -1159,10 +1163,10 @@ hexo s</code></pre>
 <li>设置背景</li>
 </ul>
 <p>把你挑选的背景图片命名为：background.jpg，放在blog\themes\next\source\images里，在blog\themes\next\source\css_custom文件的custom.styl首部添加：</p>
-<pre><code class="highlight css"><span class="selector-tag">body</span> &#123;
-  <span class="attribute">background</span>:<span class="built_in">url</span>(<span class="string">/images/background.jpg</span>);
-  <span class="attribute">background-attachment</span>: fixed;
-&#125;</code></pre>
+<pre class="language-css" data-language="css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/background.jpg<span class="token punctuation">)</span></span><span class="token punctuation">;</span>
+  <span class="token property">background-attachment</span><span class="token punctuation">:</span> fixed<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>background-attachment: fixed;是固定背景图片。</p>
 <p>这是设置一张静态图片作为背景，其实Next主题自带有动态的背景效果，修改主题配置文件中的canvas_nest: false 为 canvas_nest: true 即可。</p>
@@ -1172,7 +1176,7 @@ hexo s</code></pre>
 <p>默认的侧栏菜单条目有：首页、归档、标签、关于、搜索等。如果你想要增加其他的菜单条目，修改主题配置文件_config.yml里的Menu Settings中的menu和menu_icons两个地方</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-666a22fedbba95d979eeb26e52fc29e2_hd.jpg"></p>
 <p>其中menu里是配置菜单项对应的页面位置（如：/love），menu_icons对应菜单项的图标，这里的图标是来自于Font Awesome ，所以你需要在<a href="https://fontawesome.com/">Font Awesome</a>网站上找到你需要的icon，然后把该icon的名字写在menu_icons对应菜单名后面，注意冒号有一个英文输入状态的空格。设置好后，在命令行里输入：</p>
-<pre><code class="highlight haxe">hexo <span class="keyword">new</span> <span class="type">page</span> <span class="string">&quot;你所要增加的菜单项名称（要和你在menu中的填写要匹配）&quot;</span></code></pre>
+<pre class="language-none"><code class="language-none">hexo new page &quot;你所要增加的菜单项名称（要和你在menu中的填写要匹配）&quot;</code></pre>
 
 <p>新建的页面在博客根目录下的source文件里，这时你就可以对新建的页面自定义设计。</p>
 <p>还有更多的进阶个性化设置，如SEO、评论系统、个人头像、博客分享、订阅功能、High功能、404网页设置等，可以参看：</p>
@@ -2002,6 +2006,21 @@ hexo s</code></pre>
       </tags>
   </entry>
   <entry>
+    <title>关于</title>
+    <url>/about/index.html</url>
+    <content><![CDATA[<p><img data-src="index/about_header.jpg" alt="图片"></p>
+<h2 id="Music"><a href="#Music" class="headerlink" title="Music"></a>Music</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=34586886&auto=0&height=66"></iframe>
+
+<h2 id="关于Blog"><a href="#关于Blog" class="headerlink" title="关于Blog"></a>关于Blog</h2><p align="center"> 博客从 <a href="/archives/4a17b156.html"  target="_blank"> 2018.02.01 </a> 至今已经运行 <span id="DaemonDay"></span> </p>
+
+<p align="center"> 本博客主要用来记录一些 杂谈/转载/笔记 之类的 </p>
+
+<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p align="center"> 联系我: aUBieWhpLm9yZw== </p>
+
+<p align="center"> 欢迎来换友链！ </p>
+]]></content>
+  </entry>
+  <entry>
     <title>404 Not Found: 该页无法显示</title>
     <url>//404.html</url>
     <content><![CDATA[<p align="center" style="margin-top:50px;"> 你可能需要：
@@ -2025,20 +2044,5 @@ hexo s</code></pre>
     <title>tags</title>
     <url>/tags/index.html</url>
     <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>关于</title>
-    <url>/about/index.html</url>
-    <content><![CDATA[<p><img data-src="index/about_header.jpg" alt="图片"></p>
-<h2 id="Music"><a href="#Music" class="headerlink" title="Music"></a>Music</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=34586886&auto=0&height=66"></iframe>
-
-<h2 id="关于Blog"><a href="#关于Blog" class="headerlink" title="关于Blog"></a>关于Blog</h2><p align="center"> 博客从 <a href="/archives/4a17b156.html"  target="_blank"> 2018.02.01 </a> 至今已经运行 <span id="DaemonDay"></span> </p>
-
-<p align="center"> 本博客主要用来记录一些 杂谈/转载/笔记 之类的 </p>
-
-<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><p align="center"> 联系我: aUBieWhpLm9yZw== </p>
-
-<p align="center"> 欢迎来换友链！ </p>
-]]></content>
   </entry>
 </search>

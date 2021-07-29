@@ -52,6 +52,10 @@
 
 
 
+
+
+  <meta name="keywords" content=",," />
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -322,99 +326,99 @@
 <p>而 Feign 是一个更加声明式的 HTTP 客户端，开发者可以像调用本地方法一样调用它，完全感觉不到是远程调用，结合 Ribbon 也可以做负载均衡。</p>
 <p>既然两个问题都得到了解决，我们就用一个例子来进一步说明一下，例子包含了微服务中最基本的三个角色（注册中心、服务提供者、服务消费者)：</p>
 <h4 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h4><p>注解 <code>@EnableEurekaServer</code> 表示该 Spring Boot 应用是一个注册中心。</p>
-<pre><code class="highlight java"><span class="meta">@EnableEurekaServer</span>
-<span class="meta">@SpringBootApplication</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaserverApplication</span> </span>&#123;
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(EurekaserverApplication.class, args);
-    &#125;
-&#125;</code></pre>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@EnableEurekaServer</span>
+<span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EurekaserverApplication</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">EurekaserverApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p><code> eureka.client.registerWithEureka: false</code> 和<code>fetchRegistry: false</code>来表明自己是一个 eureka server。</p>
-<pre><code class="highlight yaml"><span class="attr">server:</span>
-  <span class="attr">port:</span> <span class="number">8080</span>
+<pre class="language-none"><code class="language-none">server:
+  port: 8080
 
-<span class="attr">eureka:</span>
-  <span class="attr">instance:</span>
-    <span class="attr">hostname:</span> <span class="string">localhost</span>
-  <span class="attr">client:</span>
-    <span class="attr">registerWithEureka:</span> <span class="literal">false</span>
-    <span class="attr">fetchRegistry:</span> <span class="literal">false</span>
-    <span class="attr">serviceUrl:</span>
-      <span class="attr">defaultZone:</span> <span class="string">http://$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;/eureka/</span></code></pre>
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http:&#x2F;&#x2F;$&#123;eureka.instance.hostname&#125;:$&#123;server.port&#125;&#x2F;eureka&#x2F;</code></pre>
 
 <h4 id="service-hello-服务"><a href="#service-hello-服务" class="headerlink" title="service-hello 服务"></a>service-hello 服务</h4><p>注解<code>@EnableEurekaClient</code>表示他是一个 Eureka 客户端，它会在注册中心注册自己。</p>
 <p>注解<code>@RestController</code>表示这是一个控制器，<code>@RequestMapping(&quot;/hello&quot;)</code>表示匹配到请求<code>&#39;/hello&#39;</code>时会调用该方法进行响应。</p>
-<pre><code class="highlight java"><span class="meta">@SpringBootApplication</span>
-<span class="meta">@EnableEurekaClient</span>
-<span class="meta">@RestController</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceHelloApplication</span> </span>&#123;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableEurekaClient</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServiceHelloApplication</span> <span class="token punctuation">&#123;</span>
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(ServiceHelloApplication.class, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">ServiceHelloApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="meta">@Value(&quot;$&#123;server.port&#125;&quot;)</span>
-    String port;
-    <span class="meta">@RequestMapping(&quot;/hello&quot;)</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">home</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span> </span>&#123;
-        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>+name+<span class="string">&quot;,i am from port:&quot;</span> +port;
-    &#125;
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"$&#123;server.port&#125;"</span><span class="token punctuation">)</span>
+    <span class="token class-name">String</span> port<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">home</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"hello "</span><span class="token operator">+</span>name<span class="token operator">+</span><span class="token string">",i am from port:"</span> <span class="token operator">+</span>port<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>注册中心的地址为<code>http://localhost:8080/eureka/</code>，也就是上面我们定义的。服务名为<code>service-hello</code>，将会被调用者使用。</p>
-<pre><code class="highlight dts"><span class="symbol">eureka:</span>
-<span class="symbol">  client:</span>
-<span class="symbol">    serviceUrl:</span>
-<span class="symbol">      defaultZone:</span> http:<span class="comment">//localhost:8080/eureka/</span>
-<span class="symbol">server:</span>
-<span class="symbol">  port:</span> <span class="number">8081</span>
-<span class="symbol">spring:</span>
-<span class="symbol">  application:</span>
-<span class="symbol">    name:</span> service-hello</code></pre>
+<pre class="language-none"><code class="language-none">eureka:
+  client:
+    serviceUrl:
+      defaultZone: http:&#x2F;&#x2F;localhost:8080&#x2F;eureka&#x2F;
+server:
+  port: 8081
+spring:
+  application:
+    name: service-hello</code></pre>
 
 <h4 id="服务消费者-service-ribbon"><a href="#服务消费者-service-ribbon" class="headerlink" title="服务消费者 service-ribbon"></a>服务消费者 service-ribbon</h4><p>假设 service-ribbon 端口为 8082，当我们访问 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://localhost:8080/hello">http://localhost:8080/hello</a> 时，<code>HelloControler</code> 接收到请求，并调用 <code>HelloService</code> 中的<code>helloService</code>方法，<code>HelloService</code>中通过定义的<code>restTemplate</code>去调用<code>http://service-hello/hello</code>。此处要注意的是<code>@LoadBalanced</code>注解，它表示启用负载均衡。</p>
-<pre><code class="highlight java"><span class="meta">@SpringBootApplication</span>
-<span class="meta">@EnableDiscoveryClient</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceRibbonApplication</span> </span>&#123;
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableDiscoveryClient</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServiceRibbonApplication</span> <span class="token punctuation">&#123;</span>
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;
-        SpringApplication.run(ServiceRibbonApplication.class, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">ServiceRibbonApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="meta">@Bean</span>
-    <span class="meta">@LoadBalanced</span>
-    <span class="function">RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;
-        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();
-    &#125;
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@LoadBalanced</span>
+    <span class="token class-name">RestTemplate</span> <span class="token function">restTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RestTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
+<span class="token punctuation">&#125;</span>
 
-<span class="meta">@Service</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloService</span> </span>&#123;
+<span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloService</span> <span class="token punctuation">&#123;</span>
 
-    <span class="meta">@Autowired</span>
-    RestTemplate restTemplate;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RestTemplate</span> restTemplate<span class="token punctuation">;</span>
 
-    <span class="function"><span class="keyword">public</span> String <span class="title">helloService</span><span class="params">(String name)</span> </span>&#123;
-        <span class="keyword">return</span> restTemplate.getForObject(<span class="string">&quot;http://service-hello/hello?name=&quot;</span>+name,String.class);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">helloService</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> restTemplate<span class="token punctuation">.</span><span class="token function">getForObject</span><span class="token punctuation">(</span><span class="token string">"http://service-hello/hello?name="</span><span class="token operator">+</span>name<span class="token punctuation">,</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
+<span class="token punctuation">&#125;</span>
 
-<span class="meta">@RestController</span>
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloControler</span> </span>&#123;
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloControler</span> <span class="token punctuation">&#123;</span>
 
-    <span class="meta">@Autowired</span>
-    HelloService helloService;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">HelloService</span> helloService<span class="token punctuation">;</span>
 
-    <span class="meta">@RequestMapping(value = &quot;/hello&quot;)</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(<span class="meta">@RequestParam</span> String name)</span></span>&#123;
-        <span class="keyword">return</span> helloService.helloService(name);
-    &#125;
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> helloService<span class="token punctuation">.</span><span class="token function">helloService</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>至此其实一个微服务应用的雏形已经搭建出来了，服务治理、服务调用可以说是「五脏六腑」中的「心脏」。</p>
 <h3 id="「心脏」的依托"><a href="#「心脏」的依托" class="headerlink" title="「心脏」的依托"></a>「心脏」的依托</h3><p>接下来我们要进一步思考的是「五脏六腑」中其余的部分，因为少了它们人也是活不久的。下面通过一个问题或需求对应一个组件的方式进行介绍。</p>

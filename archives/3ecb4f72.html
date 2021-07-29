@@ -48,6 +48,10 @@
 
 
 
+
+
+  <meta name="keywords" content="," />
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -281,13 +285,13 @@
 <ul>
 <li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
 </ul>
-<pre><code class="highlight apache"><span class="attribute">net</span>.ipv<span class="number">4</span>.tcp_fastopen = <span class="number">3</span></code></pre>
+<pre class="language-none"><code class="language-none">net.ipv4.tcp_fastopen &#x3D; 3</code></pre>
 <ul>
 <li>保存，退出。</li>
 <li>执行<code>sysctl -p</code>使其生效。</li>
 <li>在<code>/etc/rc.local</code>中添加以下行，即使在重启系统后也可以使其持久化</li>
 </ul>
-<pre><code class="highlight awk">echo <span class="number">3</span> &gt; <span class="regexp">/proc/</span>sys<span class="regexp">/net/i</span>pv4/tcp_fastopen</code></pre>
+<pre class="language-none"><code class="language-none">echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_fastopen</code></pre>
 
     </div>
 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="gcc版本$ gcc --version gcc (GCC) 12.0.0 20210722 (experimental) Copyright (C) 2021 Free Software Foundation, Inc. This is free software; see the source for copying conditions.  There is NO warranty; not">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-29T04:53:31.000Z">
-<meta property="article:modified_time" content="2021-07-29T14:10:18.467Z">
+<meta property="article:modified_time" content="2021-07-29T15:11:23.287Z">
 <meta property="article:author" content="echobits">
 <meta property="article:tag" content="ubuntu">
 <meta property="article:tag" content="linux">
@@ -48,6 +48,10 @@
 
 
 
+
+
+
+  <meta name="keywords" content=",," />
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -149,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E7%89%88%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">gcc版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDLinux%E5%86%85%E6%A0%B8"><span class="nav-number">2.</span> <span class="nav-text">下载Linux内核</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">解压</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">编译前的准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E9%9C%80%E8%A6%81%E5%90%84%E7%A7%8D%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">编译内核需要各种依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%86%85%E6%A0%B8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">拷贝内核配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8"><span class="nav-number">3.3.</span> <span class="nav-text">定制内核</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">开始编译</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc%E7%89%88%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">gcc版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDLinux%E5%86%85%E6%A0%B8"><span class="nav-number">2.</span> <span class="nav-text">下载Linux内核</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">解压</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">编译前的准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E9%9C%80%E8%A6%81%E5%90%84%E7%A7%8D%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">编译内核需要各种依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%86%85%E6%A0%B8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">拷贝内核配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8"><span class="nav-number">3.3.</span> <span class="nav-text">定制内核</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E7%BC%96%E8%AF%91"><span class="nav-number">4.</span> <span class="nav-text">开始编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%8C%E6%88%90%E4%B9%8B%E5%90%8E%E9%A6%96%E5%85%88%E5%AE%89%E8%A3%85%E6%A8%A1%E5%9D%97"><span class="nav-number">4.1.</span> <span class="nav-text">编译完成之后首先安装模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%84%B6%E5%90%8E%E5%AE%89%E8%A3%85%E5%86%85%E6%A0%B8"><span class="nav-number">4.2.</span> <span class="nav-text">然后安装内核</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E5%90%8E%E5%90%AF%E7%94%A8%E5%86%85%E6%A0%B8%E4%BD%9C%E4%B8%BA%E5%BC%95%E5%AF%BC"><span class="nav-number">4.3.</span> <span class="nav-text">完成后启用内核作为引导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%80%E4%B8%8Bgrub"><span class="nav-number">4.4.</span> <span class="nav-text">更新一下grub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%90%AF"><span class="nav-number">4.5.</span> <span class="nav-text">重启</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E5%86%85%E6%A0%B8%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">5.</span> <span class="nav-text">检查内核是否安装成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">另一种安装方式</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -248,7 +252,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-07-29 12:53:31 / 修改时间：22:10:18" itemprop="dateCreated datePublished" datetime="2021-07-29T12:53:31+08:00">2021-07-29</time>
+      <time title="创建时间：2021-07-29 12:53:31 / 修改时间：23:11:23" itemprop="dateCreated datePublished" datetime="2021-07-29T12:53:31+08:00">2021-07-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -277,56 +281,60 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre><code class="highlight gams"><span class="symbol">$</span> gcc --version
-gcc (GCC) <span class="number">12.0</span><span class="number">.0</span> <span class="number">20210722</span> (experimental)
-Copyright (C) <span class="number">2021</span> <span class="keyword">Free</span> Software Foundation, Inc.
-This is <span class="keyword">free</span> software; see the source <span class="keyword">for</span> copying conditions.  There is <span class="keyword">NO</span>
-warranty; <span class="keyword">not</span> even <span class="keyword">for</span> MERCHANTABILITY <span class="keyword">or</span> FITNESS <span class="keyword">FOR</span> A PARTICULAR PURPOSE.</code></pre>
+        <h2 id="gcc版本"><a href="#gcc版本" class="headerlink" title="gcc版本"></a>gcc版本</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ gcc --version
+gcc <span class="token punctuation">(</span>GCC<span class="token punctuation">)</span> <span class="token number">12.0</span>.0 <span class="token number">20210722</span> <span class="token punctuation">(</span>experimental<span class="token punctuation">)</span>
+Copyright <span class="token punctuation">(</span>C<span class="token punctuation">)</span> <span class="token number">2021</span> Free Software Foundation, Inc.
+This is <span class="token function">free</span> software<span class="token punctuation">;</span> see the <span class="token builtin class-name">source</span> <span class="token keyword">for</span> copying conditions.  There is NO
+warranty<span class="token punctuation">;</span> not even <span class="token keyword">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</code></pre>
 <p>这里默认你已经装好9以上的gcc，并配置好环境了。没GCC环境的可以参考我上篇文章 <a href="https://blog.byhi.org/archives/586372ad.html">ubuntu 20.04 lts 编译gcc12</a></p>
 <h2 id="下载Linux内核"><a href="#下载Linux内核" class="headerlink" title="下载Linux内核"></a>下载Linux内核</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.kernel.org/">kernel.org</a> 下载 longterm: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz">5.10.53</a> 到 <code>/home/user/Download/kernel</code></p>
-<pre><code class="highlight awk">cd <span class="regexp">/home/u</span>ser<span class="regexp">/Download/</span>kernel &amp;&amp; wget -c https:<span class="regexp">//</span>cdn.kernel.org<span class="regexp">/pub/</span>linux<span class="regexp">/kernel/</span>v5.x/linux-<span class="number">5.10</span>.<span class="number">53</span>.tar.xz</code></pre>
-<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre><code class="highlight apache"><span class="attribute">tar</span> -Jxf linux-<span class="number">5</span>.<span class="number">10</span>.<span class="number">53</span>.tar.xz &amp;&amp; cd linux-<span class="number">5</span>.<span class="number">10</span>.<span class="number">53</span></code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/user/Download/kernel <span class="token operator">&amp;&amp;</span> <span class="token function">wget</span> -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.53.tar.xz </code></pre>
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> -Jxf linux-5.10.53.tar.xz <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> linux-5.10.53</code></pre>
 <span id="more"></span>
-<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre><code class="highlight q">$ sudo apt-<span class="built_in">get</span> install fakeroot build-essential ncurses-<span class="built_in">dev</span> xz-utils bc bison flex libssl-<span class="built_in">dev</span> libncurses5-<span class="built_in">dev</span> libelf-<span class="built_in">dev</span> -y</code></pre>
+<h2 id="编译前的准备工作"><a href="#编译前的准备工作" class="headerlink" title="编译前的准备工作"></a>编译前的准备工作</h2><h3 id="编译内核需要各种依赖"><a href="#编译内核需要各种依赖" class="headerlink" title="编译内核需要各种依赖"></a>编译内核需要各种依赖</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> fakeroot build-essential ncurses-dev xz-utils <span class="token function">bc</span> bison flex libssl-dev libncurses5-dev libelf-dev -y</code></pre>
 <p>flebx 是词法分析器，bison 是解析器<br>这里面可能会出现一些问题，按照提示做即可，涉及一些软件包版本相互依赖关系，每个机器可能问题不一样，具体可以Google.</p>
 <p>可以先用uname -r自行查看下当前内核版本</p>
-<pre><code class="highlight ada">$ uname -r
-<span class="number">5.4</span>.<span class="number">0</span>-<span class="number">80</span>-<span class="keyword">generic</span></code></pre>
-<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre><code class="highlight powershell"><span class="variable">$</span> <span class="built_in">cp</span> /boot/config-<span class="variable">$</span>(uname <span class="literal">-r</span>) ./. config</code></pre>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
+<span class="token number">5.4</span>.0-80-generic</code></pre>
+<h3 id="拷贝内核配置文件"><a href="#拷贝内核配置文件" class="headerlink" title="拷贝内核配置文件"></a>拷贝内核配置文件</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">cp</span> /boot/config-<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -r<span class="token variable">)</span></span> ./. config</code></pre>
 <p>将当前内核的配置文件拷贝成 .config 放到 linux-5.10.53 目录下，来提供对各种硬件的支持。<br>谨慎点可以多拷贝一份放到U盘，以防操作不慎，系统崩掉</p>
-<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre><code class="highlight elixir"><span class="variable">$ </span>make localmodconfig</code></pre>
+<h3 id="定制内核"><a href="#定制内核" class="headerlink" title="定制内核"></a>定制内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> localmodconfig</code></pre>
 <p>输入 make localmodconfig 它将询问您有关新驱动程序和内核支持的问题，如果您想定制您的内核，请按照提示一步步回答提示(有不明白的地方可以Google)。如果您不知道该如何配置，请按 Enter 键将问题的所有答案设置为默认值。</p>
 <p>Linux 内核构建系统提供了许多构建目标，了解它的最好方法可以运行 <code>make help</code></p>
-<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre><code class="highlight elixir"><span class="variable">$ </span>make -j6</code></pre>
-<pre><div class="caption"><span>的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)</span></div><code class="highlight -j6```">编译完成之后首先安装模块
+<h2 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6</code></pre>
 
-### 编译完成之后首先安装模块</code></pre>
-<p>$ sudo make modules_install -j6</p>
-<pre><code class="highlight clean">### 然后安装内核</code></pre>
-<p>$ sudo make install</p>
-<pre><code class="highlight clean">### 完成后启用内核作为引导</code></pre>
-<p>$ sudo update-initramfs -c -k 5.10.53<br>update-initramfs: Generating /boot/initrd.img-5.10.53</p>
-<pre><code class="highlight clean">### 更新一下grub</code></pre>
-<p>$ sudo update-grub<br>Sourcing file <code>/etc/default/grub&#39; Sourcing file </code>/etc/default/grub.d/init-select.cfg’<br>Generating grub configuration file …<br>Found linux image: /boot/vmlinuz-5.10.53<br>Found initrd image: /boot/initrd.img-5.10.53<br>Found linux image: /boot/vmlinuz-5.8.0-63-generic<br>Found initrd image: /boot/initrd.img-5.8.0-63-generic<br>Found linux image: /boot/vmlinuz-5.8.0-43-generic<br>Found initrd image: /boot/initrd.img-5.8.0-43-generic<br>Found memtest86+ image: /boot/memtest86+.elf<br>Found memtest86+ image: /boot/memtest86+.bin<br>done</p>
-<pre><code class="highlight clean">### 重启</code></pre>
-<p>$ sudo shutdown -r now</p>
-<pre><code class="highlight clean">
-## 检查内核是否安装成功
+<p>-j6 的意思是采用6个内核线程编译，由于我是4核8线程系统，所以采用6个线程。(因为手上还有工作在完成，所以留出2个线程)<br>编译完成之后首先安装模块</p>
+<h3 id="编译完成之后首先安装模块"><a href="#编译完成之后首先安装模块" class="headerlink" title="编译完成之后首先安装模块"></a>编译完成之后首先安装模块</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> modules_install -j6</code></pre>
+<h3 id="然后安装内核"><a href="#然后安装内核" class="headerlink" title="然后安装内核"></a>然后安装内核</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span></code></pre>
+<h3 id="完成后启用内核作为引导"><a href="#完成后启用内核作为引导" class="headerlink" title="完成后启用内核作为引导"></a>完成后启用内核作为引导</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> update-initramfs -c -k <span class="token number">5.10</span>.53
+update-initramfs: Generating /boot/initrd.img-5.10.53</code></pre>
+<h3 id="更新一下grub"><a href="#更新一下grub" class="headerlink" title="更新一下grub"></a>更新一下grub</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">update-grub</span>
+Sourcing <span class="token function">file</span> <span class="token variable"><span class="token variable">`</span>/etc/default/grub'
+Sourcing <span class="token function">file</span> <span class="token variable">`</span></span>/etc/default/grub.d/init-select.cfg'
+Generating grub configuration <span class="token function">file</span> <span class="token punctuation">..</span>.
+Found linux image: /boot/vmlinuz-5.10.53
+Found initrd image: /boot/initrd.img-5.10.53
+Found linux image: /boot/vmlinuz-5.8.0-63-generic
+Found initrd image: /boot/initrd.img-5.8.0-63-generic
+Found linux image: /boot/vmlinuz-5.8.0-43-generic
+Found initrd image: /boot/initrd.img-5.8.0-43-generic
+Found memtest86+ image: /boot/memtest86+.elf
+Found memtest86+ image: /boot/memtest86+.bin
+<span class="token keyword">done</span></code></pre>
 
-如果重启顺利能进系统，运行如下命令看下内核是否安装成功
-</code></pre>
-<p>$ uname -r<br>5.10.53</p>
-<pre><code class="highlight clean">
-到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下
+<h3 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
 
-## 另一种安装方式</code></pre>
-<p>$ make -j6 deb-pkg<br>该命令将为您编译的内核创建一个 .deb 文件。</p>
-<pre><code class="highlight">编译完成后，输入将内核安装到系统</code></pre>
-<p>$ sudo dpkg -i linux-*.deb</p>
-<pre><code class="highlight">现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</code></pre>
-<p>$ sudo shutdown -r now</p>
-<pre><code>
-</code></pre>
+<h2 id="检查内核是否安装成功"><a href="#检查内核是否安装成功" class="headerlink" title="检查内核是否安装成功"></a>检查内核是否安装成功</h2><p>如果重启顺利能进系统，运行如下命令看下内核是否安装成功</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">uname</span> -r
+<span class="token number">5.10</span>.53</code></pre>
+
+<p>到此，内核成功更新完毕。还有另一种编译方式，直接打包成.deb包，如下</p>
+<h2 id="另一种安装方式"><a href="#另一种安装方式" class="headerlink" title="另一种安装方式"></a>另一种安装方式</h2><pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">make</span> -j6 deb-pkg</code></pre>
+<p>该命令将为您编译的内核创建一个 .deb 文件。</p>
+<p>编译完成后，输入将内核安装到系统</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> dpkg -i linux-*.deb</code></pre>
+<p>现在重新启动，您将在 GRUB 菜单中看到编译后的内核。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">shutdown</span> -r now</code></pre>
 
     </div>
 

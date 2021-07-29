@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.byhi.org","root":"/","images":"/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true}}</script><script src="/js/config.js"></script>
-<meta name="description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码function showImg( url ) &amp;#123;     var imgid &#x3D; Math.random(),     frameid &#x3D; &amp;#x27;frame">
+<meta name="description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码function showImg( url ) &amp;#123;     var imgid &#x3D; Math.random(),     frameid &#x3D; &amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="允许空白referer防盗链图片的破解">
 <meta property="og:url" content="https://blog.byhi.org/archives/6e64e2a1.html">
 <meta property="og:site_name" content="echobits">
-<meta property="og:description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码function showImg( url ) &amp;#123;     var imgid &#x3D; Math.random(),     frameid &#x3D; &amp;#x27;frame">
+<meta property="og:description" content="最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。 iframe方案Javascript源码function showImg( url ) &amp;#123;     var imgid &#x3D; Math.random(),     frameid &#x3D; &amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-05-19T05:47:12.000Z">
 <meta property="article:modified_time" content="2019-05-19T06:53:14.000Z">
@@ -47,6 +47,10 @@
 
 
 
+
+
+
+  <meta name="keywords" content="," />
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -277,48 +281,48 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>最近【2019 年 4 月 24 日左右发现】微博图床出问题了，访问图片链接全部是返回 403 状态码，表示拒绝访问，其实是微博图床开启了防盗链，本文就记录这个现象以及可行的解决方案。</p>
-<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre><code class="highlight JavaScript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;
-    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),
-    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;
-    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;
-    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);
+<h2 id="iframe方案"><a href="#iframe方案" class="headerlink" title="iframe方案"></a>iframe方案</h2><h3 id="Javascript源码"><a href="#Javascript源码" class="headerlink" title="Javascript源码"></a>Javascript源码</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">function showImg( url ) &#123;
+    var imgid &#x3D; Math.random(),
+    frameid &#x3D; &#39;frameimg&#39; + imgid;
+    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
+    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
 &#125;</code></pre>
 
-<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre><code class="highlight JavaScript">showImg(<span class="string">&#x27;图片地址&#x27;</span>);</code></pre>
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><pre class="language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">showImg(&#39;图片地址&#39;);</code></pre>
 
 <span id="more"></span>
 
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt;</span>  
-<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript">  </span>
-<span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">showImg</span>(<span class="params"> url </span>) </span>&#123;</span>
-<span class="javascript">    <span class="keyword">var</span> imgid = <span class="built_in">Math</span>.random(),</span>
-<span class="javascript">    frameid = <span class="string">&#x27;frameimg&#x27;</span> + imgid;</span>
-<span class="javascript">    <span class="built_in">window</span>[<span class="string">&#x27;img&#x27;</span>+imgid] = <span class="string">&#x27;&lt;img id=&quot;img&quot; src=\&#x27;&#x27;</span>+url+<span class="string">&#x27;\&#x27; /&gt; &lt;script&gt; window.onload = function() &#123; parent.document.getElementById(\&#x27;&#x27;</span>+frameid+<span class="string">&#x27;\&#x27;).height = document.getElementById(\&#x27;img\&#x27;).height+\&#x27;px\&#x27;; &#125;&lt;&#x27;</span>+<span class="string">&#x27;/script&gt;&#x27;</span>;</span>
-<span class="javascript">    <span class="built_in">document</span>.write(<span class="string">&#x27;&lt;iframe id=&quot;&#x27;</span>+frameid+<span class="string">&#x27;&quot; src=&quot;javascript:parent[\&#x27;img&#x27;</span>+imgid+<span class="string">&#x27;\&#x27;];&quot; frameBorder=&quot;0&quot; scrolling=&quot;no&quot; width=&quot;100%&quot;&gt;&lt;/iframe&gt;&#x27;</span>);</span>
-<span class="javascript">&#125;</span>
-<span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;  
+&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;  
+function showImg( url ) &#123;
+    var imgid &#x3D; Math.random(),
+    frameid &#x3D; &#39;frameimg&#39; + imgid;
+    window[&#39;img&#39;+imgid] &#x3D; &#39;&lt;img id&#x3D;&quot;img&quot; src&#x3D;\&#39;&#39;+url+&#39;\&#39; &#x2F;&gt; &lt;script&gt; window.onload &#x3D; function() &#123; parent.document.getElementById(\&#39;&#39;+frameid+&#39;\&#39;).height &#x3D; document.getElementById(\&#39;img\&#39;).height+\&#39;px\&#39;; &#125;&lt;&#39;+&#39;&#x2F;script&gt;&#39;;
+    document.write(&#39;&lt;iframe id&#x3D;&quot;&#39;+frameid+&#39;&quot; src&#x3D;&quot;javascript:parent[\&#39;img&#39;+imgid+&#39;\&#39;];&quot; frameBorder&#x3D;&quot;0&quot; scrolling&#x3D;&quot;no&quot; width&#x3D;&quot;100%&quot;&gt;&lt;&#x2F;iframe&gt;&#39;);
+&#125;
+&lt;&#x2F;script&gt;
 
 
- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>直接盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
- <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot;</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>js破解盗链：<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span>  
+ &lt;h1&gt;直接盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
+ &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&quot; &#x2F;&gt;&lt;br&gt;  
+ &lt;h1&gt;js破解盗链：&lt;&#x2F;h1&gt;&lt;br&gt;  
 
- <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;hotlinking&quot;</span>&gt;</span>
+ &lt;div id&#x3D;&quot;hotlinking&quot;&gt;
 
- <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span>
-<span class="javascript"> showImg(<span class="string">&#x27;http://ww4.sinaimg.cn/bmiddle/9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#x27;</span>);</span>
-<span class="javascript"> </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+ &lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;
+ showImg(&#39;http:&#x2F;&#x2F;ww4.sinaimg.cn&#x2F;bmiddle&#x2F;9150e4e5gy1fpv6cc83cnj20c80iagmd.jpg&#39;);
+ &lt;&#x2F;script&gt;
 
- <span class="tag">&lt;/<span class="name">div</span>&gt;</span>
+ &lt;&#x2F;div&gt;
 </code></pre>
 
 <h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p> 已测试IE6、IE7、IE8、chrome 7、FF3.6、Opera10.63</p>
-<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">referrerPolicy</span>=<span class="string">&quot;no-referrer&quot;</span>&gt;</span></code></pre>
+<h2 id="给img标签添加Referrer-Policy属性"><a href="#给img标签添加Referrer-Policy属性" class="headerlink" title="给img标签添加Referrer-Policy属性"></a>给img标签添加Referrer-Policy属性</h2><h3 id="给你页面中的img添加参数"><a href="#给你页面中的img添加参数" class="headerlink" title="给你页面中的img添加参数"></a>给你页面中的img添加参数</h3><pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;img src&#x3D;&quot;&quot; referrerPolicy&#x3D;&quot;no-referrer&quot;&gt;</code></pre>
 
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>目前 微软系浏览器 和 Safari on iOS 尚不支持该属性</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy</a></p>
 <h2 id="加head标记"><a href="#加head标记" class="headerlink" title="加head标记"></a>加head标记</h2><h3 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h3><p>在静态网页的 头部 代码中【即 head 标记】添加如下配置项：</p>
-<pre><code class="highlight HTML"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;referrer&quot;</span> <span class="attr">content</span>=<span class="string">&quot;no-referrer&quot;</span> /&gt;</span></code></pre>
+<pre class="language-HTML" data-language="HTML"><code class="language-HTML">&lt;meta name&#x3D;&quot;referrer&quot; content&#x3D;&quot;no-referrer&quot; &#x2F;&gt;</code></pre>
 
 <p>它的作用就是阻止浏览器发送 Referer 信息，对整个页面的所有链接生效【当然也有针对单个链接设置的方法：<code>&lt;a rel=”noreferrer” href=”your-website-url” /&gt;</code>，这里不采用】，这样一来微博图床就不知道请求的引用来源了，可以达到和直接在浏览器中访问一样的效果。 <strong>但是要注意，不是每种浏览器都支持这种语法的，此设置对有的浏览器来说无效</strong>。</p>
 <h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>如果你的网站使用了第三方统计，可能会导致第三方统计失效。</p>

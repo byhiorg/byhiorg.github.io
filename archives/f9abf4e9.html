@@ -48,6 +48,10 @@
 
 
 
+
+
+  <meta name="keywords" content="," />
+
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -291,38 +295,38 @@
 <p>“黑暗网络”(Darknet) 是在网络层访问受限的框架，例如 Tor 或 I2P。私有 VPN 和网状网络 (Mesh Network) 也属于这个类别。通过这些框架的网络流量会被屏蔽。当进行数据传输时，系统只会显示您连接的黑暗网络以及您传输了多少数据，而不一定会显示您访问的网站或所涉及数据的内容。与之相反的是，直接与明网（Clean Net）或与未加密的表网服务和深网服务交互。在这种情况下，您与所请求资源之间的互联网服务提供商 (ISP) 和网络运营商可以看到您传输的流量内容。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>这里使用centos7作为服务器</p>
 <h3 id="首先扩展yum源"><a href="#首先扩展yum源" class="headerlink" title="首先扩展yum源"></a>首先扩展yum源</h3><p>这里推荐下面两个yum源，建议服务器初始化的时候就是用这两个yum源作为软件的扩展</p>
-<pre><code class="highlight awk">rpm -Uvh https:<span class="regexp">//</span>dl.fedoraproject.org<span class="regexp">/pub/</span>epel/epel-release-latest-<span class="number">7</span>.noarch.rpm
-rpm -Uvh https:<span class="regexp">//mi</span>rror.webtatic.com<span class="regexp">/yum/</span>el7/webtatic-release.rpm</code></pre>
+<pre class="language-none"><code class="language-none">rpm -Uvh https:&#x2F;&#x2F;dl.fedoraproject.org&#x2F;pub&#x2F;epel&#x2F;epel-release-latest-7.noarch.rpm
+rpm -Uvh https:&#x2F;&#x2F;mirror.webtatic.com&#x2F;yum&#x2F;el7&#x2F;webtatic-release.rpm</code></pre>
 
-<h3 id="然后安装nginx"><a href="#然后安装nginx" class="headerlink" title="然后安装nginx"></a>然后安装nginx</h3><pre><code class="highlight cmake">yum -y <span class="keyword">install</span> nginx</code></pre>
+<h3 id="然后安装nginx"><a href="#然后安装nginx" class="headerlink" title="然后安装nginx"></a>然后安装nginx</h3><pre class="language-none"><code class="language-none">yum -y install nginx</code></pre>
 
-<h3 id="安装tor"><a href="#安装tor" class="headerlink" title="安装tor"></a>安装tor</h3><pre><code class="highlight cmake">yum -y <span class="keyword">install</span> tor</code></pre>
+<h3 id="安装tor"><a href="#安装tor" class="headerlink" title="安装tor"></a>安装tor</h3><pre class="language-none"><code class="language-none">yum -y install tor</code></pre>
 
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="先配置nginx"><a href="#先配置nginx" class="headerlink" title="先配置nginx"></a>先配置nginx</h3><p>打开nginx的配置文件,让nginx监听8080端口</p>
-<pre><code class="highlight pgsql"><span class="keyword">server</span> &#123;
-    <span class="keyword">listen</span> <span class="number">8080</span>;
+<pre class="language-none"><code class="language-none">server &#123;
+    listen 8080;
 
-    <span class="keyword">location</span> / &#123;
-        root   /www/tor;
-        <span class="keyword">index</span>  <span class="keyword">index</span>.html <span class="keyword">index</span>.htm;
+    location &#x2F; &#123;
+        root   &#x2F;www&#x2F;tor;
+        index  index.html index.htm;
     &#125;
 &#125;</code></pre>
 
 <p>重启nginx让配置生效</p>
-<pre><code class="highlight maxima">systemctl <span class="built_in">restart</span> nginx.service</code></pre>
+<pre class="language-none"><code class="language-none">systemctl restart nginx.service</code></pre>
 
 <p>然后到 /www/tor 里写点东西测试下:</p>
-<pre><code class="highlight arcade">echo <span class="string">&quot;&lt;h2&gt;Tor site build success!&lt;/h2&gt;&quot;</span> &gt; <span class="regexp">/www/</span>tor/index.html</code></pre>
+<pre class="language-none"><code class="language-none">echo &quot;&lt;h2&gt;Tor site build success!&lt;&#x2F;h2&gt;&quot; &gt; &#x2F;www&#x2F;tor&#x2F;index.html</code></pre>
 
 <p>然后用curl访问下 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://localhost:8080/">http://localhost:8080</a>  如果可以访问，则成功生效！</p>
-<h3 id="再来配置-Tor"><a href="#再来配置-Tor" class="headerlink" title="再来配置 Tor"></a>再来配置 Tor</h3><pre><code class="highlight awk">vi <span class="regexp">/etc/</span>tor/torrc</code></pre>
+<h3 id="再来配置-Tor"><a href="#再来配置-Tor" class="headerlink" title="再来配置 Tor"></a>再来配置 Tor</h3><pre class="language-none"><code class="language-none">vi &#x2F;etc&#x2F;tor&#x2F;torrc</code></pre>
 
 <p>添加以下两行</p>
-<pre><code class="highlight awk">HiddenServiceDir <span class="regexp">/var/</span>lib<span class="regexp">/tor/</span>hidden_service/
-HiddenServicePort <span class="number">80</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span></code></pre>
+<pre class="language-none"><code class="language-none">HiddenServiceDir &#x2F;var&#x2F;lib&#x2F;tor&#x2F;hidden_service&#x2F;
+HiddenServicePort 80 127.0.0.1:8080</code></pre>
 
 <p>保存配置，然后启动Tor</p>
-<pre><code class="highlight crmsh">systemctl <span class="literal">start</span> tor.service</code></pre>
+<pre class="language-none"><code class="language-none">systemctl start tor.service</code></pre>
 
 <p>当tor启动后，会创建一个私钥(/var/lib/tor/hidden_service/private_key)在你的hidden_service目录，同时创建你的 /var/lib/tor/hidden_service/hostname 里创建独一无二的.onion 主机名。</p>
 <p>然后，用<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.torproject.org/">tor浏览器</a>访问你的.onion的域名，看是否成功。</p>
