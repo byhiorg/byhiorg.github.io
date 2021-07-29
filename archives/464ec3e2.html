@@ -167,7 +167,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,7 +178,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -283,12 +283,12 @@
 <h2 id="开启终端"><a href="#开启终端" class="headerlink" title="开启终端"></a>开启终端</h2><p>登录Ubuntu Desktop。按<code>Ctrl + Atl + T</code>打开GNOME终端。如果由于某种原因快捷方式不起作用，请从Ubuntu Dash运行终端。</p>
 <span id="more"></span>
 
-<h2 id="检查可用更新"><a href="#检查可用更新" class="headerlink" title="检查可用更新"></a>检查可用更新</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br></pre></td></tr></table></figure>
+<h2 id="检查可用更新"><a href="#检查可用更新" class="headerlink" title="检查可用更新"></a>检查可用更新</h2><pre><code class="highlight pgsql">$ sudo apt-<span class="keyword">get</span> <span class="keyword">update</span></code></pre>
 <p>该命令表示使用最新版本更新Ubuntu软件包列表。如果跳过此命令，Ubuntu很可能会安装较旧版本的软件而不是最新版本。因此，无论何时安装新软件或打算升级软件版本，最好先运行此命令。命令开头的sudo前缀指示终端以root身份运行命令，因为安装和升级软件是一种权限操作，不应由没有足够访问权限的用户执行。在sudo提示时提供用户密码，然后按Enter键。</p>
-<h2 id="通过命令行安装PuTTY"><a href="#通过命令行安装PuTTY" class="headerlink" title="通过命令行安装PuTTY"></a>通过命令行安装PuTTY</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install -y putty</span><br></pre></td></tr></table></figure>
+<h2 id="通过命令行安装PuTTY"><a href="#通过命令行安装PuTTY" class="headerlink" title="通过命令行安装PuTTY"></a>通过命令行安装PuTTY</h2><pre><code class="highlight routeros">$ sudo apt-<span class="builtin-name">get</span> install -y putty</code></pre>
 
 <h2 id="启动PuTTY"><a href="#启动PuTTY" class="headerlink" title="启动PuTTY"></a>启动PuTTY</h2><p>你可以以命令行的方式，或者从Dash来启动</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ putty</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight elixir"><span class="variable">$ </span>putty</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1539280502/blog/putty.png" alt="puttyGUI"></p>
 <p>如上图所示，PuTTY提供了一系列连接类型可供选择：Raw，Telnet，Rlogin，SSH和Serial。它还附带了SCP（pscp），SFTP（psftp），RSA和DSA密钥生成器（puttygen）等命令行工具，可以从终端运行。</p>
 <h2 id="关于源码编译"><a href="#关于源码编译" class="headerlink" title="关于源码编译"></a>关于源码编译</h2><p>在此处下载<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY源文件</a>。解压源码文件压缩包，并按照压缩包中的README文件从源代码编译PuTTY。</p>

@@ -165,7 +165,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -176,7 +176,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -281,13 +281,13 @@
 <ul>
 <li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.tcp_fastopen = 3</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight apache"><span class="attribute">net</span>.ipv<span class="number">4</span>.tcp_fastopen = <span class="number">3</span></code></pre>
 <ul>
 <li>保存，退出。</li>
 <li>执行<code>sysctl -p</code>使其生效。</li>
 <li>在<code>/etc/rc.local</code>中添加以下行，即使在重启系统后也可以使其持久化</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight awk">echo <span class="number">3</span> &gt; <span class="regexp">/proc/</span>sys<span class="regexp">/net/i</span>pv4/tcp_fastopen</code></pre>
 
     </div>
 

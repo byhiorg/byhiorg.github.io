@@ -194,7 +194,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -205,7 +205,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -338,14 +338,15 @@
 <h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>什么是Git ?简单来说Git是开源的分布式版本控制系统，用于敏捷高效地处理项目。我们网站在本地搭建好了，需要使用Git同步到GitHub上。如果想要了解Git的细节，参看廖雪峰老师的<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git教程</a>：Git教程  从Git官网下载：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://git-scm.com/downloads">Git - Downloading Package</a> 现在的机子基本都是64位的，选择64位的安装包，下载后安装，在命令行里输入git测试是否安装成功，若安装失败，参看其他详细的Git安装教程。安装成功后，将你的Git与GitHub帐号绑定，鼠标右击打开Git Bash</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523740302/blog/v2-8b1cbe253d6e0301bd9a68c6f98a9f52_hd.jpg" alt="鼠标右击打开Git Bash" title="鼠标右击打开Git Bash"></p>
 <p>或者在菜单里搜索Git Bash，设置user.name和user.email配置信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;你的GitHub用户名&quot;</span><br><span class="line">git config --global user.email &quot;你的GitHub注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight verilog">git <span class="keyword">config</span> --<span class="keyword">global</span> user<span class="variable">.name</span> <span class="string">&quot;你的GitHub用户名&quot;</span>
+git <span class="keyword">config</span> --<span class="keyword">global</span> user<span class="variable">.email</span> <span class="string">&quot;你的GitHub注册邮箱&quot;</span></code></pre>
 <p>生成ssh密钥文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;你的GitHub注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight excel">ssh-keygen -<span class="built_in">t</span> rsa -C <span class="string">&quot;你的GitHub注册邮箱&quot;</span></code></pre>
 <p>然后直接三个回车即可，默认不需要设置密码<br>然后找到生成的.ssh的文件夹中的id_rsa.pub密钥，将内容全部复制</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
 <p>打开<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;" rel="external nofollow noreferrer">&#x67;&#105;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#105;&#116;&#64;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;" rel="external nofollow noreferrer">&#103;&#105;&#116;&#64;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;</a> ：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
@@ -356,14 +357,18 @@
 <h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>Hexo就是我们的个人博客网站的框架， 这里需要自己在电脑常里创建一个文件夹，可以命名为Blog，Hexo框架与以后你自己发布的网页都在这个文件夹中。创建好后，进入文件夹中，按住shift键，右击鼠标点击命令行</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-a5450a466c0927c25dff8ad6f1d2046c_hd.jpg"></p>
 <p>使用npm命令安装Hexo，输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight avrasm">npm install -g hexo-<span class="keyword">cli</span></code></pre>
 
 <p>这个安装时间较长耐心等待，安装完成后，初始化我们的博客，输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight csharp">hexo <span class="keyword">init</span> blog</code></pre>
 
 <p>注意，这里的命令都是作用在刚刚创建的Blog文件夹中。</p>
 <p>为了检测我们的网站雏形，分别按顺序输入以下三条命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo new test_my_site</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight haxe">hexo <span class="keyword">new</span> <span class="type">test_my_site</span>
+
+hexo g
+
+hexo s</code></pre>
 
 <p>这些命令在后面作介绍，完成后，打开浏览器输入地址：</p>
 <p>localhost:4000</p>
@@ -383,13 +388,16 @@
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523745633/blog/2018-04-15_063959.png"></p>
 <p>保存站点配置文件。</p>
 <p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight ada">npm install hexo-deployer-git <span class="comment">--save</span></code></pre>
 
 <p>这时，我们分别输入三条命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
+<span class="attribute">hexo g</span>
+<span class="attribute">hexo d</span></code></pre>
 
 <p>或者</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
+<span class="attribute">hexo g -d</span></code></pre>
 
 <p>其实第三条的 hexo d 就是部署网站命令，d是deploy的缩写。完成后，打开浏览器，在地址栏输入你的放置个人网站的仓库路径，即 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://xxxx.github.io/">http://xxxx.github.io</a> 。你就会发现你的博客已经上线了，可以在网络上被访问了。</p>
 <h3 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h3><p>虽然在Internet上可以访问我们的网站，但是网址是GitHub提供的，比如: xxxx.github.io 而我们想使用我们自己的个性化域名，这就需要绑定我们自己的域名。这里演示的是在阿里云万网的域名绑定，在国内主流的域名代理厂商也就阿里云和腾讯云。登录到阿里云，进入管理控制台的域名列表，找到你的个性化域名，进入解析</p>
@@ -402,11 +410,12 @@
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744424/blog/v2-79abfff91af3f520e24cb91acf6aa994_hd.jpg"></p>
 <p>保存，命名为CNAME ，注意保存成 <em>所有文件</em> 而不是 <em>txt文件</em>。</p>
 <p>完成这三步，进入blog目录中，按住shift键右击打开命令行，依次输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight ebnf"><span class="attribute">hexo clean</span>
+<span class="attribute">hexo g -d</span></code></pre>
 
 <p>这时候打开浏览器在地址栏输入你的个性化域名将会直接进入你自己搭建的网站。</p>
 <h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>如果你不喜欢Hexo默认的主题，可以更换不同的主题，主题传送门：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/themes/">Themes</a> 我自己使用的是Next主题，可以在blog目录中的themes文件夹中查看你自己主题是什么。现在把默认主题更改成Next主题，在blog目录中（就是命令行的位置处于blog目录）打开命令行输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight awk">git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/iissnan/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></code></pre>
 <p>这是将Next主题下载到blog目录的themes主题下的next文件夹中。打开 <em>站点</em> 的_config.yml配置文件，修改主题为next</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-b1997377e82408cb15b485c65ae00f70_hd.jpg"></p>
 <p>打开 <em>主题</em> 的_config.yml配置文件，不是站点主题文件，找到Scheme Settings</p>
@@ -414,7 +423,7 @@
 <p>next主题有三个样式，我用的是Pisces，你们可以自己试试看，选择你自己喜欢的样式（只需要把行首的#去除，#是注释），选择好后，再次部署网站，hexo g、hexo d，查看效果。选择其他主题，按照上述过程即可实现。</p>
 <h3 id="初识Markdown语法"><a href="#初识Markdown语法" class="headerlink" title="初识Markdown语法"></a>初识Markdown语法</h3><p>Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。Markdown语法简洁明了、容易掌握，而且功能比纯文本更强，因此写博客使用它，可以让用户更加专注的写文章，而不需要费尽心力的考虑样式，相对于html已经算是轻量级语言，像有道云笔记也支持Markdown写作。并且Markdown完全兼容html，也就是可以在文章里直接插入html代码。比如给博文添加音乐，就可以直接把音乐的外链html代码插入文章中。具体语法参看：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.appinn.com/markdown/">Markdown 语法说明(简体中文版)</a> 可以说十分钟就可以入门。当然，工欲善其事必先利其器，选择一个好的Markdown编辑器也是非常重要的，这里推荐 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://code52.org/DownmarkerWPF/">MarkPad</a> 和 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://www.markdownpad.com/">The Markdown Editor for Windows</a> 以及前端神器 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://atom.io/">Atom</a> 和 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://code.visualstudio.com/">VScode</a> ，这是带有预览效果的编辑器，也可以使用本地的文本编辑器，更多的Markdown的语法与编辑器自己可以搜索了解。</p>
 <h3 id="发布文章"><a href="#发布文章" class="headerlink" title="发布文章"></a>发布文章</h3><p>我们开始正式发布上线博客文章，在命令行中输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n &quot;博客名字&quot;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight excel">hexo <span class="built_in">n</span> <span class="string">&quot;博客名字&quot;</span></code></pre>
 
 <p>我们会发现在blog根目录下的source文件夹中的_post文件夹中多了一个 <em>博客名字.md</em> 文件，使用Markdown编辑器打开，就可以开始你的个人博客之旅了，Markdown常用的样式也就十来种，完全能够满足一般博文的样式要求，这是我的一篇博文内容示例：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744423/blog/v2-4f96cd03a88e68b8ae86c38bfb0808ac_hd.jpg"></p>
@@ -471,7 +480,10 @@
 <li>设置背景</li>
 </ul>
 <p>把你挑选的背景图片命名为：background.jpg，放在blog\themes\next\source\images里，在blog\themes\next\source\css_custom文件的custom.styl首部添加：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>:<span class="built_in">url</span>(<span class="string">/images/background.jpg</span>);</span><br><span class="line">  <span class="attribute">background-attachment</span>: fixed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight css"><span class="selector-tag">body</span> &#123;
+  <span class="attribute">background</span>:<span class="built_in">url</span>(<span class="string">/images/background.jpg</span>);
+  <span class="attribute">background-attachment</span>: fixed;
+&#125;</code></pre>
 
 <p>background-attachment: fixed;是固定背景图片。</p>
 <p>这是设置一张静态图片作为背景，其实Next主题自带有动态的背景效果，修改主题配置文件中的canvas_nest: false 为 canvas_nest: true 即可。</p>
@@ -481,7 +493,7 @@
 <p>默认的侧栏菜单条目有：首页、归档、标签、关于、搜索等。如果你想要增加其他的菜单条目，修改主题配置文件_config.yml里的Menu Settings中的menu和menu_icons两个地方</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-666a22fedbba95d979eeb26e52fc29e2_hd.jpg"></p>
 <p>其中menu里是配置菜单项对应的页面位置（如：/love），menu_icons对应菜单项的图标，这里的图标是来自于Font Awesome ，所以你需要在<a target="_blank" rel="noopener external nofollow noreferrer" href="https://fontawesome.com/">Font Awesome</a>网站上找到你需要的icon，然后把该icon的名字写在menu_icons对应菜单名后面，注意冒号有一个英文输入状态的空格。设置好后，在命令行里输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page &quot;你所要增加的菜单项名称（要和你在menu中的填写要匹配）&quot;</span><br></pre></td></tr></table></figure>
+<pre><code class="highlight haxe">hexo <span class="keyword">new</span> <span class="type">page</span> <span class="string">&quot;你所要增加的菜单项名称（要和你在menu中的填写要匹配）&quot;</span></code></pre>
 
 <p>新建的页面在博客根目录下的source文件里，这时你就可以对新建的页面自定义设计。</p>
 <p>还有更多的进阶个性化设置，如SEO、评论系统、个人头像、博客分享、订阅功能、High功能、404网页设置等，可以参看：</p>
