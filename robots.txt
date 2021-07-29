@@ -1,0 +1,12 @@
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /about/
+
+Disallow: /tags/
+Disallow: /categories/
+
+Sitemap: https://blog.byhi.org/sitemap.xml
