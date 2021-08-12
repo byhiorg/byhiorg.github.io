@@ -2006,7 +2006,7 @@ hexo g -d</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>2021-08-12-ubuntu-20-04-compile-setting-redis</title>
+    <title>ubuntu 20.04编译并配置redis</title>
     <url>/archives/e110687b.html</url>
     <content><![CDATA[<p>我的系统环境是 Ubuntu 20.04,并且已经安装好了<a href="https://blog.byhi.org/archives/586372ad.html">GCC</a>。</p>
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><pre class="language-none"><code class="language-none">$ wget -c https:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-6.2.5.tar.gz 
