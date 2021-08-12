@@ -6,7 +6,7 @@
   <link href="https://blog.byhi.org/atom.xml" rel="self"/>
   
   <link href="https://blog.byhi.org/"/>
-  <updated>2021-07-29T15:14:09.018Z</updated>
+  <updated>2021-08-12T12:35:34.053Z</updated>
   <id>https://blog.byhi.org/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021-08-12-ubuntu-20-04-compile-setting-redis</title>
+    <link href="https://blog.byhi.org/archives/e110687b.html"/>
+    <id>https://blog.byhi.org/archives/e110687b.html</id>
+    <published>2021-08-12T12:08:06.000Z</published>
+    <updated>2021-08-12T12:35:34.053Z</updated>
+    
+    <content type="html"><![CDATA[<p>我的系统环境是 Ubuntu 20.04,并且已经安装好了<a href="https://blog.byhi.org/archives/586372ad.html">GCC</a>。</p><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><pre class="language-none"><code class="language-none">$ wget -c https:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-6.2.5.tar.gz $ tar -zxf redis-6.2.5.tar.gz$ cd redis-6.2.5</code></pre><h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>直接在 <code>redis-6.2.5</code> 这个目录下make就可以了</p><pre class="language-none"><code class="language-none">$ make -j6</code></pre><h2 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h2><p>编译完成后 <code>src</code> 目录下会出现 一些可执行文件，拷贝到 <code>/usr/local/bin</code> 里 </p><pre class="language-none"><code class="language-none">$ sudo cp src&#x2F;redis-server &#x2F;usr&#x2F;local&#x2F;bin&#x2F;$ sudo cp src&#x2F;redis-cli &#x2F;usr&#x2F;local&#x2F;bin&#x2F; </code></pre><p>或者不通过拷贝的方式，我们也可以执行下面的命令达到一样的效果。</p><pre class="language-none"><code class="language-none">$ sudo make install</code></pre><span id="more"></span><h2 id="Redis-配置"><a href="#Redis-配置" class="headerlink" title="Redis 配置"></a>Redis 配置</h2><pre class="language-none"><code class="language-none">$ sudo mkdir &#x2F;etc&#x2F;redis$ sudo cp -p redis.conf &#x2F;etc&#x2F;redis</code></pre><p>现在来修改配置文件</p><pre class="language-none"><code class="language-none">$ sudo vi &#x2F;etc&#x2F;redis&#x2F;redis.confsupervised systemd # 把 supervised auto 改为 supervised systemddir &#x2F;home&#x2F;byhi&#x2F;Public&#x2F;Data&#x2F;redis # 原配置里写的是 dir . 改为你想存储持久化数据的目录</code></pre><p>编写基于systemd的系统服务启动文件</p><pre class="language-none"><code class="language-none">$ sudo vi &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;redis.service[Unit]Description&#x3D;Redis In-Memory Data StoreAfter&#x3D;network.target[Service]User&#x3D;redisGroup&#x3D;redisExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;redis-server &#x2F;etc&#x2F;redis&#x2F;redis.confExecStop&#x3D;&#x2F;usr&#x2F;local&#x2F;bin&#x2F;redis-cli shutdownRestart&#x3D;always[Install]WantedBy&#x3D;multi-user.target</code></pre><p>创建redis用户，组，及持久化目录</p><pre class="language-none"><code class="language-none">$ sudo adduser --system --group --no-create-home redis$ mkdir -p &#x2F;home&#x2F;byhi&#x2F;Public&#x2F;Data&#x2F;redis$ sudo chown redis:redis &#x2F;home&#x2F;byhi&#x2F;Public&#x2F;Data&#x2F;redis$ sudo chmod 770 &#x2F;home&#x2F;byhi&#x2F;Public&#x2F;Data&#x2F;redis </code></pre><h2 id="启动，测试"><a href="#启动，测试" class="headerlink" title="启动，测试"></a>启动，测试</h2><pre class="language-none"><code class="language-none">$ sudo systemctl start redis$ sudo systemctl status redis● redis.service - Redis In-Memory Data Store     Loaded: loaded (&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;redis.service; disabled; vendor preset: enabled)     Active: active (running) since Thu 2021-08-12 20:31:39 CST; 3s ago   Main PID: 704472 (redis-server)      Tasks: 5 (limit: 77029)     Memory: 2.1M     CGroup: &#x2F;system.slice&#x2F;redis.service             └─704472 &#x2F;usr&#x2F;local&#x2F;bin&#x2F;redis-server 127.0.0.1:6379</code></pre><p>为了测试 redis 服务的实例是否正常启动，可使用 redis-cli连接 redis-server</p><pre class="language-none"><code class="language-none">$ redis-cli127.0.0.1:6379&gt; PINGPONG127.0.0.1:6379&gt; set test &quot;hello&quot;OK127.0.0.1:6379&gt; get test&quot;hello&quot;127.0.0.1:6379&gt;</code></pre>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;我的系统环境是 Ubuntu 20.04,并且已经安装好了&lt;a href=&quot;https://blog.byhi.org/archives/586372ad.html&quot;&gt;GCC&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&quot;下载&quot;&gt;&lt;a href=&quot;#下载&quot; class=&quot;headerlink&quot; title=&quot;下载&quot;&gt;&lt;/a&gt;下载&lt;/h2&gt;&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;$ wget -c https:&amp;#x2F;&amp;#x2F;download.redis.io&amp;#x2F;releases&amp;#x2F;redis-6.2.5.tar.gz 
+$ tar -zxf redis-6.2.5.tar.gz
+$ cd redis-6.2.5&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;编译&quot;&gt;&lt;a href=&quot;#编译&quot; class=&quot;headerlink&quot; title=&quot;编译&quot;&gt;&lt;/a&gt;编译&lt;/h2&gt;&lt;p&gt;直接在 &lt;code&gt;redis-6.2.5&lt;/code&gt; 这个目录下make就可以了&lt;/p&gt;
+&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;$ make -j6&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;拷贝&quot;&gt;&lt;a href=&quot;#拷贝&quot; class=&quot;headerlink&quot; title=&quot;拷贝&quot;&gt;&lt;/a&gt;拷贝&lt;/h2&gt;&lt;p&gt;编译完成后 &lt;code&gt;src&lt;/code&gt; 目录下会出现 一些可执行文件，拷贝到 &lt;code&gt;/usr/local/bin&lt;/code&gt; 里 &lt;/p&gt;
+&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;$ sudo cp src&amp;#x2F;redis-server &amp;#x2F;usr&amp;#x2F;local&amp;#x2F;bin&amp;#x2F;
+$ sudo cp src&amp;#x2F;redis-cli &amp;#x2F;usr&amp;#x2F;local&amp;#x2F;bin&amp;#x2F; &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者不通过拷贝的方式，我们也可以执行下面的命令达到一样的效果。&lt;/p&gt;
+&lt;pre class=&quot;language-none&quot;&gt;&lt;code class=&quot;language-none&quot;&gt;$ sudo make install&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>ubuntu 20.04 lts 编译 linux kernel 5.10.53</title>

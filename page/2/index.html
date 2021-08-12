@@ -164,7 +164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -211,6 +211,98 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/3ecb4f72.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="echobits">
+      <meta itemprop="description" content="个人笔记,偶尔聊聊服务端技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echobits">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/archives/3ecb4f72.html" class="post-title-link" itemprop="url">如何在Ubuntu中开启Fast TCP Open</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2018-10-12 01:15:05 / 修改时间：01:29:44" itemprop="dateCreated datePublished" datetime="2018-10-12T01:15:05+08:00">2018-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/archives/3ecb4f72.html" class="post-meta-item leancloud_visitors" data-flag-title="如何在Ubuntu中开启Fast TCP Open" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>TFO是TCP连接的拥塞控制算法之一。 TFO解决的问题是减少TCP连接通常需要的握手的RTT（往返时间）。这篇叫做《<a target="_blank" rel="noopener external nofollow noreferrer" href="https://raghavan.usc.edu//papers/tfo-conext11.pdf">TCP Fast Open</a>》的论文指出它可以获得大约10％甚至在某些情况下能够达到40％的提速。</p>
+<h2 id="如何在Ubuntu下开启"><a href="#如何在Ubuntu下开启" class="headerlink" title="如何在Ubuntu下开启"></a>如何在Ubuntu下开启</h2><p>首先，你的Linux内核必须高于3.7。你可以用<code>uname -r</code>来检查一下。然后按照以下步骤启用Fast TCP Open。</p>
+<ul>
+<li>编辑/etc/sysctl.conf并将以下行添加到其文件末尾</li>
+</ul>
+<pre class="language-none"><code class="language-none">net.ipv4.tcp_fastopen &#x3D; 3</code></pre>
+<ul>
+<li>保存，退出。</li>
+<li>执行<code>sysctl -p</code>使其生效。</li>
+<li>在<code>/etc/rc.local</code>中添加以下行，即使在重启系统后也可以使其持久化</li>
+</ul>
+<pre class="language-none"><code class="language-none">echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_fastopen</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
