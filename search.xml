@@ -2084,6 +2084,18 @@ OK
 ]]></content>
   </entry>
   <entry>
+    <title>关于Ubuntu20.04 LTS 安装Nvidia驱动，并开启dkms的坑</title>
+    <url>/archives/7c5a4838.html</url>
+    <content><![CDATA[<h2 id="什么是dkms"><a href="#什么是dkms" class="headerlink" title="什么是dkms"></a>什么是dkms</h2><p>我们都知道，如果要使用没有集成到内核之中的Linux驱动程序需要手动编译。当然，这并不是一件什么难事，即使是对于没有编程经验的Linux使用者，只要稍微有点hacker的意识，努力看看代码包里的Readme或者INSTALL文件，按部就班的执行几条命令还是很容易办到的。但这里还有一个问题，Linux模块和内核是有依赖关系的，如果遇到因为发行版更新造成的内核版本的变动，之前编译的模块是无法继续使用的，我们只能手动再编译一遍。这样重复的操作有些繁琐且是反生产力的，而对于没有内核编程经验的使用者来说可能会造成一些困扰，使用者搞不清楚为什么更新系统之后，原来用的好好的驱动程序突然就不能用了。这里，就是Dell创建的DKMS项目的意义所在。DKMS全称是Dynamic Kernel Module Support，它可以帮我们维护内核外的这些驱动程序，在内核版本变动之后可以自动重新生成新的模块。</p>
+<span id="more"></span>
+
+<h2 id="安装dkms"><a href="#安装dkms" class="headerlink" title="安装dkms"></a>安装dkms</h2><p>如果需要在安装Nvidia驱动时，顺便将dkms注册进内核模块，需要先安装dkms,ubuntu安装如下</p>
+<pre class="language-none"><code class="language-none">$ sudo apt-get install dkms -y</code></pre>
+
+<h2 id="坑是什么"><a href="#坑是什么" class="headerlink" title="坑是什么"></a>坑是什么</h2><p>由于我之前安装了多GCC版本，并顺手将gcc-12设置为系统默认gcc,安装Nvidia官方驱动，并将dkms注册进内核模块这一步时，编译程序直接给报了 <code>ERROR: Installation has failed.</code> 。 之后，将系统默认gcc 切回 <code>gcc-9 g++-9</code> 再次编译，通过。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>404 Not Found: 该页无法显示</title>
     <url>//404.html</url>
     <content><![CDATA[<p align="center" style="margin-top:50px;"> 你可能需要：
