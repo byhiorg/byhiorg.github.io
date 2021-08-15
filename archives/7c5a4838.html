@@ -29,7 +29,7 @@
 <meta property="og:description" content="什么是dkms我们都知道，如果要使用没有集成到内核之中的Linux驱动程序需要手动编译。当然，这并不是一件什么难事，即使是对于没有编程经验的Linux使用者，只要稍微有点hacker的意识，努力看看代码包里的Readme或者INSTALL文件，按部就班的执行几条命令还是很容易办到的。但这里还有一个问题，Linux模块和内核是有依赖关系的，如果遇到因为发行版更新造成的内核版本的变动，之前编译的模块是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-15T10:23:51.000Z">
-<meta property="article:modified_time" content="2021-08-15T10:34:42.148Z">
+<meta property="article:modified_time" content="2021-08-15T15:21:42.246Z">
 <meta property="article:author" content="echobits">
 <meta property="article:tag" content="杂谈,折腾,记录">
 <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.byhi.org/archives/7c5a4838.html","path":"archives/7c5a4838.html","title":"关于Ubuntu20.04 LTS 安装Nvidia驱动，并开启dkms的坑"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>关于Ubuntu20.04 LTS 安装Nvidia驱动，并开启dkms的坑 | echobits</title>
+<title>关于Ubuntu20.04 LTS 安装Nvidia驱动，并开启dkms的坑 | echobits</title><meta name="robots" content="noindex">
   
 
 
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFdkms"><span class="nav-number">1.</span> <span class="nav-text">什么是dkms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85dkms"><span class="nav-number">2.</span> <span class="nav-text">安装dkms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%91%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">坑是什么</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFdkms"><span class="nav-number">1.</span> <span class="nav-text">什么是dkms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85dkms"><span class="nav-number">2.</span> <span class="nav-text">安装dkms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%91%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">坑是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,7 +167,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -249,7 +249,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-08-15 18:23:51 / 修改时间：18:34:42" itemprop="dateCreated datePublished" datetime="2021-08-15T18:23:51+08:00">2021-08-15</time>
+      <time title="创建时间：2021-08-15 18:23:51 / 修改时间：23:21:42" itemprop="dateCreated datePublished" datetime="2021-08-15T18:23:51+08:00">2021-08-15</time>
     </span>
 
   
@@ -269,14 +269,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="什么是dkms"><a href="#什么是dkms" class="headerlink" title="什么是dkms"></a>什么是dkms</h2><p>我们都知道，如果要使用没有集成到内核之中的Linux驱动程序需要手动编译。当然，这并不是一件什么难事，即使是对于没有编程经验的Linux使用者，只要稍微有点hacker的意识，努力看看代码包里的Readme或者INSTALL文件，按部就班的执行几条命令还是很容易办到的。但这里还有一个问题，Linux模块和内核是有依赖关系的，如果遇到因为发行版更新造成的内核版本的变动，之前编译的模块是无法继续使用的，我们只能手动再编译一遍。这样重复的操作有些繁琐且是反生产力的，而对于没有内核编程经验的使用者来说可能会造成一些困扰，使用者搞不清楚为什么更新系统之后，原来用的好好的驱动程序突然就不能用了。这里，就是Dell创建的DKMS项目的意义所在。DKMS全称是Dynamic Kernel Module Support，它可以帮我们维护内核外的这些驱动程序，在内核版本变动之后可以自动重新生成新的模块。</p>
+        <h2 id="什么是dkms"><a href="#什么是dkms" class="headerlink" title="什么是dkms"></a>什么是dkms</h2><p>我们都知道，如果要使用没有集成到内核之中的Linux驱动程序需要手动编译。当然，这并不是一件什么难事，即使是对于没有编程经验的Linux使用者，只要稍微有点hacker的意识，努力看看代码包里的Readme或者INSTALL文件，按部就班的执行几条命令还是很容易办到的。但这里还有一个问题，Linux模块和内核是有依赖关系的，如果遇到因为发行版更新造成的内核版本的变动，之前编译的模块是无法继续使用的，我们只能手动再编译一遍。这样重复的操作有些繁琐且是反生产力的，而对于没有内核编程经验的使用者来说可能会造成一些困扰，使用者搞不清楚为什么更新系统之后，原来用的好好的驱动程序突然就不能用了。这就是Dell创建DKMS项目的意义所在。DKMS全称是Dynamic Kernel Module Support，它可以帮我们维护内核外的这些驱动程序，在内核版本变动之后可以自动重新生成新的模块。</p>
 <span id="more"></span>
 
 <h2 id="安装dkms"><a href="#安装dkms" class="headerlink" title="安装dkms"></a>安装dkms</h2><p>如果需要在安装Nvidia驱动时，顺便将dkms注册进内核模块，需要先安装dkms,ubuntu安装如下</p>
 <pre class="language-none"><code class="language-none">$ sudo apt-get install dkms -y</code></pre>
 
-<h2 id="坑是什么"><a href="#坑是什么" class="headerlink" title="坑是什么"></a>坑是什么</h2><p>由于我之前安装了多GCC版本，并顺手将gcc-12设置为系统默认gcc,安装Nvidia官方驱动，并将dkms注册进内核模块这一步时，编译程序直接给报了 <code>ERROR: Installation has failed.</code> 。 之后，将系统默认gcc 切回 <code>gcc-9 g++-9</code> 再次编译，通过。</p>
-
+<h2 id="坑是什么"><a href="#坑是什么" class="headerlink" title="坑是什么"></a>坑是什么</h2><p>由于我之前安装了多GCC版本，并顺手将 <code>gcc-12 </code> 设置为系统默认gcc,安装Nvidia官方驱动，并将dkms注册进内核模块这一步时，编译程序直接给报了 <code>ERROR: Installation has failed.</code> 。 之后，将系统默认gcc 切回 <code>gcc-9 g++-9</code> 再次编译，通过。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这个坑是怎么造成的呢？之前我用 gcc-12 编译并升级了我的Linux内核。然后在一次系统测试中又把内核给换了回去，而原内核是gcc-9编译出来的，所以造成了该次编译不通过。</p>
+<!-- flag of hidden posts -->
     </div>
 
     
@@ -304,15 +305,6 @@
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/archives/e110687b.html" rel="prev" title="ubuntu 20.04编译并配置redis">
-                  <i class="fa fa-chevron-left"></i> ubuntu 20.04编译并配置redis
-                </a>
-            </div>
-            <div class="post-nav-item">
-            </div>
-          </div>
     </footer>
   </article>
 </div>
