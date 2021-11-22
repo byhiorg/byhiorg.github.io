@@ -9,8 +9,24 @@
 
 
     <url>
+        <loc>https://blog.byhi.org/archives/d87c5f79.html</loc>
+        <lastmod>2021-11-22T17:09:56.589Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://blog.byhi.org/archives/b39da0c2.html</loc>
+        <lastmod>2021-11-04T15:28:41.136Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://blog.byhi.org/archives/e3eb7877.html</loc>
-        <lastmod>2021-09-28T22:48:10.951Z</lastmod>
+        <lastmod>2021-09-28T22:50:06.521Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -51,14 +67,6 @@
     <url>
         <loc>https://blog.byhi.org/archives/eec576ad.html</loc>
         <lastmod>2021-07-29T15:14:09.018Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://blog.byhi.org/archives/b39da0c2.html</loc>
-        <lastmod>2020-02-14T12:33:32.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

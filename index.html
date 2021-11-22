@@ -164,7 +164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -220,6 +220,94 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/d87c5f79.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="echobits">
+      <meta itemprop="description" content="个人笔记,偶尔聊聊服务端技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echobits">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/archives/d87c5f79.html" class="post-title-link" itemprop="url">ubuntu清理Linux内核和禁用Linux内核自动更新</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-11-23 00:50:58 / 修改时间：01:09:56" itemprop="dateCreated datePublished" datetime="2021-11-23T00:50:58+08:00">2021-11-23</time>
+    </span>
+
+  
+    <span id="/archives/d87c5f79.html" class="post-meta-item leancloud_visitors" data-flag-title="ubuntu清理Linux内核和禁用Linux内核自动更新" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="OS版本"><a href="#OS版本" class="headerlink" title="OS版本"></a>OS版本</h2><p>Ubuntu 20.04 LTS</p>
+<h2 id="查看已安装内核"><a href="#查看已安装内核" class="headerlink" title="查看已安装内核"></a>查看已安装内核</h2><pre class="language-none"><code class="language-none">$ dpkg --get-selections | grep linux</code></pre>
+
+<h2 id="查看正在使用的内核"><a href="#查看正在使用的内核" class="headerlink" title="查看正在使用的内核"></a>查看正在使用的内核</h2><pre class="language-none"><code class="language-none">$ uname -sr</code></pre>
+
+<h2 id="删除不用内核"><a href="#删除不用内核" class="headerlink" title="删除不用内核"></a>删除不用内核</h2><pre class="language-none"><code class="language-none">$ sudo apt-get remove linux-headers-5.4.0-74 -y
+$ sudo apt-get remove linux-headers-5.4.0-74-generic -y
+$ sudo apt-get remove linux-image-5.4.0-74-generic -y
+$ sudo apt-get remove linux-modules-5.4.0-74-generic -y
+$ sudo apt-get remove linux-modules-extra-5.4.0-74-generic -y</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/archives/d87c5f79.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/e3eb7877.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -245,7 +333,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-09-29 06:20:11 / 修改时间：06:48:10" itemprop="dateCreated datePublished" datetime="2021-09-29T06:20:11+08:00">2021-09-29</time>
+      <time title="创建时间：2021-09-29 06:20:11 / 修改时间：06:50:06" itemprop="dateCreated datePublished" datetime="2021-09-29T06:20:11+08:00">2021-09-29</time>
     </span>
 
   
@@ -922,7 +1010,7 @@ $ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov-tool &#x2F;usr&
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-02-14 20:33:32" itemprop="dateModified" datetime="2020-02-14T20:33:32+08:00">2020-02-14</time>
+        <time title="修改时间：2021-11-04 23:28:41" itemprop="dateModified" datetime="2021-11-04T23:28:41+08:00">2021-11-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -953,12 +1041,12 @@ $ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov-tool &#x2F;usr&
     <div class="post-body" itemprop="articleBody">
           <h2 id="Telegram简介"><a href="#Telegram简介" class="headerlink" title="Telegram简介"></a>Telegram简介</h2><p>Telegram是一款即时通信软件，客户端是自由及开放源代码软件。用户可以相互交换加密与自析构的消息，发送照片、影片等所有类型文件。官方提供手机版（Android、iOS、Windows Phone）、桌面版（Windows、macOS、Linux）和网页版等多种平台客户端；同时官方开放应用程序接口，因此拥有许多第三方的客户端可供选择。</p>
 <p>2015年6月，Telegram 开放了机器人API，2017年5月支持了付款功能。机器人是 Telegram 上以程序运作的账号，可以回复人类的指令、消息。</p>
-<h2 id="Telegram-群組-頻道-機器人-公眾索引系統"><a href="#Telegram-群組-頻道-機器人-公眾索引系統" class="headerlink" title="Telegram 群組/頻道/機器人 公眾索引系統"></a>Telegram 群組/頻道/機器人 公眾索引系統</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://tg.weils.net/">https://tg.weils.net/</a></p>
+<h2 id="Telegram-群組-頻道-機器人-公眾索引系統"><a href="#Telegram-群組-頻道-機器人-公眾索引系統" class="headerlink" title="Telegram 群組/頻道/機器人 公眾索引系統"></a>Telegram 群組/頻道/機器人 公眾索引系統</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://tgtw.cc/">https://tgtw.cc/</a></p>
 <p>提交後，短時間內就會在網站、頻道及機器人的列表中呈現出來。所以你還在用群組推廣群宣傳群組嗎？那你可能跟不上時代了~</p>
 <p>它的廣播頻道：你可以先加入頻道，觀察別人宣傳的群組</p>
 <p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://t.me/TG_index_channel">https://t.me/TG_index_channel</a></p>
 <p>使用說明：</p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://tg.weils.net/manual.php">https://tg.weils.net/manual.php</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://tgtw.cc/manual.php">https://tgtw.cc/manual.php</a></p>
 <p>提交及瀏覽除了網站也可以透過機器人：</p>
 <p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://t.me/TG_index_bot">https://t.me/TG_index_bot</a></p>
 <p>註.如果你不習慣和機器人對話，其實用電腦連網站及登入會較容易操作。</p>
@@ -1071,103 +1159,6 @@ $ sudo ln -sf &#x2F;usr&#x2F;local&#x2F;gcc12&#x2F;bin&#x2F;gcov-tool &#x2F;usr&
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/archives/f9abf4e9.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/ad2407d.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="echobits">
-      <meta itemprop="description" content="个人笔记,偶尔聊聊服务端技术">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="echobits">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/archives/ad2407d.html" class="post-title-link" itemprop="url">1809 1 月更新官方 esd 和 xml 下载</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-02-09 14:14:59" itemprop="dateCreated datePublished" datetime="2019-02-09T14:14:59+08:00">2019-02-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2019-02-23 01:14:44" itemprop="dateModified" datetime="2019-02-23T01:14:44+08:00">2019-02-23</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BB%BC%E5%90%88/" itemprop="url" rel="index"><span itemprop="name">综合</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/archives/ad2407d.html" class="post-meta-item leancloud_visitors" data-flag-title="1809 1 月更新官方 esd 和 xml 下载" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近，在官方发布 1809 1 月更新官方 ISO 后，官方新更 1809 1 月更新官方 esd，以下贴出简体中文和英语的 esd 下载地址。</p>
-<h2 id="Microsoft-Windows-XML-下载地址"><a href="#Microsoft-Windows-XML-下载地址" class="headerlink" title="Microsoft Windows XML 下载地址"></a>Microsoft Windows XML 下载地址</h2><p>windows10 1809 xml 官方下载地址：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://download.microsoft.com/download/B/E/4/BE4D25FA-BF52-4EAF-B9D0-5EF8D31F29FA/products_20190110.cab">https://download.microsoft.com/download/B/E/4/BE4D25FA-BF52-4EAF-B9D0-5EF8D31F29FA/products_20190110.cab</a></p>
-<p>本站存档：<a href="/files/products_20190110.cab">products_20190110.cab</a></p>
-<p>解压此 cab 文件，可得 xml 文件，可下载所有语言的 esd 文件。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/archives/ad2407d.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
