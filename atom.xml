@@ -6,7 +6,7 @@
   <link href="https://blog.byhi.org/atom.xml" rel="self"/>
   
   <link href="https://blog.byhi.org/"/>
-  <updated>2022-01-09T21:06:57.993Z</updated>
+  <updated>2022-01-09T21:21:20.353Z</updated>
   <id>https://blog.byhi.org/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://blog.byhi.org/archives/ee11bfd7.html"/>
     <id>https://blog.byhi.org/archives/ee11bfd7.html</id>
     <published>2022-01-09T20:48:20.000Z</published>
-    <updated>2022-01-09T21:06:57.993Z</updated>
+    <updated>2022-01-09T21:21:20.353Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="先安装openssl"><a href="#先安装openssl" class="headerlink" title="先安装openssl"></a>先安装openssl</h2><p>系统一般自带，没安装的可以安装一下</p><pre class="language-none"><code class="language-none">$ sudo apt install -y openssl$ openssl versionOpenSSL 1.1.1k  31 Mar 2021</code></pre><h2 id="先把文件打包压缩一下"><a href="#先把文件打包压缩一下" class="headerlink" title="先把文件打包压缩一下"></a>先把文件打包压缩一下</h2><p>这里我推荐压缩比较高的 bzip2</p><pre class="language-none"><code class="language-none">$ tar -jcf data.tar.gz .&#x2F;data&#x2F;*</code></pre><p>打包压缩一下 当前目录下 data 文件夹下所有文件</p><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -a -salt -iter 5 -in data.tar.gz -out data.tar.gz.enc</code></pre><p>此处为对称加密。系统将提示您输入两次加密密码，可以是任何您想要的密码。此命令将生成一个新的 data.tar.gz.enc 文件作为新加密文件的密钥。请妥善保管该密钥和你输入的密码。一旦丢失，该文件则无解了。</p><h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -d -a -iter 5 -in data.tar.gz.enc -out data.tar.gz</code></pre><p>上述命令将提示您输入加密密码，然后生成一个 data.tar.gz 的已解密文件。此时，您只需解压缩就可以使用其中文件了。</p><h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><pre class="language-none"><code class="language-none">$ tar jxf data.tar.gz</code></pre><p>会将该压缩包解压到当前目录</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="先安装openssl"><a href="#先安装openssl" class="headerlink" title="先安装openssl"></a>先安装openssl</h2><p>系统一般自带，没安装的可以安装一下</p><pre class="language-none"><code class="language-none">$ sudo apt install -y openssl$ openssl versionOpenSSL 1.1.1k  31 Mar 2021</code></pre><h2 id="先把文件打包压缩一下"><a href="#先把文件打包压缩一下" class="headerlink" title="先把文件打包压缩一下"></a>先把文件打包压缩一下</h2><p>这里我推荐压缩比较高的 bzip2</p><pre class="language-none"><code class="language-none">$ tar -jcf data.tar.bz2 .&#x2F;data&#x2F;*</code></pre><p>打包压缩一下 当前目录下 data 文件夹下所有文件</p><h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -a -salt -iter 5 -in data.tar.bz2 -out data.tar.bz2.enc</code></pre><p>此处为对称加密。系统将提示您输入两次加密密码，可以是任何您想要的密码。此命令将生成一个新的 data.tar.gz.enc 文件作为新加密文件的密钥。请妥善保管该密钥和你输入的密码。一旦丢失，该文件则无解了。</p><h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -d -a -iter 5 -in data.tar.bz2.enc -out data.tar.bz2</code></pre><p>上述命令将提示您输入加密密码，然后生成一个 data.tar.bz2 的已解密文件。此时，您只需解压缩就可以使用其中文件了。</p><h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><pre class="language-none"><code class="language-none">$ tar jxf data.tar.bz2</code></pre><p>会将该压缩包解压到当前目录</p>]]></content>
     
     
       
