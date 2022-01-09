@@ -21,32 +21,36 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.byhi.org","root":"/","images":"/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true}}</script><script src="/js/config.js"></script>
-<meta name="description" content="个人笔记,偶尔聊聊服务端技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="echobits">
-<meta property="og:url" content="https://blog.byhi.org/tags/golang/index.html">
+<meta name="description" content="先安装openssl系统一般自带，没安装的可以安装一下 $ sudo apt install -y openssl $ openssl version OpenSSL 1.1.1k  31 Mar 2021  先把文件打包压缩一下这里我推荐压缩比较高的 bzip2 $ tar -jcf data.tar.gz .&#x2F;data&#x2F;* 打包压缩一下 当前目录下 data 文件夹下所有文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下压缩加密存档文件">
+<meta property="og:url" content="https://blog.byhi.org/archives/ee11bfd7.html">
 <meta property="og:site_name" content="echobits">
-<meta property="og:description" content="个人笔记,偶尔聊聊服务端技术">
+<meta property="og:description" content="先安装openssl系统一般自带，没安装的可以安装一下 $ sudo apt install -y openssl $ openssl version OpenSSL 1.1.1k  31 Mar 2021  先把文件打包压缩一下这里我推荐压缩比较高的 bzip2 $ tar -jcf data.tar.gz .&#x2F;data&#x2F;* 打包压缩一下 当前目录下 data 文件夹下所有文">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-09T20:48:20.000Z">
+<meta property="article:modified_time" content="2022-01-09T21:06:57.993Z">
 <meta property="article:author" content="echobits">
-<meta property="article:tag" content="杂谈,折腾,记录">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.byhi.org/tags/golang/">
+<link rel="canonical" href="https://blog.byhi.org/archives/ee11bfd7.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/golang/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.byhi.org/archives/ee11bfd7.html","path":"archives/ee11bfd7.html","title":"Linux下压缩加密存档文件"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: golang | echobits</title>
+<title>Linux下压缩加密存档文件 | echobits</title>
   
 
 
 
 
 
+
+  <meta name="keywords" content="," />
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -135,7 +139,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -148,6 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%AE%89%E8%A3%85openssl"><span class="nav-number">1.</span> <span class="nav-text">先安装openssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%8A%8A%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85%E5%8E%8B%E7%BC%A9%E4%B8%80%E4%B8%8B"><span class="nav-number">2.</span> <span class="nav-text">先把文件打包压缩一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">3.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">4.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B"><span class="nav-number">5.</span> <span class="nav-text">解压</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -210,71 +215,133 @@
 </noscript>
 
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h2 class="collection-header">golang
-          <small>标签</small>
-        </h2>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.byhi.org/archives/ee11bfd7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="echobits">
+      <meta itemprop="description" content="个人笔记,偶尔聊聊服务端技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="echobits">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux下压缩加密存档文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+
+      <time title="创建时间：2022-01-10 04:48:20 / 修改时间：05:06:57" itemprop="dateCreated datePublished" datetime="2022-01-10T04:48:20+08:00">2022-01-10</time>
+    </span>
+
+  
+    <span id="/archives/ee11bfd7.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux下压缩加密存档文件" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="先安装openssl"><a href="#先安装openssl" class="headerlink" title="先安装openssl"></a>先安装openssl</h2><p>系统一般自带，没安装的可以安装一下</p>
+<pre class="language-none"><code class="language-none">$ sudo apt install -y openssl
+$ openssl version
+OpenSSL 1.1.1k  31 Mar 2021</code></pre>
+
+<h2 id="先把文件打包压缩一下"><a href="#先把文件打包压缩一下" class="headerlink" title="先把文件打包压缩一下"></a>先把文件打包压缩一下</h2><p>这里我推荐压缩比较高的 bzip2</p>
+<pre class="language-none"><code class="language-none">$ tar -jcf data.tar.gz .&#x2F;data&#x2F;*</code></pre>
+<p>打包压缩一下 当前目录下 data 文件夹下所有文件</p>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -a -salt -iter 5 -in data.tar.gz -out data.tar.gz.enc</code></pre>
+
+<p>此处为对称加密。系统将提示您输入两次加密密码，可以是任何您想要的密码。此命令将生成一个新的 data.tar.gz.enc 文件作为新加密文件的密钥。请妥善保管该密钥和你输入的密码。一旦丢失，该文件则无解了。</p>
+<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -d -a -iter 5 -in data.tar.gz.enc -out data.tar.gz</code></pre>
+
+<p>上述命令将提示您输入加密密码，然后生成一个 data.tar.gz 的已解密文件。此时，您只需解压缩就可以使用其中文件了。</p>
+<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><pre class="language-none"><code class="language-none">$ tar jxf data.tar.gz</code></pre>
+
+<p>会将该压缩包解压到当前目录</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-09-29T06:20:11+08:00"
-              content="2021-09-29">
-          09-29
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/archives/e3eb7877.html" itemprop="url">
-            <span itemprop="name">谈一谈golang锁机制</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
 
-      
-    </header>
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/archives/d87c5f79.html" rel="prev" title="ubuntu清理Linux内核和禁用Linux内核自动更新">
+                  <i class="fa fa-chevron-left"></i> ubuntu清理Linux内核和禁用Linux内核自动更新
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2021-09-29T05:38:01+08:00"
-              content="2021-09-29">
-          09-29
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/archives/61b9f7c8.html" itemprop="url">
-            <span itemprop="name">golang gc 原理</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
 
-    </div>
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
   </div>
   
-  
-  
-
 </div>
   </main>
 
