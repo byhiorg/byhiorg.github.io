@@ -2256,7 +2256,7 @@ OpenSSL 1.1.1k  31 Mar 2021</code></pre>
 <p>打包压缩一下 当前目录下 data 文件夹下所有文件</p>
 <h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -a -salt -iter 5 -in data.tar.bz2 -out data.tar.bz2.enc</code></pre>
 
-<p>此处为对称加密。系统将提示您输入两次加密密码，可以是任何您想要的密码。此命令将生成一个新的 data.tar.gz.enc 文件作为已加密的文件。请妥善保管您输入的密码。一旦丢失，该文件则无解了。</p>
+<p>此处为对称加密。系统将提示您输入两次加密密码，可以是任何您想要的密码。此命令将生成一个新的 data.tar.bz2.enc 文件作为已加密的文件。请妥善保管您输入的密码。一旦丢失，该文件则无解了。</p>
 <span id="more"></span>
 
 <h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><pre class="language-none"><code class="language-none">openssl aes-256-cbc -d -a -iter 5 -in data.tar.bz2.enc -out data.tar.bz2</code></pre>
@@ -2266,7 +2266,7 @@ OpenSSL 1.1.1k  31 Mar 2021</code></pre>
 
 <p>会将该压缩包解压到当前目录</p>
 <h2 id="多线程压缩"><a href="#多线程压缩" class="headerlink" title="多线程压缩"></a>多线程压缩</h2><h3 id="xz"><a href="#xz" class="headerlink" title="xz"></a>xz</h3><pre class="language-none"><code class="language-none">$ tar -cf - .&#x2F;data&#x2F;* | xz -k --threads&#x3D;16 --block-size&#x3D;8MiB -9 -c &gt; data.tar.xz
-$ openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -in .&#x2F;data.tar.xz -out .&#x2F;data.tar.xz.pbkdf2  # 加密
+$ openssl aes-256-cbc -salt -pbkdf2 -iter 100000  -in data.tar.xz -out data.tar.xz.pbkdf2  # 加密
 $ openssl aes-256-cbc -d -salt -pbkdf2 -iter 100000 -in data.tar.xz.pbkdf2 -out data.tar.xz # 解密</code></pre>
 
 <blockquote>
@@ -2291,7 +2291,7 @@ unpigz [ -cfhikKlLmMnNqrRtz ] [ -b blocksize ] [ -p threads ] [ -S suffix ] [ na
 
 <p>加上 <code>-k</code> 选项保留原始文件，会在当前工作目录获得压缩后的 <code>your_file_name.gz</code> 文件</p>
 <p>这时候还可以用</p>
-<pre class="language-none"><code class="language-none">$ igz -l your_file_name.gz</code></pre>
+<pre class="language-none"><code class="language-none">$ pigz -l your_file_name.gz</code></pre>
 
 <p>来查看压缩文件后的压缩率</p>
 <h4 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h4><pre class="language-none"><code class="language-none">$ unpigz -d your_file_name.gz</code></pre>
