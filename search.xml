@@ -1029,7 +1029,7 @@ git config --global user.email &quot;你的GitHub注册邮箱&quot;</code></pre>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743668/blog/v2-d1e47103ec1aa8675f68688c5d63bd27_hd.jpg"></p>
 <p>打开<a href="https://github.com/settings/keys">GitHub_Settings_keys</a> 页面，新建new SSH Key</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523743833/blog/v2-72a3f22c080e99343c3cc4aabce10e3c_hd.jpg"></p>
-<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#109;">&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#109;</a> ：</p>
+<p>Title为标题，任意填即可，将刚刚复制的id_rsa.pub内容粘贴进去，最后点击Add SSH key。<br>在Git Bash中检测GitHub公钥设置是否成功，输入 ssh <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#109;</a> ：</p>
 <p><img data-src="https://res.cloudinary.com/dwomm5wrg/image/upload/v1523744425/blog/v2-da481ffa686410becd4186c656b4ebd6_hd.jpg"></p>
 <p>如上则说明成功。这里之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 <h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://nodejs.org/en/download/">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装，安装后，检测Node.js是否安装成功，在命令行中输入 node -v :</p>
@@ -1189,7 +1189,6 @@ hexo g -d</code></pre>
 <p><a href="http://blog.sunxinfei.com/">Xin’s Notes</a></p>
 <p><a href="https://guguant.github.io/">飞鸟与鱼</a></p>
 <p><a href="http://helloqa.com/">iTesting软件测试知识分享</a></p>
-<p><a href="http://bolg.upsky.top/">赵小源的个人博客</a></p>
 <p><a href="http://www.huajiayi.top/">华嘉熠’s Blog</a></p>
 <p><a href="http://asmire.site/">Cocoon</a></p>
 <p><a href="https://www.dandyweng.com/">翁天信 · Dandy Weng</a></p>
@@ -1311,7 +1310,8 @@ hexo g -d</code></pre>
 <p>老毛子Padavan固件自助交流群：<a href="http://t.me/pdcn2">http://t.me/pdcn2</a></p>
 <p>koolshare merlin firmware：<a href="https://t.me/xbchat">https://t.me/xbchat</a></p>
 <p>koolshare OpenWRT X64-软路由：<a href="https://t.me/joinchat/ERO9vEMMVu1dzQ-F8nP6kA">https://t.me/joinchat/ERO9vEMMVu1dzQ-F8nP6kA</a></p>
-<p>OpenWrt-flippy：<a href="https://t.me/joinchat/WTWXSt_bMW0xHQZE">https://t.me/joinchat/WTWXSt_bMW0xHQZE</a></p>
+<p>OpenWrt-flippy： <a href="https://t.me/joinchat/WTWXSt_bMW0xHQZE">https://t.me/joinchat/WTWXSt_bMW0xHQZE</a></p>
+<p>OpenWrt 固件使用 交流群： <a href="https://t.me/joinchat/jpRkLjx0Dps1ZTAx">https://t.me/joinchat/jpRkLjx0Dps1ZTAx</a></p>
 <p>搬瓦工 (BandwagonHost)：<a href="https://t.me/BandwagonHostGroup">https://t.me/BandwagonHostGroup</a></p>
 <p>GigsGigsCloud.com 意见交流：<a href="https://t.me/gigsgigscloudgroup">https://t.me/gigsgigscloudgroup</a></p>
 <p>机场连萌：<a href="https://t.me/Supermarket666">https://t.me/Supermarket666</a></p>
@@ -1319,6 +1319,7 @@ hexo g -d</code></pre>
 <p>91yun.co 大海航行靠舵手：<a href="https://t.me/im91yun">https://t.me/im91yun</a></p>
 <p>eSir PlayGround：<a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA">https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA</a></p>
 <p>逗比根据地：<a href="https://t.me/doubi">https://t.me/doubi</a></p>
+<p>三好学生：<a href="https://t.me/goodgoodgoodstudent">https://t.me/goodgoodgoodstudent</a> </p>
 <p>ssmgr交流群：<a href="https://t.me/ssmgr">https://t.me/ssmgr</a></p>
 <p>Affyun.com 买买买大会 | 线路讨论 | 三网监测 | VPS评测交流：<a href="https://t.me/pingcat">https://t.me/pingcat</a></p>
 <p>正规群：<a href="https://t.me/zhenggui">https://t.me/zhenggui</a></p>
@@ -1330,11 +1331,12 @@ hexo g -d</code></pre>
 <p>烧饼博客粉丝群：<a href="https://t.me/sbfans">https://t.me/sbfans</a></p>
 <p>Go：<a href="https://t.me/GolangCN">https://t.me/GolangCN</a></p>
 <p>Gopher 台灣：<a href="https://t.me/golangtw">https://t.me/golangtw</a></p>
+<p>Go 夜读：<a href="https://t.me/talkgo">https://t.me/talkgo</a></p>
 <p>The Go Programming Language for Memes and dating advice for weebs and autists ： <a href="https://telegram.me/joinchat/BN3aiwcy8VOZQqn4wJBlkg">https://telegram.me/joinchat/BN3aiwcy8VOZQqn4wJBlkg</a></p>
 <p>Golang Indonesia（印尼人为主）：<a href="https://telegram.me/golangID">https://telegram.me/golangID</a></p>
 <p>Python 中文交流：<a href="https://t.me/pythonzh">https://t.me/pythonzh</a></p>
 <p>Java 编程语言：<a href="https://t.me/Javaer">https://t.me/Javaer</a></p>
-<p>台灣 PHP 社區：<a href="https://t.me/PHP_TW">https://t.me/PHP_TW</a></p>
+<p>PHP 臺灣社群：<a href="https://t.me/PHPTaiwan">https://t.me/PHPTaiwan</a></p>
 <p>C 语言中文交流：<a href="https://t.me/Clanguagezh">https://t.me/Clanguagezh</a></p>
 <p>C++ 中文交流：<a href="https://t.me/cpluspluszh">https://t.me/cpluspluszh</a></p>
 <p>Rust-Lang (Learn Rust with RustDevz)：<a href="https://t.me/rustdevs">https://t.me/rustdevs</a></p>
@@ -1352,7 +1354,6 @@ hexo g -d</code></pre>
 <p>Debian 中文：<a href="https://t.me/debianzh">https://t.me/debianzh</a></p>
 <p>Ubuntu 中文：<a href="https://t.me/ubuntuzh">https://t.me/ubuntuzh</a></p>
 <p>Coder Offtopic 中文群：<a href="https://t.me/coder_ot">https://t.me/coder_ot</a></p>
-<p>政治畅谈：<a href="https://t.me/chinaviews">https://t.me/chinaviews</a> （telegram上谈政治的群大多成了水群，更有甚者成了广告群。慎入）</p>
 <p>Deepin GNU/Linux：<a href="https://t.me/deepin">https://t.me/deepin</a></p>
 <p>archlinux-cn：<a href="https://t.me/archlinuxcn_group">https://t.me/archlinuxcn_group</a></p>
 <p>archlinux-cn-offtopic ： <a href="https://t.me/archlinuxcn_offtopic">https://t.me/archlinuxcn_offtopic</a> （水群）</p>
@@ -1388,6 +1389,9 @@ hexo g -d</code></pre>
 <p>一天世界：<a href="https://t.me/ipn_yitianshijie">https://t.me/ipn_yitianshijie</a></p>
 <p>大家都在 DIY 床上斯哈斯哈：<a href="https://t.me/prpr233">https://t.me/prpr233</a> （生日快乐群）</p>
 <p>易姐の红魔馆： <a href="https://t.me/joinchat/xxdVtnTKa_U1YWQ1">https://t.me/joinchat/xxdVtnTKa_U1YWQ1</a></p>
+<p>政治畅谈：<a href="https://t.me/chinaviews">https://t.me/chinaviews</a> （telegram上谈政治的群大多成了水群，更有甚者成了广告群。慎入）</p>
+<p>政治观察讨论群： <a href="https://t.me/democratic_watch">https://t.me/democratic_watch</a></p>
+<p>中国新闻|新闻爆料 ： <a href="https://t.me/newszg">https://t.me/newszg</a></p>
 <p>貼圖群：<a href="https://t.me/StickerGroup">https://t.me/StickerGroup</a></p>
 <p>Language: Chinese (Traditional)：<a href="https://t.me/translation_zh_hant">https://t.me/translation_zh_hant</a></p>
 <p>Telegram 討論區：<a href="https://t.me/PublicGroupForzh">https://t.me/PublicGroupForzh</a></p>
@@ -1395,6 +1399,7 @@ hexo g -d</code></pre>
 <p>绅士仓库：<a href="https://t.me/joinchat/JNE1eQ1DkN2iZCsnWps3cg">https://t.me/joinchat/JNE1eQ1DkN2iZCsnWps3cg</a></p>
 <p>Telegram 新手帮助：<a href="https://t.me/Newbie_Chat">https://t.me/Newbie_Chat</a></p>
 <p>Steam：<a href="https://t.me/SteamCN">https://t.me/SteamCN</a></p>
+<p>Steam◆中文讨论群：</p>
 <p>ACGN☆Taiwan （🔸主群禁止 R18<br>🔸任何新片兩天禁止在主群及R18群劇透，劇透群則不受限制<br>🔸群組任何對話將被記錄在第三方伺服器，請理性發言<br>🔸發送多檔案請包成壓縮檔<br>🔸禁止洗版<br>🔸建議使用書面體<br>🔸推廣請先徵求管理員同意）：<a href="https://t.me/TaiwanAnime">https://t.me/TaiwanAnime</a></p>
 <h2 id="TG频道（Channel）"><a href="#TG频道（Channel）" class="headerlink" title="TG频道（Channel）"></a>TG频道（Channel）</h2><p>Telegram-zh_CN 简体中文语言包：<a href="https://t.me/zh_CN">https://t.me/zh_CN</a></p>
 <p>Telegram 繁体中文: <a href="https://t.me/Tele_zh_TW">https://t.me/Tele_zh_TW</a></p>
@@ -1463,6 +1468,7 @@ hexo g -d</code></pre>
 <p>one SSR 一个公益节点发布频道：<a href="https://t.me/onessr">https://t.me/onessr</a></p>
 <p>wxkxsw纯公益站：<a href="https://t.me/freenode8">https://t.me/freenode8</a></p>
 <p>免费vpn评测-免费,安全,稳定：<a href="https://t.me/vpnchina">https://t.me/vpnchina</a></p>
+<p>Flippy_Openwrt： <a href="https://t.me/openwrt_flippy">https://t.me/openwrt_flippy</a></p>
 <p>主机测评： <a href="https://t.me/zhujiceping_channel">https://t.me/zhujiceping_channel</a></p>
 <p>秋水逸冰：<a href="https://t.me/qiushuiyibing">https://t.me/qiushuiyibing</a></p>
 <p>Shadowrocket News：<a href="https://t.me/ShadowrocketNews">https://t.me/ShadowrocketNews</a></p>
@@ -1485,6 +1491,7 @@ hexo g -d</code></pre>
 <p>智能講股⚡️7x24財經新聞快訊：<a href="https://t.me/StockIntelligenceNews">https://t.me/StockIntelligenceNews</a></p>
 <p>竹新社：<a href="https://t.me/tnews365">https://t.me/tnews365</a></p>
 <p>竹新资料库：<a href="https://t.me/kt_database">https://t.me/kt_database</a></p>
+<p>中国新闻|新闻爆料： <a href="https://t.me/newszg1">https://t.me/newszg1</a></p>
 <p>TG极客： <a href="https://t.me/TGgeek">https://t.me/TGgeek</a><br>TG极客新闻：<a href="https://t.me/TGgeekNews">https://t.me/TGgeekNews</a></p>
 <p>Sync资源更新（只发key）： <a href="https://t.me/shenkey">https://t.me/shenkey</a></p>
 <p>英文学习桌：<a href="https://t.me/english_learning_discuss">https://t.me/english_learning_discuss</a></p>
